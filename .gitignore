@@ -1,0 +1,32 @@
+#IDE
+.idea
+
+# Ignore the Eclipse metadata
+.metadata
+
+# Ignore the target directory
+target/
+
+# Ignore the .settings directory
+.settings/
+
+# Ignore the .project file
+.project
+
+# Ignore the .classpath file
+.classpath
+
+# Ignore the .factorypath file
+.factorypath
+
+# Ignore the .sts4-cache folder
+.sts4-cache/
+
+# Ignore the Maven wrapper files
+mvnw
+mvnw.cmd
+
+# Ignore the logs folder
+logs/
+
+.DS_Store
