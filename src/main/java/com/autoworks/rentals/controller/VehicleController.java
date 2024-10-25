@@ -18,6 +18,7 @@ public class VehicleController {
 
     @Autowired
     private VehicleService vehicleService;
+    
 
     // Get all vehicles - http://localhost:8080/api/vehicles
     @GetMapping
