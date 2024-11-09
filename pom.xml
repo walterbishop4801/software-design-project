@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>com.ul</groupId>
 	<artifactId>vrs</artifactId>
-	<version>1.1.0-SNAPSHOT</version>
+	<version>2.0.0</version>
 	<url>https://github.com/walterbishop4801/software-design-project</url>
 	<licenses>
 		<license/>
@@ -170,12 +170,12 @@
     						<toRef>HEAD</toRef>
 							<useIntegrations>true</useIntegrations>
 							<gitHubEnabled>true</gitHubEnabled>
-							<gitHubApi>https://api.github.com/repos/tomasbjerre/git-changelog-maven-plugin</gitHubApi>
-							<gitHubIssuePattern>#([0-9]*)</gitHubIssuePattern>
+							<gitHubIssuePattern>#[A-Z]+-[0-9]+</gitHubIssuePattern>
 							<templateFile>changelog.mustache</templateFile>
-							<readableTagName>-([^-]+?)$</readableTagName>
 							<gitHubToken>${GITHUB_OAUTH2TOKEN}</gitHubToken>
-							<ignoreCommitsIfMessageMatches>^$</ignoreCommitsIfMessageMatches>
+							<gitHubApi>https://github.com/walterbishop4801/software-design-project/rental-system</gitHubApi>
+							<readableTagName>-([^-]+?)$</readableTagName>
+          					<ignoreCommitsIfMessageMatches>^\[maven-release-plugin\].*</ignoreCommitsIfMessageMatches>
 							<templateContent>
 <![CDATA[
 # CHANGELOG for VRS
@@ -184,6 +184,65 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+{{#tags}}
+{{#ifReleaseTag .}}
+## [{{name}}](https://github.com/walterbishop4801/software-design-project/rental-system/{{name}}) ({{tagDate .}})
+
+	{{#ifContainsBreaking commits}}
+### Breaking changes
+
+    	{{#commits}}
+      		{{#ifCommitBreaking .}}
+- {{#eachCommitScope .}} **{{.}}** {{/eachCommitScope}} {{{commitDescription .}}} ([{{hash}}](https://github.com/{{ownerName}}/{{repoName}}/commit/{{hash}}))
+      		{{/ifCommitBreaking}}
+    	{{/commits}}
+	{{/ifContainsBreaking}}
+
+	{{#ifContainsType commits type='feat'}}
+### Features
+
+    	{{#commits}}
+      		{{#ifCommitType . type='feat'}}
+- {{#eachCommitScope .}} **{{.}}** {{/eachCommitScope}} {{{commitDescription .}}} ([{{hash}}](https://github.com/walterbishop4801/software-design-project/rental-system/commit/{{hashFull}}))
+      		{{/ifCommitType}}
+    	{{/commits}}
+	{{/ifContainsType}}
+
+  	{{#ifContainsType commits type='fix'}}
+### Bug Fixes
+
+    	{{#commits}}
+      		{{#ifCommitType . type='fix'}}
+- {{#eachCommitScope .}} **{{.}}** {{/eachCommitScope}} {{{commitDescription .}}} ([{{hash}}](https://github.com/walterbishop4801/software-design-project/rental-system/commit/{{hashFull}}))
+			{{/ifCommitType}}
+    	{{/commits}}
+  	{{/ifContainsType}}
+
+	{{#ifContainsType commits type='docs'}}
+### Documentation
+
+		{{#commits}}
+      		{{#ifCommitType . type='docs'}}
+- {{#eachCommitScope .}} **{{.}}** {{/eachCommitScope}} {{{commitDescription .}}} ([{{hash}}](https://github.com/walterbishop4801/software-design-project/rental-system/commit/{{hashFull}}))
+			{{/ifCommitType}}
+    	{{/commits}}
+	{{/ifContainsType}}
+
+### Other changes
+
+	{{#commits}}
+		{{#ifCommitTypeOtherThan . type='feat'}}
+			{{#ifCommitTypeOtherThan . type='fix'}}
+  				{{#ifCommitTypeOtherThan . type='docs'}}
+- **{{{messageTitle}}}** {{{commitDescription .}}} ([{{hash}}](https://github.com/walterbishop4801/software-design-project/rental-system/commit/
+				{{/ifCommitTypeOtherThan}}
+			{{/ifCommitTypeOtherThan}}
+		{{/ifCommitTypeOtherThan}}
+	{{/commits}}
+
+{{/ifReleaseTag}}
+{{/tags}}
 ]]>
 							</templateContent>
 						</configuration>
