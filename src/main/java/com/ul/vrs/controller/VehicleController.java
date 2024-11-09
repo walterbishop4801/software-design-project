@@ -1,7 +1,7 @@
-package com.autoworks.rentals.controller;
+package com.ul.vrs.controller;
 
-import com.autoworks.rentals.entity.Vehicle;
-import com.autoworks.rentals.service.VehicleService;
+import com.ul.vrs.entity.Vehicle;
+import com.ul.vrs.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +18,7 @@ public class VehicleController {
 
     @Autowired
     private VehicleService vehicleService;
-    
+
 
     // Get all vehicles - http://localhost:8080/api/vehicles
     @GetMapping

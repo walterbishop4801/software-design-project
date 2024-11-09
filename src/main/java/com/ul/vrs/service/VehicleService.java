@@ -1,6 +1,6 @@
-package com.autoworks.rentals.service;
+package com.ul.vrs.service;
 
-import com.autoworks.rentals.entity.Vehicle;
+import com.ul.vrs.entity.Vehicle;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ public class VehicleService {
 
     // List to store vehicles
     private List<Vehicle> vehicles = new ArrayList<>();
-    
+
     // Current ID based on initialized list
     private Long currentId = 3L;
 
@@ -37,8 +37,8 @@ public class VehicleService {
     // Add a new vehicle to the list
     public Vehicle addVehicle(Vehicle vehicle) {
     	currentId++; // Increment the ID based on the current highest ID
-        vehicle.setId(currentId); 
-        vehicles.add(vehicle); 
+        vehicle.setId(currentId);
+        vehicles.add(vehicle);
         return vehicle;
     }
 
