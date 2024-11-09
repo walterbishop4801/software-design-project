@@ -1,6 +1,6 @@
-package com.autoworks.rentals.fuel;
+package com.ul.vrs.fuel;
 
-import com.autoworks.rentals.interfaces.Fuel;
+import com.ul.vrs.nterfaces.Fuel;
 
 public class DieselFuel implements Fuel {
     @Override

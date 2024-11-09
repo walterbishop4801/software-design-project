@@ -1,4 +1,4 @@
-package com.autoworks.rentals.interfaces;
+package com.ul.vrs.nterfaces;
 
 import java.util.Observer;
 

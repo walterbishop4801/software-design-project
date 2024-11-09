@@ -1,7 +1,7 @@
-package com.autoworks.rentals.entity;
+package com.ul.vrs.entity;
 
-import com.autoworks.rentals.enums.Color;
-import com.autoworks.rentals.enums.VehicleState;
+import com.ul.vrs.enums.Color;
+import com.ul.vrs.enums.VehicleState;
 
 public abstract class Vehicle {
 
@@ -51,7 +51,7 @@ public abstract class Vehicle {
     public void setModel(String model) {
         this.model = model;
     }
-    
+
 	public String getDescription() {
 		return description;
 	}

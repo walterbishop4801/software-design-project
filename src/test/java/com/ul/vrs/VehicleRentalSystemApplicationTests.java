@@ -1,10 +1,10 @@
-package com.autoworks.rentals;
+package com.ul.vrs;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class RentalsApplicationTests {
+@SpringBootTest(classes = VehicleRentalSystemApplication.class)
+class VehicleRentalSystemApplicationTests {
 
 	@Test
 	void contextLoads() {

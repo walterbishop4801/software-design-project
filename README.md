@@ -1,7 +1,12 @@
 # Software Design Project - Vehicle Rental System
 
-**Useful Links:**
 
-* Report: [https://www.overleaf.com/project/report](https://www.overleaf.com/project/6703c3aaac8856a485147c93)
-* Google Document Draft: [https://docs.google.com/document/software-design-draft](https://docs.google.com/document/d/1GvZfNH6KubEHyPWcMn4PLu21W0XWRzRvPQfXgbK2958/edit?usp=sharing)
+Spring Boot application designed to simplify and streamline vehicle rental operations.
 
+## Authors
+
+- Shane Barden: https://github.com/Shaneb7102
+- Ivor D Souza: https://github.com/ivor11
+- Aniruddh Mallya: https://github.com/walterbishop4801
+- David Parreño: https://github.com/losedavidpb
+- Rohan Sikder: https://github.com/rohansikder

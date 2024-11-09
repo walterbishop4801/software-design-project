@@ -1,4 +1,4 @@
-package com.autoworks.rentals.entity;
+package com.ul.vrs.entity;
 
 public class Scooter extends Vehicle {
     private boolean hasHelmetIncluded;

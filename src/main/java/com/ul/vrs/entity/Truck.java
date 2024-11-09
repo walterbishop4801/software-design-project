@@ -1,4 +1,4 @@
-package com.autoworks.rentals.entity;
+package com.ul.vrs.entity;
 
 public class Truck extends Vehicle {
     private float payloadCapacity;

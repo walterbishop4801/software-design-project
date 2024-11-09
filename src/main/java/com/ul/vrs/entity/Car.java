@@ -1,6 +1,6 @@
-package com.autoworks.rentals.entity;
+package com.ul.vrs.entity;
 
-import com.autoworks.rentals.enums.Color;
+import com.ul.vrs.enums.Color;
 
 public class Car extends Vehicle {
     private int numberOfDoors;

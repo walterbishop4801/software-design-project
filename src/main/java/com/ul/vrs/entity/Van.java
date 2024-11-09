@@ -1,4 +1,4 @@
-package com.autoworks.rentals.entity;
+package com.ul.vrs.entity;
 
 
 public class Van extends Vehicle {
