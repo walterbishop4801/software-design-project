@@ -1,4 +1,4 @@
-package com.autoworks.rentals.entity;
+package com.ul.vrs.entity;
 
 public class Vehicle {
 
@@ -46,7 +46,7 @@ public class Vehicle {
     public void setModel(String model) {
         this.model = model;
     }
-    
+
 	public String getDescription() {
 		return description;
 	}

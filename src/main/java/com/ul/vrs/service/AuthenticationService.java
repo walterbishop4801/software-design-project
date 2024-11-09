@@ -1,4 +1,4 @@
-package com.autoworks.rentals.service;
+package com.ul.vrs.service;
 
 import org.springframework.stereotype.Service;
 
