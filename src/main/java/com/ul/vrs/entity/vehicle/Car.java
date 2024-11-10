@@ -1,5 +1,6 @@
 package com.ul.vrs.entity.vehicle;
 
+import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
 
 /**
@@ -16,6 +17,8 @@ public class Car extends Vehicle {
     /**
      * Create new instance of Car
      *
+     * @param ID            id of the vehicle
+     * @param name          name of the vehicle
      * @param brandOwner    brand owner of the vehicle
      * @param releaseYear   release year of the vehicle
      * @param cost          initial cost of the vehicle
@@ -25,8 +28,8 @@ public class Car extends Vehicle {
      * @param numberOfDoors number of doors
      * @param trunkCapacity trunk capacity
      */
-    public Car(String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType, VehicleState vehicleState, int numberOfDoors, float trunkCapacity) {
-        super(brandOwner, releaseYear, cost, color, fuelType, vehicleState);
+    public Car(long ID, String name, String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType, VehicleState vehicleState, int numberOfDoors, float trunkCapacity) {
+        super(ID, name, brandOwner, releaseYear, cost, color, fuelType, vehicleState);
 
         this.numberOfDoors = numberOfDoors;
         this.trunkCapacity = trunkCapacity;
@@ -35,6 +38,8 @@ public class Car extends Vehicle {
     /**
      * Create new instance of Car
      *
+     * @param ID            id of the vehicle
+     * @param name          name of the vehicle
      * @param brandOwner    brand owner of the vehicle
      * @param releaseYear   release year of the vehicle
      * @param cost          initial cost of the vehicle
@@ -43,8 +48,8 @@ public class Car extends Vehicle {
      * @param numberOfDoors number of doors
      * @param trunkCapacity trunk capacity
      */
-    public Car(String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType, int numberOfDoors, float trunkCapacity) {
-        this(brandOwner, releaseYear, cost, color, fuelType, VehicleState.AVAILABLE, numberOfDoors, trunkCapacity);
+    public Car(long ID, String name, String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType, int numberOfDoors, float trunkCapacity) {
+        this(ID, name, brandOwner, releaseYear, cost, color, fuelType, VehicleState.AVAILABLE, numberOfDoors, trunkCapacity);
     }
 
     /**

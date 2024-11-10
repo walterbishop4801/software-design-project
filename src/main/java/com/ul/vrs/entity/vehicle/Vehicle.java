@@ -3,6 +3,7 @@ package com.ul.vrs.entity.vehicle;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.Observer;
 import com.ul.vrs.entity.Subject;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
@@ -15,6 +16,8 @@ import com.ul.vrs.entity.vehicle.fuel.Fuel;
  * @since 1.0.0
  */
 public abstract class Vehicle implements Subject {
+    private long ID;
+    private final String name;
     private final String brandOwner;
     private final int releaseYear;
     protected final double cost;
@@ -26,14 +29,18 @@ public abstract class Vehicle implements Subject {
     /**
      * Create new instance of Vehicle
      *
-     * @param brandOwner brand owner of the vehicle
-     * @param releaseYear release year of the vehicle
-     * @param cost initial cost of the vehicle
-     * @param color color of the vehicle
-     * @param fuelType fuel type of the vehicle
+     * @param ID           id of the vehicle
+     * @param name         name of the vehicle
+     * @param brandOwner   brand owner of the vehicle
+     * @param releaseYear  release year of the vehicle
+     * @param cost         initial cost of the vehicle
+     * @param color        color of the vehicle
+     * @param fuelType     fuel type of the vehicle
      * @param vehicleState state of the vehicle
      */
-    public Vehicle(String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType, VehicleState vehicleState) {
+    public Vehicle(long ID, String name, String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType, VehicleState vehicleState) {
+        this.ID = ID;
+        this.name = name;
         this.brandOwner = brandOwner;
         this.releaseYear = releaseYear;
         this.cost = cost;
@@ -46,14 +53,34 @@ public abstract class Vehicle implements Subject {
     /**
      * Create new instance of Vehicle
      *
+     * @param ID           id of the vehicle
+     * @param name         name of the vehicle
      * @param brandOwner   brand owner of the vehicle
      * @param releaseYear  release year of the vehicle
      * @param cost         initial cost of the vehicle
      * @param color        color of the vehicle
      * @param fuelType     fuel type of the vehicle
      */
-    public Vehicle(String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType) {
-        this(brandOwner, releaseYear, cost, color, fuelType, VehicleState.AVAILABLE);
+    public Vehicle(long ID, String name, String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType) {
+        this(ID, name, brandOwner, releaseYear, cost, color, fuelType, VehicleState.AVAILABLE);
+    }
+
+    /**
+     * Get ID
+     *
+     * @return ID
+     */
+    public long getID() {
+        return this.ID;
+    }
+
+    /**
+     * Set ID to a new identifier
+     *
+     * @param ID new ID
+     */
+    public void setID(long ID) {
+        this.ID = ID;
     }
 
     /**

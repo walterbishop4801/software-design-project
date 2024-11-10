@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.ul.vrs.entity.Booking;
 import com.ul.vrs.entity.Customer;
-import com.ul.vrs.entity.Vehicle;
+import com.ul.vrs.entity.vehicle.Vehicle;
 
 /**
  * RentalSystemService
@@ -17,10 +17,15 @@ import com.ul.vrs.entity.Vehicle;
 @Service
 public class RentalSystemService {
     private Customer customer;
-    private List<Vehicle> vehicles;
+    private List<Vehicle> availableVehicles;
+
+    public RentalSystemService(Customer customer, List<Vehicle> availableVehicles) {
+        this.customer = customer;
+        this.availableVehicles = availableVehicles;
+    }
 
     public List<Vehicle> getAvailableVehicles() {
-        return vehicles;
+        return availableVehicles;
     }
 
     public Booking makeBooking(Vehicle v) {

@@ -1,5 +1,6 @@
 package com.ul.vrs.entity.vehicle;
 
+import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
 
 /**
@@ -17,6 +18,8 @@ public class Truck extends Vehicle {
     /**
      * Create new instance of Truck
      *
+     * @param ID                id of the vehicle
+     * @param name              name of the vehicle
      * @param brandOwner        brand owner of the vehicle
      * @param releaseYear       release year of the vehicle
      * @param cost              initial cost of the vehicle
@@ -27,8 +30,8 @@ public class Truck extends Vehicle {
      * @param towingCapacity    towing capacity
      * @param numberOfAxles     number of axles
      */
-    public Truck(String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType, VehicleState vehicleState, float payloadCapacity, float towingCapacity, int numberOfAxles) {
-        super(brandOwner, releaseYear, cost, color, fuelType, vehicleState);
+    public Truck(long ID, String name, String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType, VehicleState vehicleState, float payloadCapacity, float towingCapacity, int numberOfAxles) {
+        super(ID, name, brandOwner, releaseYear, cost, color, fuelType, vehicleState);
 
         this.payloadCapacity = payloadCapacity;
         this.towingCapacity = towingCapacity;
@@ -38,6 +41,8 @@ public class Truck extends Vehicle {
     /**
      * Create new instance of Truck
      *
+     * @param ID                id of the vehicle
+     * @param name              name of the vehicle
      * @param brandOwner        brand owner of the vehicle
      * @param releaseYear       release year of the vehicle
      * @param cost              initial cost of the vehicle
@@ -47,8 +52,8 @@ public class Truck extends Vehicle {
      * @param towingCapacity    towing capacity
      * @param numberOfAxles     number of axles
      */
-    public Truck(String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType, float payloadCapacity, float towingCapacity, int numberOfAxles) {
-        this(brandOwner, releaseYear, cost, color, fuelType, VehicleState.AVAILABLE, payloadCapacity, towingCapacity, numberOfAxles);
+    public Truck(long ID, String name, String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType, float payloadCapacity, float towingCapacity, int numberOfAxles) {
+        this(ID, name, brandOwner, releaseYear, cost, color, fuelType, VehicleState.AVAILABLE, payloadCapacity, towingCapacity, numberOfAxles);
     }
 
     /**

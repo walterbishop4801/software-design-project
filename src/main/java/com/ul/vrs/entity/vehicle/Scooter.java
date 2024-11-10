@@ -1,5 +1,6 @@
 package com.ul.vrs.entity.vehicle;
 
+import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
 
 /**
@@ -17,6 +18,8 @@ public class Scooter extends Vehicle {
     /**
      * Create new instance of Scooter
      *
+     * @param ID                 id of the vehicle
+     * @param name               name of the vehicle
      * @param brandOwner         brand owner of the vehicle
      * @param releaseYear        release year of the vehicle
      * @param cost               initial cost of the vehicle
@@ -27,8 +30,8 @@ public class Scooter extends Vehicle {
      * @param maxPassengers      max number of passengers
      * @param rangePerFuelTank   range per fuel tank
      */
-    public Scooter(String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType, VehicleState vehicleState, boolean hasHelmetIncluded, int maxPassengers, int rangePerFuelTank) {
-        super(brandOwner, releaseYear, cost, color, fuelType, vehicleState);
+    public Scooter(long ID, String name, String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType, VehicleState vehicleState, boolean hasHelmetIncluded, int maxPassengers, int rangePerFuelTank) {
+        super(ID, name, brandOwner, releaseYear, cost, color, fuelType, vehicleState);
 
         this.hasHelmetIncluded = hasHelmetIncluded;
         this.maxPassengers = maxPassengers;
@@ -38,6 +41,8 @@ public class Scooter extends Vehicle {
     /**
      * Create new instance of Scooter
      *
+     * @param ID                 id of the vehicle
+     * @param name               name of the vehicle
      * @param brandOwner         brand owner of the vehicle
      * @param releaseYear        release year of the vehicle
      * @param cost               initial cost of the vehicle
@@ -47,8 +52,8 @@ public class Scooter extends Vehicle {
      * @param maxPassengers      max number of passengers
      * @param rangePerFuelTank   range per fuel tank
      */
-    public Scooter(String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType, boolean hasHelmetIncluded, int maxPassengers, int rangePerFuelTank) {
-        this(brandOwner, releaseYear, cost, color, fuelType, VehicleState.AVAILABLE, hasHelmetIncluded, maxPassengers, rangePerFuelTank);
+    public Scooter(long ID, String name, String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType, boolean hasHelmetIncluded, int maxPassengers, int rangePerFuelTank) {
+        this(ID, name, brandOwner, releaseYear, cost, color, fuelType, VehicleState.AVAILABLE, hasHelmetIncluded, maxPassengers, rangePerFuelTank);
     }
 
     /**
