@@ -14,13 +14,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Documentation
 
 -  **postman**  rename postman collection ([dc659d827b9b125](https://github.com/walterbishop4801/software-design-project/rental-system/commit/dc659d827b9b125c9d6bf899991e60b1ffaa9f38))
-
-### Other changes
-
-## [refs/tags/2.0.1](https://github.com/walterbishop4801/software-design-project/rental-system/refs/tags/2.0.1) (2024-11-10)
-
-### Documentation
-
 -  **changelog**  update changelog ([cc3f5b73563c85b](https://github.com/walterbishop4801/software-design-project/rental-system/commit/cc3f5b73563c85bd1f71e099ff8aff55d238f36c))
 
 ### Other changes
