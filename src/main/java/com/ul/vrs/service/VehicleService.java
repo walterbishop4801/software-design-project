@@ -1,6 +1,8 @@
-package com.autoworks.rentals.service;
+package com.ul.vrs.service;
 
-import com.autoworks.rentals.entity.Vehicle;
+import com.ul.vrs.entity.Car;
+import com.ul.vrs.entity.Vehicle;
+import com.ul.vrs.enums.Color;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,16 +14,15 @@ public class VehicleService {
 
     // List to store vehicles
     private List<Vehicle> vehicles = new ArrayList<>();
-    
+
     // Current ID based on initialized list
     private Long currentId = 3L;
 
     // Constructor to initialize the list with some vehicles
     public VehicleService() {
-    	vehicles.add(new Vehicle(1L, "Toyota", "Camry", "Reliable and fuel-efficient sedan", 2020, "White"));
-    	vehicles.add(new Vehicle(2L, "Honda", "Civic", "Compact car with sporty performance", 2019, "Black"));
-    	vehicles.add(new Vehicle(3L, "Ford", "Mustang", "Iconic muscle car with powerful engine", 2021, "Red"));
-
+        vehicles.add(new Car(1L, "Toyota", "Camry", "Reliable and fuel-efficient sedan", 2020, Color.WHITE));
+        vehicles.add(new Car(2L, "Honda", "Civic", "Compact car with sporty performance", 2019, Color.BLACK));
+        vehicles.add(new Car(3L, "Ford", "Mustang", "Iconic muscle car with powerful engine", 2021, Color.RED));
     }
 
     // Get all vehicles
@@ -36,9 +37,9 @@ public class VehicleService {
 
     // Add a new vehicle to the list
     public Vehicle addVehicle(Vehicle vehicle) {
-    	currentId++; // Increment the ID based on the current highest ID
-        vehicle.setId(currentId); 
-        vehicles.add(vehicle); 
+        currentId++; // Increment the ID based on the current highest ID
+        vehicle.setId(currentId);
+        vehicles.add(vehicle);
         return vehicle;
     }
 
@@ -51,6 +52,8 @@ public class VehicleService {
             vehicle.setModel(vehicleDetails.getModel());
             vehicle.setYear(vehicleDetails.getYear());
             vehicle.setColor(vehicleDetails.getColor());
+            vehicle.setDescription(vehicleDetails.getDescription());
+            vehicle.setState(vehicleDetails.getState());
             return vehicle;
         }
         return null;

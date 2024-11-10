@@ -1,6 +1,6 @@
-package com.autoworks.rentals;
+package com.ul.vrs;
 
-import com.autoworks.rentals.service.AuthenticationService;
+import com.ul.vrs.service.AuthenticationService;
 import org.springframework.ui.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 
 @Controller
 public class HomeController {
@@ -24,16 +23,16 @@ public class HomeController {
     public String homePage() {
         return "home"; // Maps to home.html in src/main/resources/templates
     }
-    
+
  	// Mapping for login page
     @GetMapping("/login")
     public String loginPage() {
         return "login"; // Maps to login.html in src/main/resources/templates
     }
-    
-    
-    //@Autowired
+
+    @Autowired
     private AuthenticationService authenticationService;
+
     @PostMapping("/login")
     public String login(@RequestParam String username, @RequestParam String password, Model model) {
         if (authenticationService.authenticate(username, password)) {
@@ -43,5 +42,5 @@ public class HomeController {
             return "login";
         }
     }
-   
+
 }

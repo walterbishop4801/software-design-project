@@ -1,16 +1,21 @@
-package com.autoworks.rentals.entity;
+package com.ul.vrs.entity;
 
-public class Vehicle {
+import com.ul.vrs.enums.Color;
+import com.ul.vrs.enums.VehicleState;
+
+public abstract class Vehicle {
 
     private Long id;
     private String make;
     private String model;
     private String description;
+    private Color color;
     private int year;
-    private String color;
+    private VehicleState state;
 
+    
     // Constructor for initialization
-    public Vehicle(Long id, String make, String model, String description, int year, String color) {
+    public Vehicle(Long id, String make, String model, String description, int year, Color color) {
         this.id = id;
         this.make = make;
         this.model = model;
@@ -46,7 +51,7 @@ public class Vehicle {
     public void setModel(String model) {
         this.model = model;
     }
-    
+
 	public String getDescription() {
 		return description;
 	}
@@ -63,13 +68,26 @@ public class Vehicle {
         this.year = year;
     }
 
-    public String getColor() {
+    public Color getColor() {
         return color;
     }
 
-    public void setColor(String color) {
+    public void setColor(Color color) {
         this.color = color;
     }
+
+	public VehicleState getState() {
+		return state;
+	}
+
+	public void setState(VehicleState state) {
+		this.state = state;
+	}
+
+	public double getRentingCost() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 
 }
