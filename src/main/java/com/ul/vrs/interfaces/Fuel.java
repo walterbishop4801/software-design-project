@@ -1,4 +1,4 @@
-package com.ul.vrs.nterfaces;
+package com.ul.vrs.interfaces;
 
 public interface Fuel {
     double getCost();

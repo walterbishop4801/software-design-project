@@ -1,4 +1,4 @@
-package com.ul.vrs.nterfaces;
+package com.ul.vrs.interfaces;
 
 import java.util.Observer;
 
