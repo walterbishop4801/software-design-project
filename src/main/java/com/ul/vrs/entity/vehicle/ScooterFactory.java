@@ -1,4 +1,4 @@
-package com.ul.vrs.entity;
+package com.ul.vrs.entity.vehicle;
 
 class ScooterFactory extends VehicleFactory {
     @Override
