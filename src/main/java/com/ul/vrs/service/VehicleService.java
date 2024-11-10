@@ -1,8 +1,10 @@
 package com.ul.vrs.service;
 
-import com.ul.vrs.entity.Car;
-import com.ul.vrs.entity.Vehicle;
-import com.ul.vrs.enums.Color;
+import com.ul.vrs.entity.Color;
+import com.ul.vrs.entity.vehicle.Car;
+import com.ul.vrs.entity.vehicle.Vehicle;
+import com.ul.vrs.entity.vehicle.fuel.PetrolFuel;
+
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,9 +22,9 @@ public class VehicleService {
 
     // Constructor to initialize the list with some vehicles
     public VehicleService() {
-        vehicles.add(new Car(1L, "Toyota", "Camry", "Reliable and fuel-efficient sedan", 2020, Color.WHITE));
-        vehicles.add(new Car(2L, "Honda", "Civic", "Compact car with sporty performance", 2019, Color.BLACK));
-        vehicles.add(new Car(3L, "Ford", "Mustang", "Iconic muscle car with powerful engine", 2021, Color.RED));
+        vehicles.add(new Car(1L, "Camry", "Toyota", 2020,25_000, Color.WHITE, new PetrolFuel(), 4, 425));
+        vehicles.add(new Car(2L, "Civic", "Honda", 2010, 8_000, Color.BLACK, new PetrolFuel(), 4, 354));
+        vehicles.add(new Car(3L, "Mustang", "Ford", 2021, 27_000, Color.RED, new PetrolFuel(), 2, 382));
     }
 
     // Get all vehicles
@@ -31,36 +33,26 @@ public class VehicleService {
     }
 
     // Get a vehicle by ID
-    public Optional<Vehicle> getVehicleById(Long id) {
-        return vehicles.stream().filter(v -> v.getId().equals(id)).findFirst();
+    public Optional<Vehicle> getVehicleById(long id) {
+        return vehicles.stream().filter(v -> v.getID() == id).findFirst();
     }
 
     // Add a new vehicle to the list
     public Vehicle addVehicle(Vehicle vehicle) {
         currentId++; // Increment the ID based on the current highest ID
-        vehicle.setId(currentId);
+        vehicle.setID(currentId);
         vehicles.add(vehicle);
         return vehicle;
     }
 
     // Update a vehicle by ID
     public Vehicle updateVehicle(Long id, Vehicle vehicleDetails) {
-        Optional<Vehicle> vehicleOptional = getVehicleById(id);
-        if (vehicleOptional.isPresent()) {
-            Vehicle vehicle = vehicleOptional.get();
-            vehicle.setMake(vehicleDetails.getMake());
-            vehicle.setModel(vehicleDetails.getModel());
-            vehicle.setYear(vehicleDetails.getYear());
-            vehicle.setColor(vehicleDetails.getColor());
-            vehicle.setDescription(vehicleDetails.getDescription());
-            vehicle.setState(vehicleDetails.getState());
-            return vehicle;
-        }
-        return null;
+        deleteVehicle(id);
+        return addVehicle(vehicleDetails);
     }
 
     // Delete a vehicle by ID
     public void deleteVehicle(Long id) {
-        vehicles.removeIf(v -> v.getId().equals(id));
+        vehicles.removeIf(v -> v.getID() == id);
     }
 }
