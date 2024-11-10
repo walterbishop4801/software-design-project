@@ -3,6 +3,6 @@ package com.ul.vrs.entity.vehicle;
 class ScooterFactory extends VehicleFactory {
     @Override
     public Vehicle createVehicle() {
-        return new Scooter();
+        return new Scooter(0, null, null, 0, 0, null, null, false, 0, 0);
     }
 }
