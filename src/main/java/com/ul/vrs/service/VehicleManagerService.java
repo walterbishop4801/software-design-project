@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class VehicleService {
+public class VehicleManagerService {
 
     // List to store vehicles
     private List<Vehicle> vehicles = new ArrayList<>();
@@ -21,7 +21,7 @@ public class VehicleService {
     private Long currentId = 3L;
 
     // Constructor to initialize the list with some vehicles
-    public VehicleService() {
+    public VehicleManagerService() {
         vehicles.add(new Car(1L, "Camry", "Toyota", 2020,25_000, Color.WHITE, new PetrolFuel(), 4, 425));
         vehicles.add(new Car(2L, "Civic", "Honda", 2010, 8_000, Color.BLACK, new PetrolFuel(), 4, 354));
         vehicles.add(new Car(3L, "Mustang", "Ford", 2021, 27_000, Color.RED, new PetrolFuel(), 2, 382));
