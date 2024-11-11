@@ -5,11 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [refs/tags/v2.3.0](https://github.com/walterbishop4801/software-design-project/rental-system/refs/tags/v2.3.0) (2024-11-10)
+
+### Other changes
+
+- **Factory Implementation within factory module**  ([eddcb4c0289cca3](https://github.com/walterbishop4801/software-design-project/rental-system/commit/
+- **New Factory Package Created**  ([9100efb8fa307c6](https://github.com/walterbishop4801/software-design-project/rental-system/commit/
+- **Parameters Updated**  ([f1943ad0c58b452](https://github.com/walterbishop4801/software-design-project/rental-system/commit/
+- **Package names updated**  ([c947e834e379fcb](https://github.com/walterbishop4801/software-design-project/rental-system/commit/
+- **Modification of Factory package Location**  ([28a04b3372a4626](https://github.com/walterbishop4801/software-design-project/rental-system/commit/
+- **Merge branch 'dev' into vehicle**  ([8b28ff22ee4debd](https://github.com/walterbishop4801/software-design-project/rental-system/commit/
+- **Vehicle Factories**  ([a5c1663f07ad23e](https://github.com/walterbishop4801/software-design-project/rental-system/commit/
+- **Merge pull request #6 from walterbishop4801/rental-system**  ([7ce392203e7d7d6](https://github.com/walterbishop4801/software-design-project/rental-system/commit/
+
 ## [refs/tags/v2.2.0](https://github.com/walterbishop4801/software-design-project/rental-system/refs/tags/v2.2.0) (2024-11-10)
 
 ### Features
 
 -  **renting**  controller and service of the rental system ([dfc0b8881cb1c2c](https://github.com/walterbishop4801/software-design-project/rental-system/commit/dfc0b8881cb1c2c25d9a622eb2e5b8f61678fee6))
+
 
 ### Documentation
 
