@@ -1,7 +1,7 @@
 package com.ul.vrs.controller;
 
 import com.ul.vrs.entity.vehicle.Vehicle;
-import com.ul.vrs.service.VehicleService;
+import com.ul.vrs.service.VehicleManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +17,7 @@ import java.util.Optional;
 public class VehicleController {
 
     @Autowired
-    private VehicleService vehicleService;
+    private VehicleManagerService vehicleService;
 
 
     // Get all vehicles - http://localhost:8080/api/vehicles
