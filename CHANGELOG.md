@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [refs/tags/2.3.2](https://github.com/walterbishop4801/software-design-project/rental-system/refs/tags/2.3.2) (2024-11-12)
+
+### Bug Fixes
+
+-  **vehicle**  fixed add/update vehicles by using JsonTypeInfo annotations ([eb20ee2ec0068e6](https://github.com/walterbishop4801/software-design-project/rental-system/commit/eb20ee2ec0068e6b4ec66f167638fc7065159cc5))
+
+### Documentation
+
+-  **changelog**  update changelog for 2.3.1 ([3655e27d61601cc](https://github.com/walterbishop4801/software-design-project/rental-system/commit/3655e27d61601cc197a04ac8a93339d4342c02ee))
+
+### Other changes
+
 ## [refs/tags/2.3.1](https://github.com/walterbishop4801/software-design-project/rental-system/refs/tags/2.3.1) (2024-11-12)
 
 ### Breaking changes

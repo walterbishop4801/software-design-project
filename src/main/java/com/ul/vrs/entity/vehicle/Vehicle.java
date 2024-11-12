@@ -7,14 +7,30 @@ import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.Observer;
 import com.ul.vrs.entity.Subject;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 /**
  * Vehicle: entity of a vehicle
  *
  * @author Rohan Sikder
- * @version 2.3.1
+ * @version 2.3.2
  * @since 1.0.0
  */
+
+
+@JsonTypeInfo(
+	    use = JsonTypeInfo.Id.NAME,
+	    include = JsonTypeInfo.As.PROPERTY,
+	    property = "type"
+	)
+
+@JsonSubTypes({
+	    @JsonSubTypes.Type(value = Car.class, name = "car"),
+	    @JsonSubTypes.Type(value = Truck.class, name = "truck") 
+})
+
+
 public abstract class Vehicle implements Subject {
     private long ID;
     private final String name;
