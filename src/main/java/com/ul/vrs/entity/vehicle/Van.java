@@ -1,13 +1,14 @@
 package com.ul.vrs.entity.vehicle;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
 
 /**
  * Van: entity of a van
  *
- * @author Rohan Sikder
- * @version 2.0.1
+ * @version 2.3.2
  * @since 1.0.0
  */
 public class Van extends Vehicle {
@@ -28,9 +29,19 @@ public class Van extends Vehicle {
      * @param cargoCapacity cargo capacity
      * @param numberOfSeats number of seats
      */
-    public Van(long ID, String name, String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType, VehicleState vehicleState, float cargoCapacity, int numberOfSeats) {
+    @JsonCreator
+    public Van(
+            @JsonProperty("ID") long ID,
+            @JsonProperty("name") String name,
+            @JsonProperty("brandOwner") String brandOwner,
+            @JsonProperty("releaseYear") int releaseYear,
+            @JsonProperty("cost") double cost,
+            @JsonProperty("color") Color color,
+            @JsonProperty("fuelType") Fuel fuelType,
+            @JsonProperty("vehicleState") VehicleState vehicleState,
+            @JsonProperty("cargoCapacity") float cargoCapacity,
+            @JsonProperty("numberOfSeats") int numberOfSeats) {
         super(ID, name, brandOwner, releaseYear, cost, color, fuelType, vehicleState);
-
         this.cargoCapacity = cargoCapacity;
         this.numberOfSeats = numberOfSeats;
     }
@@ -48,7 +59,16 @@ public class Van extends Vehicle {
      * @param cargoCapacity cargo capacity
      * @param numberOfSeats number of seats
      */
-    public Van(long ID, String name, String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType, float cargoCapacity, int numberOfSeats) {
+    public Van(
+            long ID,
+            String name,
+            String brandOwner,
+            int releaseYear,
+            double cost,
+            Color color,
+            Fuel fuelType,
+            float cargoCapacity,
+            int numberOfSeats) {
         this(ID, name, brandOwner, releaseYear, cost, color, fuelType, VehicleState.AVAILABLE, cargoCapacity, numberOfSeats);
     }
 

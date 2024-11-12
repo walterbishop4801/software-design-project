@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>com.ul</groupId>
 	<artifactId>vrs</artifactId>
-	<version>2.3.1</version>
+	<version>2.3.2-SNAPSHOT</version>
 	<url>https://github.com/walterbishop4801/software-design-project</url>
 	<licenses>
 		<license/>
@@ -51,72 +51,82 @@
 	</properties>
 	<dependencies>
 
-		<!-- PMD: Static code analyser -->
-		<dependency>
-			<groupId>net.sourceforge.pmd</groupId>
-			<artifactId>pmd</artifactId>
-			<version>7.7.0</version>
-			<type>pom</type>
-			<exclusions>
-				<exclusion>
-					<groupId>org.ow2.asm</groupId>
-					<artifactId>asm</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+    <!-- PMD: Static code analyser -->
+    <dependency>
+        <groupId>net.sourceforge.pmd</groupId>
+        <artifactId>pmd</artifactId>
+        <version>7.7.0</version>
+        <type>pom</type>
+        <exclusions>
+            <exclusion>
+                <groupId>org.ow2.asm</groupId>
+                <artifactId>asm</artifactId>
+            </exclusion>
+        </exclusions>
+    </dependency>
 
-		<!-- Git Changelog: Automatic Changelog generator -->
-		<dependency>
-			<groupId>se.bjurr.gitchangelog</groupId>
-			<artifactId>git-changelog-lib</artifactId>
-			<version>2.4.1</version>
-		</dependency>
+    <!-- Git Changelog: Automatic Changelog generator -->
+    <dependency>
+        <groupId>se.bjurr.gitchangelog</groupId>
+        <artifactId>git-changelog-lib</artifactId>
+        <version>2.4.1</version>
+    </dependency>
 
-		<!-- Spring Boot -->
-		<dependency>
-		    <groupId>org.springframework.boot</groupId>
-		    <artifactId>spring-boot-starter-thymeleaf</artifactId>
-		</dependency>
+    <!-- Spring Boot -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-thymeleaf</artifactId>
+    </dependency>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-		</dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter</artifactId>
+    </dependency>
 
-		<dependency>
-		    <groupId>org.springframework.boot</groupId>
-		    <artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-test</artifactId>
+        <scope>test</scope>
+    </dependency>
 
-		<!-- <dependency>
-		    <groupId>org.springframework.security</groupId>
-		    <artifactId>spring-security-test</artifactId>
-		    <scope>test</scope>
-		</dependency>
+    <!-- Jackson Databind for JSON Deserialization -->
+    <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>2.17.2</version>
+    </dependency>
 
-		<dependency>
-		    <groupId>org.springframework.boot</groupId>
-		    <artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
+    <!-- Uncomment and configure if needed
+    <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-test</artifactId>
+        <scope>test</scope>
+    </dependency>
 
-		<dependency>
-		    <groupId>org.springframework.boot</groupId>
-		    <artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
 
-		<dependency>
-		    <groupId>com.h2database</groupId>
-		    <artifactId>h2</artifactId>
-		    <scope>runtime</scope>
-		</dependency> -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
 
-	</dependencies>
+    <dependency>
+        <groupId>com.h2database</groupId>
+        <artifactId>h2</artifactId>
+        <scope>runtime</scope>
+    </dependency>
+    -->
+
+</dependencies>
+
 
 	<reporting>
         <plugins>
