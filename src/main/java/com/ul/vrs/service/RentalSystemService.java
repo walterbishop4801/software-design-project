@@ -1,16 +1,26 @@
 package com.ul.vrs.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.ul.vrs.entity.Customer;
+import com.ul.vrs.entity.Color;
+import com.ul.vrs.entity.account.Customer;
 import com.ul.vrs.entity.booking.Booking;
-import com.ul.vrs.entity.booking.BookingDecorator;
+import com.ul.vrs.entity.booking.Customization;
+import com.ul.vrs.entity.booking.GPSBookingDecorator;
+import com.ul.vrs.entity.booking.InsuranceBookingDecorator;
+import com.ul.vrs.entity.booking.VoucherBookingDecorator;
+import com.ul.vrs.entity.vehicle.Car;
 import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.entity.vehicle.VehicleState;
+import com.ul.vrs.entity.vehicle.fuel.PetrolFuel;
 
 /**
  * RentalSystemService
@@ -21,25 +31,19 @@ import com.ul.vrs.entity.vehicle.VehicleState;
  */
 @Service
 public class RentalSystemService {
-    private final Customer customer;
+    // private final Customer customer;
 
-    /**
-     * Creates new instance of RentalSystemService
-     *
-     * @param customer current customer
-     */
-    public RentalSystemService(Customer customer) {
-        this.customer = customer;
-    }
+    // Map to store bookings
+    private Map<UUID, Booking> bookings = new HashMap<>();
 
     /**
      * Get booking based on its ID
      *
-     * @param idBooking id of the booking
+     * @param bookingId id of the booking
      * @return booking with passed ID
      */
-    public Optional<Booking> getBookingById(long idBooking) {
-        return Optional.ofNullable(customer.getBooking(idBooking));
+    public Optional<Booking> getBookingById(UUID bookingId) {
+        return Optional.ofNullable(bookings.get(bookingId));
     }
 
     /**
@@ -48,18 +52,16 @@ public class RentalSystemService {
      * @param v vehicle to book
      * @return booking
      */
-    public Booking makeBooking(Vehicle v) {
-        if (v != null) {
-            if (v.checkAvailability()) {
-                Booking booking = new Booking(customer, v);
-
-                if (!customer.containsBooking(booking)) {
-                    customer.addBooking(booking);
-                    return booking;
-                }
+    public UUID makeBooking(Customer customer, Vehicle vehicle) {
+        if (vehicle != null) {
+            if (vehicle.checkAvailability()) {
+                Booking booking = new Booking(customer, vehicle);
+                UUID bookingId = booking.getBookingId();
+                bookings.put(bookingId, booking);
+                vehicle.updateState(VehicleState.RESERVED);
+                return bookingId;
             }
         }
-
         return null;
     }
 
@@ -67,13 +69,28 @@ public class RentalSystemService {
      * Customize booking with passed decorator
      *
      * @param b booking to be customised
-     * @param decorator decorator for the customisation
+     * @param c decorator for the customisation
      */
-    public void customizeBooking(Booking b, BookingDecorator decorator) {
-        if (b != null && decorator != null) {
-            decorator.setBooking(b);
-            decorator.customise();
+    public boolean customizeBooking(UUID bookingId, Customization c) {
+        Booking b = bookings.get(bookingId);
+        if (b != null) {
+            switch (c) {
+                case GPS:
+                    b = new GPSBookingDecorator(b);
+                    break;
+                case INSURANCE:
+                    b = new InsuranceBookingDecorator(b);
+                    break;
+                case VOUCHER:
+                    b = new VoucherBookingDecorator(b);
+                    break;
+                default:
+                    break;
+            }
+            bookings.put(bookingId, b);
+            return true;
         }
+        return false;
     }
 
     /**
@@ -81,7 +98,8 @@ public class RentalSystemService {
      *
      * @param b booking to be authenticated
      */
-    public void authenticateBookingPayment(Booking b) {
+    public void authenticateBookingPayment(UUID bookingId) {
+        Booking b = bookings.get(bookingId);
         if (b != null) b.authenticatePayment();
     }
 
@@ -90,8 +108,13 @@ public class RentalSystemService {
      *
      * @param b booking
      */
-    public void returnVehicle(Booking b) {
-        customer.removeBooking(b);
+    public void returnVehicle(UUID bookingId) {
+        Booking b = bookings.get(bookingId);
+        if (b != null) {
+            Vehicle v = b.getVehicle();
+            v.updateState(VehicleState.IN_MAINTENANCE);
+            bookings.remove(bookingId);
+        }
     }
 
     /**
@@ -99,7 +122,20 @@ public class RentalSystemService {
      *
      * @param b booking to be cancelled
      */
-    public void cancelBooking(Booking b) {
-        returnVehicle(b);
+    public void cancelBooking(UUID bookingId) {
+        Booking b = bookings.get(bookingId);
+        if (b != null) {
+            Vehicle v = b.getVehicle();
+            v.updateState(VehicleState.AVAILABLE);
+            bookings.remove(bookingId);
+        }
+    }
+
+    /**
+     * List all bookings
+     *
+     */
+    public List<Booking> getAllBookings() {
+        return new ArrayList<>(bookings.values());
     }
 }
