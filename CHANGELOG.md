@@ -55,6 +55,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [refs/tags/v2.1.0](https://github.com/walterbishop4801/software-design-project/rental-system/refs/tags/v2.1.0) (2024-11-09)
 
+
+
+
+
 ### Other changes
 
 - **Based on UML diagram: added interfaces, abstract Vehicle class, concrete vehicle classes (Car, Truck, etc.), Fuel implementations, and enums for Color and VehicleState.**  ([f24e1b17526f0fa](https://github.com/walterbishop4801/software-design-project/rental-system/commit/
@@ -62,10 +66,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [refs/tags/v2.0.0](https://github.com/walterbishop4801/software-design-project/rental-system/refs/tags/v2.0.0) (2024-11-08)
 
+
 ### Features
 
 -  **vehicle**  add CRUD operations for vehicle management ([6680c3a4fb1ffe7](https://github.com/walterbishop4801/software-design-project/rental-system/commit/6680c3a4fb1ffe7409a20b27ea9d2256a427fb0c))
 -  **init**  add init project setup ([8c52467a6bfa24c](https://github.com/walterbishop4801/software-design-project/rental-system/commit/8c52467a6bfa24c4b4034581c2042e07a5e2b98b))
+
+
 
 ### Other changes
 
@@ -103,6 +110,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [refs/tags/v1.0.0](https://github.com/walterbishop4801/software-design-project/rental-system/refs/tags/v1.0.0) (2024-09-27)
 
+
+
+
+
 ### Other changes
 
 - **Add files via upload**  ([8f2127ddf1d2822](https://github.com/walterbishop4801/software-design-project/rental-system/commit/
+
