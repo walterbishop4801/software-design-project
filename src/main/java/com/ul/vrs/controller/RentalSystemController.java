@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RestController
 @RequestMapping("/api/renting")
 public class RentalSystemController {
-    private Customer newCust = new Customer("Test");
+    private Customer newCust = new Customer("9648", "Roshavor Malleño");
 
     @Autowired
     private RentalSystemService rentalSystemService;
