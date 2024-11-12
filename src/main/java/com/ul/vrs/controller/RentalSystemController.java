@@ -1,8 +1,6 @@
 package com.ul.vrs.controller;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,14 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ul.vrs.entity.booking.Booking;
-import com.ul.vrs.entity.booking.Customization;
+import com.ul.vrs.entity.booking.BookingDecorator;
 import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.service.RentalSystemService;
 import com.ul.vrs.service.VehicleManagerService;
-import com.ul.vrs.entity.account.Customer;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,7 +29,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RestController
 @RequestMapping("/api/renting")
 public class RentalSystemController {
-    private Customer newCust = new Customer("Test");
 
     @Autowired
     private RentalSystemService rentalSystemService;
@@ -46,12 +41,6 @@ public class RentalSystemController {
     //
     //
 
-    // Get all vehicles - http://localhost:8080/api/vehicles
-    @GetMapping("/list_bookings")
-    public List<Booking> getBookings() {
-        return rentalSystemService.getAllBookings();
-    }
-
     /**
      * Make a new booking for current customer
      *
@@ -59,19 +48,19 @@ public class RentalSystemController {
      * @return new booking
      */
     // Make booking - http://localhost:8080/api/renting/make_booking/{id}
-    @PostMapping("/make_booking/{id}")
-    public ResponseEntity<UUID> makeBooking(@PathVariable long id) {
-        Optional<Vehicle> vehicleToBook = vehicleManager.getVehicleById(id);
+    @PostMapping("make_booking/{id}")
+    public ResponseEntity<Booking> makeBooking(@PathVariable long idVehicle) {
+        Optional<Vehicle> vehicleToBook = vehicleManager.getVehicleById(idVehicle);
 
         if (!vehicleToBook.isPresent()) {
             return ResponseEntity.notFound().build();
         }
 
         Vehicle vehicle = vehicleToBook.get();
-        UUID bookingId = rentalSystemService.makeBooking(newCust, vehicle);
+        Booking booking = rentalSystemService.makeBooking(vehicle);
 
-        if (bookingId != null) {
-            return ResponseEntity.ok(bookingId);
+        if (booking != null) {
+            return ResponseEntity.ok(booking);
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -85,14 +74,18 @@ public class RentalSystemController {
      * @return HTML message
      */
     // Customise booking - http://localhost:8080/api/renting/customize_booking/{id}
-    @PutMapping("/customize_booking/{id}")
-    public ResponseEntity<String> customizeBooking(@PathVariable UUID id, @RequestBody Customization decorator) {
-        boolean customization_done = rentalSystemService.customizeBooking(id, decorator);
+    @PutMapping("customize_booking/{id}")
+    public ResponseEntity<String> customizeBooking(@PathVariable long idBooking, @RequestBody BookingDecorator decorator) {
+        Optional<Booking> bookingToCancel = rentalSystemService.getBookingById(idBooking);
 
-        if(customization_done)
-            return ResponseEntity.ok("Booking (ID=" + id + ") has been customized.");
-        else
+        if (!bookingToCancel.isPresent()) {
             return ResponseEntity.notFound().build();
+        }
+
+        Booking booking = bookingToCancel.get();
+        rentalSystemService.customizeBooking(booking, decorator);
+
+        return ResponseEntity.ok("Booking (ID=" + idBooking + ") has been customized.");
     }
 
     /**
@@ -102,11 +95,18 @@ public class RentalSystemController {
      * @return HTML message
      */
     // Authenticate payment for booking - http://localhost:8080/api/renting/authenticate_payment/{id}
-    @PutMapping("/authenticate_payment/{id}")
-    public ResponseEntity<String> authenticateBookingPayment(@PathVariable UUID id) {
-        rentalSystemService.authenticateBookingPayment(id);
+    @PutMapping("authenticate_payment/{id}")
+    public ResponseEntity<String> authenticateBookingPayment(@PathVariable long idBooking) {
+        Optional<Booking> bookingToCancel = rentalSystemService.getBookingById(idBooking);
 
-        return ResponseEntity.ok("Booking (ID=" + id + ") has been authenticated.");
+        if (!bookingToCancel.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Booking booking = bookingToCancel.get();
+        rentalSystemService.authenticateBookingPayment(booking);
+
+        return ResponseEntity.ok("Booking (ID=" + idBooking + ") has been authenticated.");
     }
 
     /**
@@ -116,12 +116,18 @@ public class RentalSystemController {
      * @return HTML message
      */
     // Return vehicle - http://localhost:8080/api/renting/return_vehicle/{id}
-    @PutMapping("/return_vehicle/{id}")
-    public ResponseEntity<String> returnVehicle(@PathVariable UUID id) {
+    @PutMapping("return_vehicle/{id}")
+    public ResponseEntity<String> returnVehicle(@PathVariable long idBooking) {
+        Optional<Booking> bookingToCancel = rentalSystemService.getBookingById(idBooking);
 
-        rentalSystemService.returnVehicle(id);
+        if (!bookingToCancel.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
 
-        return ResponseEntity.ok("Vehicle of Booking (ID=" + id + ") has been returned.");
+        Booking booking = bookingToCancel.get();
+        rentalSystemService.cancelBooking(booking);
+
+        return ResponseEntity.ok("Vehicle of Booking (ID=" + idBooking + ") has been returned.");
     }
 
     /**
@@ -131,11 +137,17 @@ public class RentalSystemController {
      * @return HTML message
      */
     // Cancel booking - http://localhost:8080/api/renting/cancel_booking/{id}
-    @DeleteMapping("/cancel_booking/{id}")
-    public ResponseEntity<String> cancelBooking(@PathVariable UUID id) {
+    @DeleteMapping("cancel_booking/{id}")
+    public ResponseEntity<String> cancelBooking(@PathVariable long idBooking) {
+        Optional<Booking> bookingToCancel = rentalSystemService.getBookingById(idBooking);
 
-        rentalSystemService.cancelBooking(id);
+        if (!bookingToCancel.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
 
-        return ResponseEntity.ok("Booking (ID=" + id + ") has been canceled.");
+        Booking booking = bookingToCancel.get();
+        rentalSystemService.cancelBooking(booking);
+
+        return ResponseEntity.ok("Booking (ID=" + idBooking + ") has been canceled.");
     }
 }
