@@ -12,7 +12,7 @@ import com.ul.vrs.entity.vehicle.fuel.Fuel;
  * Vehicle: entity of a vehicle
  *
  * @author Rohan Sikder
- * @version 2.0.1
+ * @version 2.3.1
  * @since 1.0.0
  */
 public abstract class Vehicle implements Subject {
@@ -81,6 +81,15 @@ public abstract class Vehicle implements Subject {
      */
     public void setID(long ID) {
         this.ID = ID;
+    }
+
+    /**
+     * Get name
+     *
+     * @return name
+     */
+    public String getName() {
+        return this.name;
     }
 
     /**
