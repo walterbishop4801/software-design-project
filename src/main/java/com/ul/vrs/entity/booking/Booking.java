@@ -37,4 +37,12 @@ public class Booking {
     public Vehicle getVehicle() {
         return vehicle;
     }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public boolean getIsAuthenticated() {
+        return is_authenticated;
+    }
 }
