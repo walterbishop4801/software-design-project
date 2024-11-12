@@ -5,11 +5,45 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [refs/tags/2.3.1](https://github.com/walterbishop4801/software-design-project/rental-system/refs/tags/2.3.1) (2024-11-12)
+
+### Breaking changes
+
+-  **changelog**  hot-fix of the versions ([947c06ebce9f430](https://github.com/walterbishop4801/software-design-project/commit/947c06ebce9f430))
+
+### Features
+
+-  **revert-booking**  resolve conflicts with dev ([9dfb8be8699d132](https://github.com/walterbishop4801/software-design-project/rental-system/commit/9dfb8be8699d132f396bdce2237e61e715d4eec2))
+-  **booking**  merge with dev ([b4bcd1be4958fd6](https://github.com/walterbishop4801/software-design-project/rental-system/commit/b4bcd1be4958fd681fc4e03e5bf55b3435b74620))
+-  **booking**  add postman collection ([08e5576876274e1](https://github.com/walterbishop4801/software-design-project/rental-system/commit/08e5576876274e12be264646d5c7b86f3210e259))
+-  **booking**  add booking modules ([e5ede09207b4d1d](https://github.com/walterbishop4801/software-design-project/rental-system/commit/e5ede09207b4d1d3105157ecf239a61807e9f263))
+
+### Bug Fixes
+
+-  **renting**  fix customise and authenticate methods ([91b7215c111cbe1](https://github.com/walterbishop4801/software-design-project/rental-system/commit/91b7215c111cbe12d9227829b603377fd23db04a))
+-  **vehicle**  include getter for name ([7e1ee914023ad79](https://github.com/walterbishop4801/software-design-project/rental-system/commit/7e1ee914023ad79f5fc21789a03670e64ee94cc0))
+-  **changelog**  hot-fix of the versions ([947c06ebce9f430](https://github.com/walterbishop4801/software-design-project/rental-system/commit/947c06ebce9f430cd41614197b54e7e7809f2171))
+
+### Documentation
+
+-  **changelog**  update changelog for v2.3.0 ([ed8a042dda66e17](https://github.com/walterbishop4801/software-design-project/rental-system/commit/ed8a042dda66e17b58a4cbdbf4ed34d7ac7bb260))
+-  **changelog**  update changelog for v2.2.0 ([d61478c40ae7220](https://github.com/walterbishop4801/software-design-project/rental-system/commit/d61478c40ae72208a94197620274ee29d5208938))
+
+### Other changes
+
+- **Merge pull request #12 from walterbishop4801/revert-11-revert-10-booking**  ([cf1cf891a705634](https://github.com/walterbishop4801/software-design-project/rental-system/commit/
+- **Revert "Revert "booking modules & CRUD""**  ([19abcb889a9d3ff](https://github.com/walterbishop4801/software-design-project/rental-system/commit/
+- **Merge pull request #11 from walterbishop4801/revert-10-booking**  ([8bd1fa1aa37aa47](https://github.com/walterbishop4801/software-design-project/rental-system/commit/
+- **Revert "booking modules & CRUD"**  ([f5dccffa7e1716c](https://github.com/walterbishop4801/software-design-project/rental-system/commit/
+- **Merge pull request #10 from walterbishop4801/booking**  ([ab1ee9a3bc8a80c](https://github.com/walterbishop4801/software-design-project/rental-system/commit/
+- **Merge pull request #9 from walterbishop4801/vehicle**  ([793a798af878d1a](https://github.com/walterbishop4801/software-design-project/rental-system/commit/
+- **Merge branch 'dev' into vehicle**  ([e9bbcf27439f405](https://github.com/walterbishop4801/software-design-project/rental-system/commit/
+- **Merge pull request #8 from walterbishop4801/vehicle**  ([5a0ca2ba3fee4b8](https://github.com/walterbishop4801/software-design-project/rental-system/commit/
+- **Merge pull request #7 from walterbishop4801/rental-system**  ([976e100a351b20f](https://github.com/walterbishop4801/software-design-project/rental-system/commit/
+- **booking: init booking class** init booking class ([7e4a8c18ead6f67](https://github.com/walterbishop4801/software-design-project/rental-system/commit/
+- **Merge pull request #4 from walterbishop4801/dev**  ([117d8799173f763](https://github.com/walterbishop4801/software-design-project/rental-system/commit/
+
 ## [refs/tags/v2.3.0](https://github.com/walterbishop4801/software-design-project/rental-system/refs/tags/v2.3.0) (2024-11-10)
-
-
-
-
 
 ### Other changes
 
@@ -24,11 +58,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [refs/tags/v2.2.0](https://github.com/walterbishop4801/software-design-project/rental-system/refs/tags/v2.2.0) (2024-11-10)
 
-
 ### Features
 
 -  **renting**  controller and service of the rental system ([dfc0b8881cb1c2c](https://github.com/walterbishop4801/software-design-project/rental-system/commit/dfc0b8881cb1c2c25d9a622eb2e5b8f61678fee6))
-
 
 ### Documentation
 
@@ -36,7 +68,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -  **changelog**  update changelog ([cc3f5b73563c85b](https://github.com/walterbishop4801/software-design-project/rental-system/commit/cc3f5b73563c85bd1f71e099ff8aff55d238f36c))
 
 ### Other changes
-
 
 ## [refs/tags/v2.1.1](https://github.com/walterbishop4801/software-design-project/rental-system/refs/tags/v2.1.1) (2024-11-10)
 
@@ -68,10 +99,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [refs/tags/v2.1.0](https://github.com/walterbishop4801/software-design-project/rental-system/refs/tags/v2.1.0) (2024-11-09)
 
-
-
-
-
 ### Other changes
 
 - **Based on UML diagram: added interfaces, abstract Vehicle class, concrete vehicle classes (Car, Truck, etc.), Fuel implementations, and enums for Color and VehicleState.**  ([f24e1b17526f0fa](https://github.com/walterbishop4801/software-design-project/rental-system/commit/
@@ -79,13 +106,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [refs/tags/v2.0.0](https://github.com/walterbishop4801/software-design-project/rental-system/refs/tags/v2.0.0) (2024-11-08)
 
-
 ### Features
 
 -  **vehicle**  add CRUD operations for vehicle management ([6680c3a4fb1ffe7](https://github.com/walterbishop4801/software-design-project/rental-system/commit/6680c3a4fb1ffe7409a20b27ea9d2256a427fb0c))
 -  **init**  add init project setup ([8c52467a6bfa24c](https://github.com/walterbishop4801/software-design-project/rental-system/commit/8c52467a6bfa24c4b4034581c2042e07a5e2b98b))
-
-
 
 ### Other changes
 
@@ -103,11 +127,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [refs/tags/v1.0.0](https://github.com/walterbishop4801/software-design-project/rental-system/refs/tags/v1.0.0) (2024-09-27)
 
-
-
-
-
 ### Other changes
 
 - **Add files via upload**  ([8f2127ddf1d2822](https://github.com/walterbishop4801/software-design-project/rental-system/commit/
-
