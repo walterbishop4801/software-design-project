@@ -7,7 +7,7 @@ public class VoucherBookingDecorator  extends BookingDecorator{
         super(booking);
     }
 
-    public long price() {
-        return super.price() - 10;
+    public long getPrice() {
+        return super.getPrice() - 10;
     }
 }

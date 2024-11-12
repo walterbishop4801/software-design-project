@@ -3,7 +3,6 @@ package com.ul.vrs.entity.booking;
 import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.entity.account.Customer;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class Booking {
@@ -11,15 +10,17 @@ public class Booking {
     private Vehicle vehicle;
     private boolean is_authenticated;
     private UUID bookingId;
+    private long price;
 
-    public Booking() {
-    }
+    /*public Booking() {
+    }*/
 
-    public Booking(Customer customer, Vehicle vehicle){
+    public Booking(Customer customer, Vehicle vehicle) {
         this.customer = customer;
         this.vehicle = vehicle;
         this.bookingId = UUID.randomUUID();
         this.is_authenticated = false;
+        this.price = 10;
     }
 
     public UUID getBookingId() {
@@ -30,8 +31,8 @@ public class Booking {
         this.is_authenticated = true;
     }
 
-    public long price() {
-        return 0;
+    public long getPrice() {
+        return this.price;
     }
 
     public Vehicle getVehicle() {

@@ -6,7 +6,7 @@ public class InsuranceBookingDecorator extends BookingDecorator{
         super(booking);
     }
 
-    public long price() {
-        return super.price() + 100;
+    public long getPrice() {
+        return super.getPrice() + 100;
     }
 }

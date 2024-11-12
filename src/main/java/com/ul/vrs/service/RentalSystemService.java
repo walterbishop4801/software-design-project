@@ -1,6 +1,5 @@
 package com.ul.vrs.service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,23 +9,20 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.account.Customer;
 import com.ul.vrs.entity.booking.Booking;
 import com.ul.vrs.entity.booking.Customization;
 import com.ul.vrs.entity.booking.GPSBookingDecorator;
 import com.ul.vrs.entity.booking.InsuranceBookingDecorator;
 import com.ul.vrs.entity.booking.VoucherBookingDecorator;
-import com.ul.vrs.entity.vehicle.Car;
 import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.entity.vehicle.VehicleState;
-import com.ul.vrs.entity.vehicle.fuel.PetrolFuel;
 
 /**
  * RentalSystemService
  *
  * @author David Parreño (losedavidpb)
- * @version 2.1.0
+ * @version 2.3.1
  * @since 1.0.0
  */
 @Service
@@ -71,7 +67,7 @@ public class RentalSystemService {
      * @param b booking to be customised
      * @param c decorator for the customisation
      */
-    public boolean customizeBooking(UUID bookingId, Customization c) {
+    public Booking customizeBooking(UUID bookingId, Customization c) {
         Booking b = bookings.get(bookingId);
         if (b != null) {
             switch (c) {
@@ -87,10 +83,12 @@ public class RentalSystemService {
                 default:
                     break;
             }
+
             bookings.put(bookingId, b);
-            return true;
+            return b;
         }
-        return false;
+
+        return null;
     }
 
     /**
