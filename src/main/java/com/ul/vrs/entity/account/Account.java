@@ -1,29 +1,47 @@
 package com.ul.vrs.entity.account;
 
-public interface Account {
-    void handle(Customer customer);
+public abstract class Account {
+    private String username;
+    private String accountId;
+    private String password;
 
-    // Active state implementation
-    public static class Active implements Account {
-        @Override
-        public void handle(Customer customer) {
-            System.out.println("Account is active for customer: " + customer.getCustomerId());
-        }
+    // Constructor
+    public Account(String username, String accountId, String password) {
+        this.username = username;
+        this.accountId = accountId;
+        this.password = password;
     }
 
-    // Suspended state implementation
-    public static class Suspended implements Account {
-        @Override
-        public void handle(Customer customer) {
-            System.out.println("Account is suspended for customer: " + customer.getCustomerId());
-        }
+    // Getters and Setters
+    public String getUsername() {
+        return username;
     }
 
-    // Closed state implementation
-    public static class Closed implements Account {
-        @Override
-        public void handle(Customer customer) {
-            System.out.println("Account is closed for customer: " + customer.getCustomerId());
-        }
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "username='" + username + '\'' +
+                ", accountId='" + accountId + '\'' +
+                '}';
     }
 }

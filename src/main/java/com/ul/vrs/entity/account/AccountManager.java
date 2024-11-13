@@ -4,43 +4,49 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AccountManager {
-    private static AccountManager instance;
-    private Map<String, Customer> accounts;  // Store customer accounts by customer ID
+    private Map<String, Account> accounts;  // Stores accounts by username
 
-    // Private constructor to prevent instantiation from other classes
-    private AccountManager() {
+    public AccountManager() {
         accounts = new HashMap<>();
     }
 
-    // Method to get the single instance of AccountManager
-    public static synchronized AccountManager getInstance() {
-        if (instance == null) {
-            instance = new AccountManager();
+ // Sign up method that accepts different account types
+    public Account signUp(String username, String password, String accountType) {
+        if (accounts.containsKey(username)) {
+            System.out.println("Username already exists: " + username);
+            return null;
         }
-        return instance;
-    }
 
-    // Method to create a new customer account and add it to the accounts map
-    public Customer createAccount(String customerId, String name) {
-        Customer customer = new Customer(customerId, name);
-        accounts.put(customerId, customer);
-        System.out.println("Account created for customer ID: " + customerId);
-        return customer;
-    }
+        Account newAccount;
+        String accountId = "ID" + (accounts.size() + 1);
 
-    // Method to retrieve a customer account by customer ID
-    public Customer getAccount(String customerId) {
-        return accounts.get(customerId);
-    }
-
- // Method to change the state of a customer's account
-    public void changeAccountState(String customerId, Account newState) {
-        Customer customer = accounts.get(customerId);
-        if (customer != null) {
-            customer.setState(newState);
-            System.out.println("Account state changed for customer ID: " + customerId);
+        // Only support Customer accounts for now
+        if (accountType == null || accountType.equalsIgnoreCase("customer")) {
+            newAccount = new Customer(username, accountId, password);  // No cast needed
         } else {
-            System.out.println("Account not found for customer ID: " + customerId);
+            System.out.println("Currently, only Customer accounts are supported.");
+            return null;
         }
+
+        accounts.put(username, newAccount);
+        System.out.println("Account created for username: " + username + " as " + accountType);
+        return newAccount;
+    }
+
+
+    // Login method for all account types
+    public Account logIn(String username, String password) {
+        Account account = accounts.get(username);
+        if (account != null && account.getPassword().equals(password)) {
+            System.out.println("Login successful for user: " + username);
+            return account;
+        }
+        System.out.println("Login failed for user: " + username);
+        return null;
+    }
+
+    // Retrieve an account by username
+    public Account getAccount(String username) {
+        return accounts.get(username);
     }
 }
