@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>com.ul</groupId>
 	<artifactId>vrs</artifactId>
-	<version>2.3.2</version>
+	<version>2.4.0</version>
 	<url>https://github.com/walterbishop4801/software-design-project</url>
 	<licenses>
 		<license/>
@@ -229,22 +229,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     	{{/commits}}
   	{{/ifContainsType}}
 
-	{{#ifContainsType commits type='docs'}}
-### Documentation
-
-		{{#commits}}
-      		{{#ifCommitType . type='docs'}}
-- {{#eachCommitScope .}} **{{.}}** {{/eachCommitScope}} {{{commitDescription .}}} ([{{hash}}](https://github.com/walterbishop4801/software-design-project/rental-system/commit/{{hashFull}}))
-			{{/ifCommitType}}
-    	{{/commits}}
-	{{/ifContainsType}}
-
 ### Other changes
 
 	{{#commits}}
 		{{#ifCommitTypeOtherThan . type='feat'}}
 			{{#ifCommitTypeOtherThan . type='fix'}}
-  				{{#ifCommitTypeOtherThan . type='docs'}}
+				{{#ifCommitTypeOtherThan . type='docs'}}
 - **{{{messageTitle}}}** {{{commitDescription .}}} ([{{hash}}](https://github.com/walterbishop4801/software-design-project/rental-system/commit/
 				{{/ifCommitTypeOtherThan}}
 			{{/ifCommitTypeOtherThan}}
