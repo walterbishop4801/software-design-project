@@ -4,7 +4,7 @@ package com.ul.vrs.entity.vehicle.fuel;
  * Fuel: fuel abstraction
  *
  * @author Rohan Sikder
- * @version 1.0.0
+ * @version 2.3.2
  * @since 1.0.0
  */
 public interface Fuel {
@@ -13,5 +13,5 @@ public interface Fuel {
      *
      * @return cost of the fuel
      */
-    public double getCost();
+    double getCost();
 }
