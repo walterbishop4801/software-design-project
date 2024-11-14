@@ -22,7 +22,7 @@ import com.ul.vrs.entity.vehicle.VehicleState;
  * RentalSystemService
  *
  * @author David Parreño (losedavidpb)
- * @version 2.3.2
+ * @version 2.4.1
  * @since 1.0.0
  */
 @Service
