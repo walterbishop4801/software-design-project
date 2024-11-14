@@ -1,13 +1,14 @@
 package com.ul.vrs.entity.vehicle;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
 
 /**
  * Car: entity of a car
  *
- * @author Rohan Sikder
- * @version 2.0.1
+ * @version 2.3.2
  * @since 1.0.0
  */
 public class Car extends Vehicle {
@@ -28,9 +29,19 @@ public class Car extends Vehicle {
      * @param numberOfDoors number of doors
      * @param trunkCapacity trunk capacity
      */
-    public Car(long ID, String name, String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType, VehicleState vehicleState, int numberOfDoors, float trunkCapacity) {
+    @JsonCreator
+    public Car(
+            @JsonProperty("ID") long ID,
+            @JsonProperty("name") String name,
+            @JsonProperty("brandOwner") String brandOwner,
+            @JsonProperty("releaseYear") int releaseYear,
+            @JsonProperty("cost") double cost,
+            @JsonProperty("color") Color color,
+            @JsonProperty("fuelType") Fuel fuelType,
+            @JsonProperty("vehicleState") VehicleState vehicleState,
+            @JsonProperty("numberOfDoors") int numberOfDoors,
+            @JsonProperty("trunkCapacity") float trunkCapacity) {
         super(ID, name, brandOwner, releaseYear, cost, color, fuelType, vehicleState);
-
         this.numberOfDoors = numberOfDoors;
         this.trunkCapacity = trunkCapacity;
     }
@@ -48,7 +59,16 @@ public class Car extends Vehicle {
      * @param numberOfDoors number of doors
      * @param trunkCapacity trunk capacity
      */
-    public Car(long ID, String name, String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType, int numberOfDoors, float trunkCapacity) {
+    public Car(
+            long ID,
+            String name,
+            String brandOwner,
+            int releaseYear,
+            double cost,
+            Color color,
+            Fuel fuelType,
+            int numberOfDoors,
+            float trunkCapacity) {
         this(ID, name, brandOwner, releaseYear, cost, color, fuelType, VehicleState.AVAILABLE, numberOfDoors, trunkCapacity);
     }
 

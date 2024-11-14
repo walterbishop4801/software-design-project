@@ -1,13 +1,14 @@
 package com.ul.vrs.entity.vehicle;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
 
 /**
  * Truck: entity of a truck
  *
- * @author Rohan Sikder
- * @version 2.0.1
+ * @version 2.3.2
  * @since 1.0.0
  */
 public class Truck extends Vehicle {
@@ -30,9 +31,20 @@ public class Truck extends Vehicle {
      * @param towingCapacity    towing capacity
      * @param numberOfAxles     number of axles
      */
-    public Truck(long ID, String name, String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType, VehicleState vehicleState, float payloadCapacity, float towingCapacity, int numberOfAxles) {
+    @JsonCreator
+    public Truck(
+            @JsonProperty("ID") long ID,
+            @JsonProperty("name") String name,
+            @JsonProperty("brandOwner") String brandOwner,
+            @JsonProperty("releaseYear") int releaseYear,
+            @JsonProperty("cost") double cost,
+            @JsonProperty("color") Color color,
+            @JsonProperty("fuelType") Fuel fuelType,
+            @JsonProperty("vehicleState") VehicleState vehicleState,
+            @JsonProperty("payloadCapacity") float payloadCapacity,
+            @JsonProperty("towingCapacity") float towingCapacity,
+            @JsonProperty("numberOfAxles") int numberOfAxles) {
         super(ID, name, brandOwner, releaseYear, cost, color, fuelType, vehicleState);
-
         this.payloadCapacity = payloadCapacity;
         this.towingCapacity = towingCapacity;
         this.numberOfAxles = numberOfAxles;
@@ -52,7 +64,17 @@ public class Truck extends Vehicle {
      * @param towingCapacity    towing capacity
      * @param numberOfAxles     number of axles
      */
-    public Truck(long ID, String name, String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType, float payloadCapacity, float towingCapacity, int numberOfAxles) {
+    public Truck(
+            long ID,
+            String name,
+            String brandOwner,
+            int releaseYear,
+            double cost,
+            Color color,
+            Fuel fuelType,
+            float payloadCapacity,
+            float towingCapacity,
+            int numberOfAxles) {
         this(ID, name, brandOwner, releaseYear, cost, color, fuelType, VehicleState.AVAILABLE, payloadCapacity, towingCapacity, numberOfAxles);
     }
 
