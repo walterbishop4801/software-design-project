@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>com.ul</groupId>
 	<artifactId>vrs</artifactId>
-	<version>2.4.0</version>
+	<version>2.4.0-SNAPSHOT</version>
 	<url>https://github.com/walterbishop4801/software-design-project</url>
 	<licenses>
 		<license/>
@@ -51,82 +51,79 @@
 	</properties>
 	<dependencies>
 
-    <!-- PMD: Static code analyser -->
-    <dependency>
-        <groupId>net.sourceforge.pmd</groupId>
-        <artifactId>pmd</artifactId>
-        <version>7.7.0</version>
-        <type>pom</type>
-        <exclusions>
-            <exclusion>
-                <groupId>org.ow2.asm</groupId>
-                <artifactId>asm</artifactId>
-            </exclusion>
-        </exclusions>
-    </dependency>
+		<!-- PMD: Static code analyser -->
+		<dependency>
+			<groupId>net.sourceforge.pmd</groupId>
+			<artifactId>pmd</artifactId>
+			<version>7.7.0</version>
+			<type>pom</type>
+			<exclusions>
+				<exclusion>
+					<groupId>org.ow2.asm</groupId>
+					<artifactId>asm</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 
-    <!-- Git Changelog: Automatic Changelog generator -->
-    <dependency>
-        <groupId>se.bjurr.gitchangelog</groupId>
-        <artifactId>git-changelog-lib</artifactId>
-        <version>2.4.1</version>
-    </dependency>
+		<!-- JaCoCo: Java code coverage -->
+		<dependency>
+			<groupId>org.jacoco</groupId>
+			<artifactId>jacoco-maven-plugin</artifactId>
+			<version>0.8.12</version>
+		</dependency>
 
-    <!-- Spring Boot -->
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-thymeleaf</artifactId>
-    </dependency>
+		<!-- Git Changelog: Automatic Changelog generator -->
+		<dependency>
+			<groupId>se.bjurr.gitchangelog</groupId>
+			<artifactId>git-changelog-lib</artifactId>
+			<version>2.4.1</version>
+		</dependency>
 
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter</artifactId>
-    </dependency>
+		<!-- Spring Boot -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
 
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
 
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-test</artifactId>
-        <scope>test</scope>
-    </dependency>
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
 
-    <!-- Jackson Databind for JSON Deserialization -->
-    <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-databind</artifactId>
-        <version>2.17.2</version>
-    </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
 
-    <!-- Uncomment and configure if needed
-    <dependency>
-        <groupId>org.springframework.security</groupId>
-        <artifactId>spring-security-test</artifactId>
-        <scope>test</scope>
-    </dependency>
+		<!-- <dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-test</artifactId>
+		    <scope>test</scope>
+		</dependency>
 
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-security</artifactId>
-    </dependency>
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-data-jpa</artifactId>
-    </dependency>
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
 
-    <dependency>
-        <groupId>com.h2database</groupId>
-        <artifactId>h2</artifactId>
-        <scope>runtime</scope>
-    </dependency>
-    -->
+		<dependency>
+		    <groupId>com.h2database</groupId>
+		    <artifactId>h2</artifactId>
+		    <scope>runtime</scope>
+		</dependency> -->
 
-</dependencies>
-
+	</dependencies>
 
 	<reporting>
         <plugins>
@@ -140,12 +137,14 @@
 
 	<build>
 		<plugins>
+
 			<!-- Spring Boot -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>3.3.5</version>
 			</plugin>
+
 			<!-- PMD -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -161,6 +160,7 @@
 					</execution>
 				</executions>
       		</plugin>
+
 			<!-- Git Changelog -->
 			<plugin>
 				<groupId>se.bjurr.gitchangelog</groupId>
@@ -168,6 +168,7 @@
 				<version>2.2.0</version>
 				<executions>
 					<execution>
+						<?m2e execute onConfiguration,onIncremental?>
 						<id>generate-git-changelog</id>
 						<phase>generate-sources</phase>
 						<goals>
@@ -175,80 +176,29 @@
 							<goal>semantic-version</goal>
 						</goals>
 						<configuration>
+							<templateFile>changelog-template.mustache</templateFile>
+							<settingsFile>changelog.conf.json</settingsFile>
 							<file>CHANGELOG.md</file>
-							<fromRef>v1.0.0</fromRef>
-    						<toRef>HEAD</toRef>
-							<useIntegrations>true</useIntegrations>
-							<gitHubEnabled>true</gitHubEnabled>
-							<gitHubIssuePattern>#[A-Z]+-[0-9]+</gitHubIssuePattern>
-							<templateFile>changelog.mustache</templateFile>
-							<gitHubToken>${GITHUB_OAUTH2TOKEN}</gitHubToken>
-							<gitHubApi>https://github.com/walterbishop4801/software-design-project/rental-system</gitHubApi>
-							<readableTagName>-([^-]+?)$</readableTagName>
-          					<ignoreCommitsIfMessageMatches>^\[maven-release-plugin\].*</ignoreCommitsIfMessageMatches>
-							<templateContent>
-<![CDATA[
-# CHANGELOG for VRS
-
-All notable changes to this project will be documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-{{#tags}}
-{{#ifReleaseTag .}}
-## [{{name}}](https://github.com/walterbishop4801/software-design-project/rental-system/{{name}}) ({{tagDate .}})
-
-	{{#ifContainsBreaking commits}}
-### Breaking changes
-
-    	{{#commits}}
-      		{{#ifCommitBreaking .}}
-- {{#eachCommitScope .}} **{{.}}** {{/eachCommitScope}} {{{commitDescription .}}} ([{{hash}}](https://github.com/{{ownerName}}/{{repoName}}/commit/{{hash}}))
-      		{{/ifCommitBreaking}}
-    	{{/commits}}
-	{{/ifContainsBreaking}}
-
-	{{#ifContainsType commits type='feat'}}
-### Features
-
-    	{{#commits}}
-      		{{#ifCommitType . type='feat'}}
-- {{#eachCommitScope .}} **{{.}}** {{/eachCommitScope}} {{{commitDescription .}}} ([{{hash}}](https://github.com/walterbishop4801/software-design-project/rental-system/commit/{{hashFull}}))
-      		{{/ifCommitType}}
-    	{{/commits}}
-	{{/ifContainsType}}
-
-  	{{#ifContainsType commits type='fix'}}
-### Bug Fixes
-
-    	{{#commits}}
-      		{{#ifCommitType . type='fix'}}
-- {{#eachCommitScope .}} **{{.}}** {{/eachCommitScope}} {{{commitDescription .}}} ([{{hash}}](https://github.com/walterbishop4801/software-design-project/rental-system/commit/{{hashFull}}))
-			{{/ifCommitType}}
-    	{{/commits}}
-  	{{/ifContainsType}}
-
-### Other changes
-
-	{{#commits}}
-		{{#ifCommitTypeOtherThan . type='feat'}}
-			{{#ifCommitTypeOtherThan . type='fix'}}
-				{{#ifCommitTypeOtherThan . type='docs'}}
-- **{{{messageTitle}}}** {{{commitDescription .}}} ([{{hash}}](https://github.com/walterbishop4801/software-design-project/rental-system/commit/
-				{{/ifCommitTypeOtherThan}}
-			{{/ifCommitTypeOtherThan}}
-		{{/ifCommitTypeOtherThan}}
-	{{/commits}}
-
-{{/ifReleaseTag}}
-{{/tags}}
-]]>
-							</templateContent>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
+
+			<!-- JaCoCo -->
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.12</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 </project>
