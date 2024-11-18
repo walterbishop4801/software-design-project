@@ -13,62 +13,64 @@ public class Manager {
         this.vehicleManager = vehicleManager;
     }
 
-    // Assign a mechanic to a vehicle by updating its state to 'IN_MAINTENANCE'
+    // Assigns a mechanic to a vehicle and updates the vehicle's state
     public void assignMechanic(Mechanic m, Vehicle v) {
         if (v != null && m != null && v.checkAvailability()) {
-            v.updateState(VehicleState.IN_MAINTENANCE); // Mark vehicle as under maintenance
+            v.updateState(VehicleState.IN_MAINTENANCE); // Set state to 'IN_MAINTENANCE'
             System.out.println("Mechanic " + m.getName() + " assigned to Vehicle ID: " + v.getID());
         } else {
-            System.out.println("Failed to assign Mechanic. Vehicle is either null, unavailable, or already in maintenance.");
+            System.out.println("Cannot assign mechanic. Vehicle is either null, unavailable, or already in maintenance.");
         }
     }
 
-    // Liberate a mechanic by changing vehicle state back to 'AVAILABLE'
+    // Releases a mechanic from a vehicle and updates the vehicle's state
     public void liberateMechanic(Mechanic m, Vehicle v) {
         if (v != null && m != null && v.getState() == VehicleState.IN_MAINTENANCE) {
-            v.updateState(VehicleState.AVAILABLE); // Mark vehicle as available again
+            v.updateState(VehicleState.AVAILABLE); // Set state to 'AVAILABLE'
             System.out.println("Mechanic " + m.getName() + " liberated from Vehicle ID: " + v.getID());
         } else {
-            System.out.println("Failed to liberate Mechanic. Vehicle is either null or not in maintenance.");
+            System.out.println("Cannot liberate mechanic. Vehicle is either null or not in maintenance.");
         }
     }
 
-    // Add a new vehicle with the specified details
+    // Adds a new vehicle to the system
     public void add(String brandOwner, Color color, int releaseYear, Fuel fuel) {
         if (brandOwner != null && color != null && fuel != null) {
-            Vehicle newVehicle = vehicleManager.createVehicle(brandOwner, color, releaseYear, fuel);
-            vehicleManager.addVehicle(newVehicle); // Assume addVehicle method exists in VehicleManagerService
-            System.out.println("New Vehicle added: " + newVehicle);
+            Vehicle newVehicle = new Vehicle(vehicleManager.getAllVehicles().size() + 1, "New Vehicle", brandOwner, releaseYear, 0.0, color, fuel);
+            vehicleManager.addVehicle(newVehicle);
+            System.out.println("New vehicle added: " + newVehicle);
         } else {
-            System.out.println("Failed to add Vehicle. Invalid inputs.");
+            System.out.println("Failed to add vehicle. Invalid input.");
         }
     }
 
-    // Update an existing vehicle with new details
-    public void update(Vehicle oldVehicle, Vehicle newVehicle) {
-        if (oldVehicle != null && newVehicle != null) {
-            boolean success = vehicleManager.updateVehicle(oldVehicle, newVehicle); // Assume updateVehicle method exists
-            if (success) {
-                System.out.println("Vehicle ID: " + oldVehicle.getID() + " updated successfully.");
+    // Updates an existing vehicle's details
+    public void update(Long vehicleId, Vehicle updatedVehicle) {
+        if (vehicleId != null && updatedVehicle != null) {
+            Vehicle existingVehicle = vehicleManager.getVehicleById(vehicleId).orElse(null);
+            if (existingVehicle != null) {
+                vehicleManager.updateVehicle(vehicleId, updatedVehicle);
+                System.out.println("Vehicle ID: " + vehicleId + " updated successfully.");
             } else {
-                System.out.println("Failed to update Vehicle. Vehicle might not exist.");
+                System.out.println("Failed to update vehicle. Vehicle with ID: " + vehicleId + " does not exist.");
             }
         } else {
-            System.out.println("Invalid Vehicles provided for update.");
+            System.out.println("Invalid input. Vehicle ID or updated vehicle cannot be null.");
         }
     }
 
-    // Remove an existing vehicle
-    public void remove(Vehicle v) {
-        if (v != null) {
-            boolean success = vehicleManager.removeVehicle(v); // Assume removeVehicle method exists
-            if (success) {
-                System.out.println("Vehicle ID: " + v.getID() + " removed successfully.");
+    // Removes a vehicle from the system
+    public void remove(Long vehicleId) {
+        if (vehicleId != null) {
+            Vehicle existingVehicle = vehicleManager.getVehicleById(vehicleId).orElse(null);
+            if (existingVehicle != null) {
+                vehicleManager.deleteVehicle(vehicleId);
+                System.out.println("Vehicle ID: " + vehicleId + " removed successfully.");
             } else {
-                System.out.println("Failed to remove Vehicle. Vehicle might not exist.");
+                System.out.println("Failed to remove vehicle. Vehicle with ID: " + vehicleId + " does not exist.");
             }
         } else {
-            System.out.println("Vehicle cannot be null.");
+            System.out.println("Vehicle ID cannot be null.");
         }
     }
 }
