@@ -71,5 +71,6 @@ public class Mechanic implements Observer {
     public void updateObserver() {
         System.out.println("Mechanic " + name + " has been notified of a vehicle state change.");
         // Add additional logic to handle notification if required
+        
     }
 }
