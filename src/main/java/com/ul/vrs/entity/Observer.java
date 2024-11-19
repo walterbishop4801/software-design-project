@@ -11,5 +11,5 @@ public interface Observer {
     /**
      * Update the observer
      */
-    public void updateObserver();
+    void updateObserver();
 }

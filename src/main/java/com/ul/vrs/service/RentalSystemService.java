@@ -49,14 +49,12 @@ public class RentalSystemService {
      * @return booking
      */
     public UUID makeBooking(Customer customer, Vehicle vehicle) {
-        if (vehicle != null) {
-            if (vehicle.checkAvailability()) {
-                Booking booking = new Booking(customer, vehicle);
-                UUID bookingId = booking.getBookingId();
-                bookings.put(bookingId, booking);
-                vehicle.updateState(VehicleState.RESERVED);
-                return bookingId;
-            }
+        if (vehicle != null && vehicle.checkAvailability()) {
+            Booking booking = new Booking(customer, vehicle);
+            UUID bookingId = booking.getBookingId();
+            bookings.put(bookingId, booking);
+            vehicle.updateState(VehicleState.RESERVED);
+            return bookingId;
         }
         return null;
     }

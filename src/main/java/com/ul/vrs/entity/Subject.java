@@ -13,17 +13,17 @@ public interface Subject {
      *
      * @param o observer to be attached
      */
-    public void attach(Observer o);
+    void attach(Observer o);
 
     /**
      * Detach passed observer
      *
      * @param o observer to be detached
      */
-    public void detach(Observer o);
+    void detach(Observer o);
 
     /**
      * Notify all observers
      */
-    public void notifyObservers();
+    void notifyObservers();
 }
