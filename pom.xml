@@ -146,7 +146,7 @@
 				<version>3.3.5</version>
 			</plugin>
 
-      <!--SonarQube-->
+      		<!--SonarQube-->
 			<plugin>
 				<groupId>org.sonarsource.scanner.maven</groupId>
 				<artifactId>sonar-maven-plugin</artifactId>
@@ -167,7 +167,7 @@
 						<goals><goal>check</goal></goals>
 					</execution>
 				</executions>
-      </plugin>
+      		</plugin>
 
 			<!-- Git Changelog -->
 			<plugin>
