@@ -5,9 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-
 ## [v2.3.1](https://github.com/walterbishop4801/software-design-project/releases/tag/v2.3.1) (2024-11-12)
-
 
 ### Features
 
@@ -37,7 +35,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -  **changelog**:  hot-fix of the versions ([947c06ebce9f430](https://github.com/walterbishop4801/software-design-project/commit/947c06ebce9f430) losedavidpb)
 
-
 ### Bug Fixes
 
 -  **changelog**:  hot-fix of the versions ([947c06ebce9f430](https://github.com/walterbishop4801/software-design-project/commit/947c06ebce9f430cd41614197b54e7e7809f2171) losedavidpb)
@@ -56,14 +53,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Modification of Factory package Location  ([28a04b3372a4626](https://github.com/walterbishop4801/software-design-project/commit/) Shane Barden)
 - Vehicle Factories  ([a5c1663f07ad23e](https://github.com/walterbishop4801/software-design-project/commit/) Shane Barden)
 
-
 ## [v2.2.0](https://github.com/walterbishop4801/software-design-project/releases/tag/v2.2.0) (2024-11-10)
-
 
 ### Features
 
 -  **renting**:  controller and service of the rental system ([dfc0b8881cb1c2c](https://github.com/walterbishop4801/software-design-project/commit/dfc0b8881cb1c2c25d9a622eb2e5b8f61678fee6) losedavidpb)
-
 
 ### Documentation
 
@@ -75,8 +69,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ([cc3f5b73563c85b](https://github.com/walterbishop4801/software-design-project/commit/cc3f5b73563c85bd1f71e099ff8aff55d238f36c) losedavidpb)
 
 ### Other changes
-
-
 
 ## [v2.1.1](https://github.com/walterbishop4801/software-design-project/releases/tag/v2.1.1) (2024-11-10)
 
@@ -105,28 +97,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Resolved merge conflicts and updated imports and package references  ([8ed604e0fbd3e66](https://github.com/walterbishop4801/software-design-project/commit/) Rohan Sikder)
 
-
 ## [v2.1.0](https://github.com/walterbishop4801/software-design-project/releases/tag/v2.1.0) (2024-11-09)
-
-
-
-
 
 ### Other changes
 
 - Based on UML diagram: added interfaces, abstract Vehicle class, concrete vehicle classes (Car, Truck, etc.), Fuel implementations, and enums for Color and VehicleState.  ([f24e1b17526f0fa](https://github.com/walterbishop4801/software-design-project/commit/) Rohan Sikder)
 - Added Color and VehicleState enums  ([28c42f3dbc7151f](https://github.com/walterbishop4801/software-design-project/commit/) Rohan Sikder)
 
-
 ## [v2.0.0](https://github.com/walterbishop4801/software-design-project/releases/tag/v2.0.0) (2024-11-08)
-
 
 ### Features
 
 -  **vehicle**:  add CRUD operations for vehicle management ([6680c3a4fb1ffe7](https://github.com/walterbishop4801/software-design-project/commit/6680c3a4fb1ffe7409a20b27ea9d2256a427fb0c) Rohan Sikder)
 -  **init**:  add init project setup ([8c52467a6bfa24c](https://github.com/walterbishop4801/software-design-project/commit/8c52467a6bfa24c4b4034581c2042e07a5e2b98b) Ivor D&#x27;Souza)
-
-
 
 ### Other changes
 
@@ -139,14 +122,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Include useful links in README  ([6ac9b5b34982751](https://github.com/walterbishop4801/software-design-project/commit/) David Parreño Barbuzano)
 - Create README.md  ([447e6fb1d9d9e15](https://github.com/walterbishop4801/software-design-project/commit/) walterbishop4801)
 
-
 ## [v1.0.0](https://github.com/walterbishop4801/software-design-project/releases/tag/v1.0.0) (2024-09-27)
-
-
-
-
 
 ### Other changes
 
 - Add files via upload  ([8f2127ddf1d2822](https://github.com/walterbishop4801/software-design-project/commit/) walterbishop4801)
-
