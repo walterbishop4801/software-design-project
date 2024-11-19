@@ -136,6 +136,12 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>3.3.5</version>
 			</plugin>
+			<!--SonarQube-->
+			<plugin>
+				<groupId>org.sonarsource.scanner.maven</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>5.0.0.4389</version>
+			</plugin>
 			<!-- PMD -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
