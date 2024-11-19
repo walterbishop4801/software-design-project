@@ -4,12 +4,12 @@ package com.ul.vrs.entity;
  * Observer: observer abstraction
  *
  * @author Rohan Sikder
- * @version 1.0.0
+ * @version 2.4.1
  * @since 1.0.0
  */
 public interface Observer {
     /**
      * Update the observer
      */
-    public void updateObserver();
+    void updateObserver();
 }

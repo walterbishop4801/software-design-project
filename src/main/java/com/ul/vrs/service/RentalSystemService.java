@@ -22,7 +22,7 @@ import com.ul.vrs.entity.vehicle.VehicleState;
  * RentalSystemService
  *
  * @author David Parreño (losedavidpb)
- * @version 2.3.1
+ * @version 2.4.1
  * @since 1.0.0
  */
 @Service
@@ -49,15 +49,16 @@ public class RentalSystemService {
      * @return booking
      */
     public UUID makeBooking(Customer customer, Vehicle vehicle) {
-        if (vehicle != null) {
-            if (vehicle.checkAvailability()) {
-                Booking booking = new Booking(customer, vehicle);
-                UUID bookingId = booking.getBookingId();
-                bookings.put(bookingId, booking);
-                vehicle.updateState(VehicleState.RESERVED);
-                return bookingId;
-            }
+        if (vehicle != null && vehicle.checkAvailability()) {
+            Booking booking = new Booking(customer, vehicle);
+            UUID bookingId = booking.getBookingId();
+
+            bookings.put(bookingId, booking);
+            vehicle.updateState(VehicleState.RESERVED);
+
+            return bookingId;
         }
+
         return null;
     }
 
@@ -69,6 +70,7 @@ public class RentalSystemService {
      */
     public Booking customizeBooking(UUID bookingId, Customization c) {
         Booking b = bookings.get(bookingId);
+
         if (b != null) {
             switch (c) {
                 case GPS:
