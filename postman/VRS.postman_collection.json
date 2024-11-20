@@ -1,9 +1,10 @@
 {
 	"info": {
-		"_postman_id": "f49fde0e-09c6-4705-a0a3-38764b9edc4b",
+		"_postman_id": "62f6b961-f12c-42f9-b31e-7fec3c7e6af0",
 		"name": "VRS",
+		"description": "Postman collection for VRS application",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "25870780"
+		"_exporter_id": "39629405"
 	},
 	"item": [
 		{
@@ -533,7 +534,8 @@
 									"    });",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -541,7 +543,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/vehicles",
+							"raw": "http://localhost:8080/api/renting/list_bookings",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -549,7 +551,8 @@
 							"port": "8080",
 							"path": [
 								"api",
-								"vehicles"
+								"renting",
+								"list_bookings"
 							]
 						}
 					},
