@@ -5,23 +5,18 @@ import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.entity.vehicle.Scooter;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
 
-/**
- * ScooterFactory: factory to create instances of Scooter
- */
-public class ScooterFactory extends VehicleFactory {
-    
-    private long ID;
-    private String name;
-    private String brandOwner;
-    private int releaseYear;
-    private double cost;
-    private Color color;
-    private Fuel fuelType;
-    private boolean hasHelmetIncluded;
-    private int maxPassengers;
-    private int rangePerFuelTank;
+public class ScooterFactory implements VehicleFactory {
+    private final long ID;
+    private final String name;
+    private final String brandOwner;
+    private final int releaseYear;
+    private final double cost;
+    private final Color color;
+    private final Fuel fuelType;
+    private final boolean hasHelmetIncluded;
+    private final int maxPassengers;
+    private final int rangePerFuelTank;
 
-    // Constructor for ScooterFactory to set properties
     public ScooterFactory(long ID, String name, String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType, boolean hasHelmetIncluded, int maxPassengers, int rangePerFuelTank) {
         this.ID = ID;
         this.name = name;

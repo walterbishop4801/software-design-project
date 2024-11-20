@@ -5,14 +5,12 @@ public abstract class Account {
     private String accountId;
     private String password;
 
-    // Constructor
     public Account(String username, String accountId, String password) {
         this.username = username;
         this.accountId = accountId;
         this.password = password;
     }
 
-    // Getters and Setters
     public String getUsername() {
         return username;
     }
@@ -35,13 +33,5 @@ public abstract class Account {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    @Override
-    public String toString() {
-        return "Account{" +
-                "username='" + username + '\'' +
-                ", accountId='" + accountId + '\'' +
-                '}';
     }
 }

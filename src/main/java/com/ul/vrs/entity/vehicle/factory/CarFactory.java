@@ -5,16 +5,16 @@ import com.ul.vrs.entity.vehicle.Car;
 import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
 
-public class CarFactory extends VehicleFactory {
-    private long ID;
-    private String name;
-    private String brandOwner;
-    private int releaseYear;
-    private double cost;
-    private Color color;
-    private Fuel fuelType;
-    private int numberOfDoors;
-    private float trunkCapacity;
+public class CarFactory implements VehicleFactory {
+    private final long ID;
+    private final String name;
+    private final String brandOwner;
+    private final int releaseYear;
+    private final double cost;
+    private final Color color;
+    private final Fuel fuelType;
+    private final int numberOfDoors;
+    private final float trunkCapacity;
 
     public CarFactory(long ID, String name, String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType, int numberOfDoors, float trunkCapacity) {
         this.ID = ID;

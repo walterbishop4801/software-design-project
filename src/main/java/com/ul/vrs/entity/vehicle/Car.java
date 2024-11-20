@@ -15,20 +15,6 @@ public class Car extends Vehicle {
     private final int numberOfDoors;
     private final float trunkCapacity;
 
-    /**
-     * Create new instance of Car
-     *
-     * @param ID            id of the vehicle
-     * @param name          name of the vehicle
-     * @param brandOwner    brand owner of the vehicle
-     * @param releaseYear   release year of the vehicle
-     * @param cost          initial cost of the vehicle
-     * @param color         color of the vehicle
-     * @param fuelType      fuel type of the vehicle
-     * @param vehicleState  state of the vehicle
-     * @param numberOfDoors number of doors
-     * @param trunkCapacity trunk capacity
-     */
     @JsonCreator
     public Car(
             @JsonProperty("ID") long ID,
@@ -46,19 +32,7 @@ public class Car extends Vehicle {
         this.trunkCapacity = trunkCapacity;
     }
 
-    /**
-     * Create new instance of Car
-     *
-     * @param ID            id of the vehicle
-     * @param name          name of the vehicle
-     * @param brandOwner    brand owner of the vehicle
-     * @param releaseYear   release year of the vehicle
-     * @param cost          initial cost of the vehicle
-     * @param color         color of the vehicle
-     * @param fuelType      fuel type of the vehicle
-     * @param numberOfDoors number of doors
-     * @param trunkCapacity trunk capacity
-     */
+    // TODO: Do we need @JsonProperty here?
     public Car(
             long ID,
             String name,
@@ -72,24 +46,15 @@ public class Car extends Vehicle {
         this(ID, name, brandOwner, releaseYear, cost, color, fuelType, VehicleState.AVAILABLE, numberOfDoors, trunkCapacity);
     }
 
-    /**
-     * Get number of doors
-     *
-     * @return number of doors
-     */
     public int getNumberOfDoors() {
         return numberOfDoors;
     }
 
-    /**
-     * Get trunk capacity
-     *
-     * @return trunk capacity
-     */
     public float getTrunkCapacity() {
         return trunkCapacity;
     }
 
+    // TODO: Adjust this value based on real-life costs or with some function
     @Override
     public double getRentingCost() {
         return 0;
