@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 {{#commits}}
    {{#ifCommitBreaking .}}
-- {{#eachCommitScope .}} **{{.}}**: {{/eachCommitScope}} {{{commitDescription .}}} ([{{hash}}](https://github.com/{{ownerName}}/{{repoName}}/commit/{{hash}}) {{authorName}})
+- {{#eachCommitScope .}} **{{.}}**: {{/eachCommitScope}} {{{commitDescription .}}} ([{{hash}}](https://github.com/{{ownerName}}/{{repoName}}/commit/{{hashFull}}) {{authorName}})
    {{/ifCommitBreaking}}
 {{/commits}}
 {{/ifContainsBreaking}}
@@ -56,7 +56,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
       {{#ifCommitTypeOtherThan . type='feat'}}
          {{#ifCommitTypeOtherThan . type='fix'}}
             {{#ifCommitTypeOtherThan . type='docs'}}
-- {{{messageTitle}}} {{{commitDescription .}}} ([{{hash}}](https://github.com/{{ownerName}}/{{repoName}}/commit/) {{authorName}})
+- {{{messageTitle}}} {{{commitDescription .}}} ([{{hash}}](https://github.com/{{ownerName}}/{{repoName}}/commit/{{hashFull}}) {{authorName}})
             {{/ifCommitTypeOtherThan}}
          {{/ifCommitTypeOtherThan}}
       {{/ifCommitTypeOtherThan}}

@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>com.ul</groupId>
 	<artifactId>vrs</artifactId>
-	<version>2.3.2</version>
+	<version>2.1.0</version>
 	<url>https://github.com/walterbishop4801/software-design-project</url>
 	<licenses>
 		<license/>
@@ -48,7 +48,7 @@
 	</scm>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>23</java.version>
+		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 
@@ -146,7 +146,7 @@
 				<version>3.3.5</version>
 			</plugin>
 
-      <!--SonarQube-->
+      		<!--SonarQube-->
 			<plugin>
 				<groupId>org.sonarsource.scanner.maven</groupId>
 				<artifactId>sonar-maven-plugin</artifactId>
@@ -167,7 +167,7 @@
 						<goals><goal>check</goal></goals>
 					</execution>
 				</executions>
-      </plugin>
+      		</plugin>
 
 			<!-- Git Changelog -->
 			<plugin>
@@ -193,7 +193,7 @@
 							<javascriptHelper>
 							<![CDATA[
 							Handlebars.registerHelper('tagName', function(from) {
-								if (from.length > 10) {
+								if (from.length > 10 && from.substring(0, 10).equals("refs/tags/")) {
 									return from.substring(10, from.length)
 								}
 
@@ -201,7 +201,7 @@
 							});
 
 							Handlebars.registerHelper('tagUrl', function(from) {
-								if (from.length > 10) {
+								if (from.length > 10 && from.substring(0, 10).equals("refs/tags/")) {
 									const baseTagName = from.substring(10, from.length)
 									return "releases/tag/".concat(baseTagName)
 								}
