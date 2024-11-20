@@ -39,17 +39,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
    {{/commits}}
 {{/ifContainsType}}
 
-{{#ifContainsType commits type='docs'}}
-### Documentation
-
-{{#commits}}
-{{#ifCommitType . type='docs'}}
-- {{#eachCommitScope .}} **{{.}}**: {{/eachCommitScope}} {{{commitDescription .}}}
-([{{hash}}](https://github.com/{{ownerName}}/{{repoName}}/commit/{{hashFull}}) {{authorName}})
-{{/ifCommitType}}
-{{/commits}}
-{{/ifContainsType}}
-
 ### Other changes
 
    {{#commits}}
