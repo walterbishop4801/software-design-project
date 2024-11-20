@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v2.2.0](https://github.com/walterbishop4801/software-design-project/releases/tag/v2.2.0) (2024-11-20)
+
+### Features
+
+-  **sonarqube**:  add sonaqube integration ([c26c77249e79285](https://github.com/walterbishop4801/software-design-project/commit/c26c77249e792850c199fa88a4899bdc24da4381) Ivor D&#x27;Souza)
+-  **config**:  include jacoco and update git-changelog settings ([44b936d9c8e92a7](https://github.com/walterbishop4801/software-design-project/commit/44b936d9c8e92a72a7936f6469ad749314291c74) losedavidpb)
+
+### Bug Fixes
+
+-  **changelog**:  fix hash and include script for changelog formatting ([80ffe94bc000cda](https://github.com/walterbishop4801/software-design-project/commit/80ffe94bc000cda2842eda5c2e7096016b355de8) David Parreño Barbuzano)
+-  **postman**:  update collection based on current endpoints ([6e63d518e5080a9](https://github.com/walterbishop4801/software-design-project/commit/6e63d518e5080a913e46d4b0804d9793dbc7f065) David Parreño Barbuzano)
+-  **sonarqube**:  delete non-existed properties from spring boot application properties ([1d85c77334ba05d](https://github.com/walterbishop4801/software-design-project/commit/1d85c77334ba05d1382e599e5c1ac1dfa24e2b9e) David Parreño Barbuzano)
+-  delete vsc settings ([d7a4e9ec2597539](https://github.com/walterbishop4801/software-design-project/commit/d7a4e9ec25975395fcca17bc8e17e96bd2dce924) losedavidpb)
+-  **pmd**:  fix pmd violations ([b32639ba128e012](https://github.com/walterbishop4801/software-design-project/commit/b32639ba128e0125286bae3b4eccddfa9bfba4a7) losedavidpb)
+-  **changelog**:  fix tag names and its urls ([16e05d558708e35](https://github.com/walterbishop4801/software-design-project/commit/16e05d558708e35a7ac9efe189fe9bbc6980378c) losedavidpb)
+-  **changelog**:  fix tag URL ([c209cf2e3aa5ac6](https://github.com/walterbishop4801/software-design-project/commit/c209cf2e3aa5ac6adacd5fc39ea14ea1129986d4) losedavidpb)
+-  **pmd**:  fix version of last commit ([342c8cc9d6bd11b](https://github.com/walterbishop4801/software-design-project/commit/342c8cc9d6bd11bc4b320f3e73b8fde60e48a36f) losedavidpb)
+-  **pmd**:  fix violations from subject, observer, fuel and rental system service ([78ecabb7c49b41e](https://github.com/walterbishop4801/software-design-project/commit/78ecabb7c49b41e1c99f33c8dfa11627e7fc8dbf) losedavidpb)
+-  **changelog**:  delete the docs section ([7d951be680a2c55](https://github.com/walterbishop4801/software-design-project/commit/7d951be680a2c5586da6f99774e6dbd7353e5014) losedavidpb)
+-  **vehicle**:  fixed add/update vehicles by using JsonTypeInfo annotations ([eb20ee2ec0068e6](https://github.com/walterbishop4801/software-design-project/commit/eb20ee2ec0068e6b4ec66f167638fc7065159cc5) Rohan Sikder)
+
+### Other changes
+
+- Changes made to customer to add more custom features as per UML specs  ([320baf1476a5a07](https://github.com/walterbishop4801/software-design-project/commit/320baf1476a5a0739e12593d16ba40ef9d925d09) walterbishop4801)
+- Changes made to customer, account and manager as per UML specs  ([e3b40b6a10ec9f4](https://github.com/walterbishop4801/software-design-project/commit/e3b40b6a10ec9f431171c6782ff3cb3d9a7f4eb0) walterbishop4801)
+- Implement VRS with Customer, Account and AccountManager  ([5cf02ce2d27b1e0](https://github.com/walterbishop4801/software-design-project/commit/5cf02ce2d27b1e080e9378977db679a96e25b001) walterbishop4801)
+
 ## [v2.1.0](https://github.com/walterbishop4801/software-design-project/releases/tag/v2.1.0) (2024-11-14)
 
 ### Breaking changes
@@ -27,19 +54,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -  **changelog**:  hot-fix of the versions ([947c06ebce9f430](https://github.com/walterbishop4801/software-design-project/commit/947c06ebce9f430cd41614197b54e7e7809f2171) losedavidpb)
 -  **vehicle**:  fix services and controllers ([327fd6b9a933180](https://github.com/walterbishop4801/software-design-project/commit/327fd6b9a9331802d579695ce2fd114a2cf9a25a) losedavidpb)
 -  **vehicle**:  adjust vehicle based on UML ([ac920979f5fb8a3](https://github.com/walterbishop4801/software-design-project/commit/ac920979f5fb8a36c125ca815e5ba75397252a9c) losedavidpb)
-
-### Documentation
-
--  **changelog**:  update changelog for 2.3.1
-([3655e27d61601cc](https://github.com/walterbishop4801/software-design-project/commit/3655e27d61601cc197a04ac8a93339d4342c02ee) losedavidpb)
--  **changelog**:  update changelog for v2.3.0
-([ed8a042dda66e17](https://github.com/walterbishop4801/software-design-project/commit/ed8a042dda66e17b58a4cbdbf4ed34d7ac7bb260) losedavidpb)
--  **changelog**:  update changelog for v2.2.0
-([d61478c40ae7220](https://github.com/walterbishop4801/software-design-project/commit/d61478c40ae72208a94197620274ee29d5208938) losedavidpb)
--  **postman**:  rename postman collection
-([dc659d827b9b125](https://github.com/walterbishop4801/software-design-project/commit/dc659d827b9b125c9d6bf899991e60b1ffaa9f38) losedavidpb)
--  **changelog**:  update changelog
-([cc3f5b73563c85b](https://github.com/walterbishop4801/software-design-project/commit/cc3f5b73563c85bd1f71e099ff8aff55d238f36c) losedavidpb)
 
 ### Other changes
 
@@ -66,11 +80,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -  **changelog**:  fix changelog plugin ([e0e6cb4276968bf](https://github.com/walterbishop4801/software-design-project/commit/e0e6cb4276968bfc5ba264528dfe7bbd62bf6c1b) losedavidpb)
 -  **package**:  fix the current project package ([8d473652b799111](https://github.com/walterbishop4801/software-design-project/commit/8d473652b7991113294e2884b6c3ad9055cf34b4) losedavidpb)
 -  **settings**:  improve dotfiles and add pmd and gitchangelog ([63582b566012610](https://github.com/walterbishop4801/software-design-project/commit/63582b56601261068d92e4bea76053246bfd98c2) losedavidpb)
-
-### Documentation
-
--  init CHANGELOG and README
-([11cb841c730483c](https://github.com/walterbishop4801/software-design-project/commit/11cb841c730483ce936af00b335e89f7539e33dd) losedavidpb)
 
 ### Other changes
 
