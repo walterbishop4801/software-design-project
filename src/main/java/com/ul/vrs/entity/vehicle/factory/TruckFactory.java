@@ -5,23 +5,18 @@ import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.entity.vehicle.Truck;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
 
-/**
- * TruckFactory: factory to create instances of Truck
- */
-public class TruckFactory extends VehicleFactory {
-    
-    private long ID;
-    private String name;
-    private String brandOwner;
-    private int releaseYear;
-    private double cost;
-    private Color color;
-    private Fuel fuelType;
-    private float payloadCapacity;
-    private float towingCapacity;
-    private int numberOfAxles;
+public class TruckFactory implements VehicleFactory {
+    private final long ID;
+    private final String name;
+    private final String brandOwner;
+    private final int releaseYear;
+    private final double cost;
+    private final Color color;
+    private final Fuel fuelType;
+    private final float payloadCapacity;
+    private final float towingCapacity;
+    private final int numberOfAxles;
 
-    // Constructor for TruckFactory to set properties
     public TruckFactory(long ID, String name, String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType, float payloadCapacity, float towingCapacity, int numberOfAxles) {
         this.ID = ID;
         this.name = name;

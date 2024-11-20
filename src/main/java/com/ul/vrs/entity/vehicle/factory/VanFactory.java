@@ -5,22 +5,17 @@ import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.entity.vehicle.Van;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
 
-/**
- * VanFactory: factory to create instances of Van
- */
-public class VanFactory extends VehicleFactory {
-    
-    private long ID;
-    private String name;
-    private String brandOwner;
-    private int releaseYear;
-    private double cost;
-    private Color color;
-    private Fuel fuelType;
-    private float cargoCapacity;
-    private int numberOfSeats;
+public class VanFactory implements VehicleFactory {
+    private final long ID;
+    private final String name;
+    private final String brandOwner;
+    private final int releaseYear;
+    private final double cost;
+    private final Color color;
+    private final Fuel fuelType;
+    private final float cargoCapacity;
+    private final int numberOfSeats;
 
-    // Constructor for VanFactory to set properties
     public VanFactory(long ID, String name, String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType, float cargoCapacity, int numberOfSeats) {
         this.ID = ID;
         this.name = name;

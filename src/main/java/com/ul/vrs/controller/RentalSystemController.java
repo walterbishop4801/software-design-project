@@ -23,17 +23,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
 
-/**
- * RentalSystemController: controller of the rental system
- *
- * @author David Parreño (losedavidpb)
- * @version 2.3.1
- * @since 2.0.1
- */
 @RestController
 @RequestMapping("/api/renting")
 public class RentalSystemController {
-    private Customer newCust = new Customer("Test");
+    // TODO: Change method signatures to have a dynamic customer account
+    private Customer customer = new Customer(
+        "test_username", "test_id", "test_password"
+    );
 
     @Autowired
     private RentalSystemService rentalSystemService;
@@ -41,23 +37,12 @@ public class RentalSystemController {
     @Autowired
     private VehicleManagerService vehicleManager;
 
-    //
-    // getAvailableVehicles() has already been defined in VehicleManagerService
-    //
-    //
-
     // Get all vehicles - http://localhost:8080/api/vehicles
     @GetMapping("/list_bookings")
     public List<Booking> getBookings() {
         return rentalSystemService.getAllBookings();
     }
 
-    /**
-     * Make a new booking for current customer
-     *
-     * @param id id of the vehicle
-     * @return new booking
-     */
     // Make booking - http://localhost:8080/api/renting/make_booking/{id}
     @PostMapping("/make_booking/{id}")
     public ResponseEntity<UUID> makeBooking(@PathVariable long id) {
@@ -68,7 +53,7 @@ public class RentalSystemController {
         }
 
         Vehicle vehicle = vehicleToBook.get();
-        UUID bookingId = rentalSystemService.makeBooking(newCust, vehicle);
+        UUID bookingId = rentalSystemService.makeBooking(customer, vehicle);
 
         if (bookingId != null) {
             return ResponseEntity.ok(bookingId);
@@ -77,13 +62,6 @@ public class RentalSystemController {
         }
     }
 
-    /**
-     * Customize the booking with additional settings
-     *
-     * @param id id of the booking
-     * @param decorator additional setting
-     * @return HTML message
-     */
     // Customise booking - http://localhost:8080/api/renting/customize_booking/{id}
     @PutMapping("/customize_booking/{id}")
     public ResponseEntity<Booking> customizeBooking(@PathVariable UUID id, @RequestBody Customization decorator) {
@@ -96,12 +74,6 @@ public class RentalSystemController {
         }
     }
 
-    /**
-     * Authenticate payment of the booking
-     *
-     * @param id id of the booking
-     * @return HTML message
-     */
     // Authenticate payment for booking - http://localhost:8080/api/renting/authenticate_payment/{id}
     @PutMapping("/authenticate_payment/{id}")
     public ResponseEntity<Booking> authenticateBookingPayment(@PathVariable UUID id) {
@@ -115,12 +87,6 @@ public class RentalSystemController {
         }
     }
 
-    /**
-     * Return vehicle of the booking
-     *
-     * @param id id of the booking
-     * @return HTML message
-     */
     // Return vehicle - http://localhost:8080/api/renting/return_vehicle/{id}
     @PutMapping("/return_vehicle/{id}")
     public ResponseEntity<String> returnVehicle(@PathVariable UUID id) {
@@ -129,12 +95,6 @@ public class RentalSystemController {
         return ResponseEntity.ok("Vehicle of Booking (ID=" + id + ") has been returned.");
     }
 
-    /**
-     * Cancel booking
-     *
-     * @param id id of the booking
-     * @return HTML message
-     */
     // Cancel booking - http://localhost:8080/api/renting/cancel_booking/{id}
     @DeleteMapping("/cancel_booking/{id}")
     public ResponseEntity<String> cancelBooking(@PathVariable UUID id) {

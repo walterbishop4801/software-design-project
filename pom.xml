@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>com.ul</groupId>
 	<artifactId>vrs</artifactId>
-	<version>2.3.1</version>
+	<version>2.1.0</version>
 	<url>https://github.com/walterbishop4801/software-design-project</url>
 	<licenses>
 		<license/>
@@ -44,10 +44,11 @@
 		<connection>scm:git:git://github.com/walterbishop4801/software-design-project.git</connection>
         <developerConnection>scm:git:ssh://github.com/walterbishop4801/software-design-project.git</developerConnection>
         <url>https://github.com/walterbishop4801/software-design-project/</url>
+		<tag>${project.version}</tag>
 	</scm>
 	<properties>
-		<java.version>17</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 
@@ -63,6 +64,13 @@
 					<artifactId>asm</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+
+		<!-- JaCoCo: Java code coverage -->
+		<dependency>
+			<groupId>org.jacoco</groupId>
+			<artifactId>jacoco-maven-plugin</artifactId>
+			<version>0.8.12</version>
 		</dependency>
 
 		<!-- Git Changelog: Automatic Changelog generator -->
@@ -130,18 +138,21 @@
 
 	<build>
 		<plugins>
+
 			<!-- Spring Boot -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>3.3.5</version>
 			</plugin>
-			<!--SonarQube-->
+
+      		<!--SonarQube-->
 			<plugin>
 				<groupId>org.sonarsource.scanner.maven</groupId>
 				<artifactId>sonar-maven-plugin</artifactId>
 				<version>5.0.0.4389</version>
 			</plugin>
+
 			<!-- PMD -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -157,104 +168,71 @@
 					</execution>
 				</executions>
       		</plugin>
+
 			<!-- Git Changelog -->
 			<plugin>
 				<groupId>se.bjurr.gitchangelog</groupId>
 				<artifactId>git-changelog-maven-plugin</artifactId>
 				<version>2.2.0</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.openjdk.nashorn</groupId>
+						<artifactId>nashorn-core</artifactId>
+						<version>15.4</version>
+					</dependency>
+				</dependencies>
 				<executions>
 					<execution>
+						<?m2e execute onConfiguration?>
 						<id>generate-git-changelog</id>
 						<phase>generate-sources</phase>
 						<goals>
 							<goal>git-changelog</goal>
-							<goal>semantic-version</goal>
 						</goals>
 						<configuration>
+							<javascriptHelper>
+							<![CDATA[
+							Handlebars.registerHelper('tagName', function(from) {
+								if (from.length > 10 && from.substring(0, 10).equals("refs/tags/")) {
+									return from.substring(10, from.length)
+								}
+
+								return from
+							});
+
+							Handlebars.registerHelper('tagUrl', function(from) {
+								if (from.length > 10 && from.substring(0, 10).equals("refs/tags/")) {
+									const baseTagName = from.substring(10, from.length)
+									return "releases/tag/".concat(baseTagName)
+								}
+
+								return from
+							});
+							]]>
+							</javascriptHelper>
+							<templateFile>changelog-template.mustache</templateFile>
+							<settingsFile>changelog.conf.json</settingsFile>
 							<file>CHANGELOG.md</file>
-							<fromRef>v1.0.0</fromRef>
-    						<toRef>HEAD</toRef>
-							<useIntegrations>true</useIntegrations>
-							<gitHubEnabled>true</gitHubEnabled>
-							<gitHubIssuePattern>#[A-Z]+-[0-9]+</gitHubIssuePattern>
-							<templateFile>changelog.mustache</templateFile>
-							<gitHubToken>${GITHUB_OAUTH2TOKEN}</gitHubToken>
-							<gitHubApi>https://github.com/walterbishop4801/software-design-project/rental-system</gitHubApi>
-							<readableTagName>-([^-]+?)$</readableTagName>
-          					<ignoreCommitsIfMessageMatches>^\[maven-release-plugin\].*</ignoreCommitsIfMessageMatches>
-							<templateContent>
-<![CDATA[
-# CHANGELOG for VRS
-
-All notable changes to this project will be documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-{{#tags}}
-{{#ifReleaseTag .}}
-## [{{name}}](https://github.com/walterbishop4801/software-design-project/rental-system/{{name}}) ({{tagDate .}})
-
-	{{#ifContainsBreaking commits}}
-### Breaking changes
-
-    	{{#commits}}
-      		{{#ifCommitBreaking .}}
-- {{#eachCommitScope .}} **{{.}}** {{/eachCommitScope}} {{{commitDescription .}}} ([{{hash}}](https://github.com/{{ownerName}}/{{repoName}}/commit/{{hash}}))
-      		{{/ifCommitBreaking}}
-    	{{/commits}}
-	{{/ifContainsBreaking}}
-
-	{{#ifContainsType commits type='feat'}}
-### Features
-
-    	{{#commits}}
-      		{{#ifCommitType . type='feat'}}
-- {{#eachCommitScope .}} **{{.}}** {{/eachCommitScope}} {{{commitDescription .}}} ([{{hash}}](https://github.com/walterbishop4801/software-design-project/rental-system/commit/{{hashFull}}))
-      		{{/ifCommitType}}
-    	{{/commits}}
-	{{/ifContainsType}}
-
-  	{{#ifContainsType commits type='fix'}}
-### Bug Fixes
-
-    	{{#commits}}
-      		{{#ifCommitType . type='fix'}}
-- {{#eachCommitScope .}} **{{.}}** {{/eachCommitScope}} {{{commitDescription .}}} ([{{hash}}](https://github.com/walterbishop4801/software-design-project/rental-system/commit/{{hashFull}}))
-			{{/ifCommitType}}
-    	{{/commits}}
-  	{{/ifContainsType}}
-
-	{{#ifContainsType commits type='docs'}}
-### Documentation
-
-		{{#commits}}
-      		{{#ifCommitType . type='docs'}}
-- {{#eachCommitScope .}} **{{.}}** {{/eachCommitScope}} {{{commitDescription .}}} ([{{hash}}](https://github.com/walterbishop4801/software-design-project/rental-system/commit/{{hashFull}}))
-			{{/ifCommitType}}
-    	{{/commits}}
-	{{/ifContainsType}}
-
-### Other changes
-
-	{{#commits}}
-		{{#ifCommitTypeOtherThan . type='feat'}}
-			{{#ifCommitTypeOtherThan . type='fix'}}
-  				{{#ifCommitTypeOtherThan . type='docs'}}
-- **{{{messageTitle}}}** {{{commitDescription .}}} ([{{hash}}](https://github.com/walterbishop4801/software-design-project/rental-system/commit/
-				{{/ifCommitTypeOtherThan}}
-			{{/ifCommitTypeOtherThan}}
-		{{/ifCommitTypeOtherThan}}
-	{{/commits}}
-
-{{/ifReleaseTag}}
-{{/tags}}
-]]>
-							</templateContent>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
+
+			<!-- JaCoCo -->
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.12</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 </project>

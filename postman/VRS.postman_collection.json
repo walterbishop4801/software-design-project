@@ -1,9 +1,10 @@
 {
 	"info": {
-		"_postman_id": "477e39b5-c2f0-4b71-98a3-9cda1f88d288",
+		"_postman_id": "62f6b961-f12c-42f9-b31e-7fec3c7e6af0",
 		"name": "VRS",
+		"description": "Postman collection for VRS application",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "39265277"
+		"_exporter_id": "39629405"
 	},
 	"item": [
 		{
@@ -11,6 +12,71 @@
 			"item": [
 				{
 					"name": "GET vehicles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData).to.be.an('array');",
+									"    responseData.forEach(function(vehicle) {",
+									"        pm.expect(vehicle).to.have.property('name');",
+									"        pm.expect(vehicle).to.have.property('brandOwner');",
+									"        pm.expect(vehicle).to.have.property('releaseYear');",
+									"        pm.expect(vehicle).to.have.property('color');",
+									"        pm.expect(vehicle).to.have.property('fuelType');",
+									"        pm.expect(vehicle).to.have.property('numberOfDoors');",
+									"        pm.expect(vehicle).to.have.property('trunkCapacity');",
+									"        pm.expect(vehicle).to.have.property('rentingCost');",
+									"        pm.expect(vehicle).to.have.property('state');",
+									"        pm.expect(vehicle).to.have.property('id');",
+									"    });",
+									"});",
+									"",
+									"",
+									"pm.test(\"Fuel cost is a non-negative number\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  responseData.forEach(function(vehicle) {",
+									"    pm.expect(vehicle.fuelType.cost).to.be.a('number').and.to.be.at.least(0);",
+									"  });",
+									"});",
+									"",
+									"",
+									"pm.test(\"Fuel type object is present in the response\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('array');",
+									"    responseData.forEach(function(vehicle) {",
+									"        pm.expect(vehicle.fuelType).to.exist;",
+									"    });",
+									"});",
+									"",
+									"",
+									"pm.test(\"Name, brandOwner, color, and state are non-empty strings\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('array');",
+									"    ",
+									"    responseData.forEach(function(vehicle) {",
+									"        pm.expect(vehicle.name).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Name should not be empty\");",
+									"        pm.expect(vehicle.brandOwner).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Brand owner should not be empty\");",
+									"        pm.expect(vehicle.color).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Color should not be empty\");",
+									"        pm.expect(vehicle.state).to.be.a('string').and.to.have.lengthOf.at.leLeast(1, \"State should not be empty\");",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -31,6 +97,81 @@
 				},
 				{
 					"name": "Get Vehicle by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData).to.have.property('name');",
+									"    pm.expect(responseData).to.have.property('brandOwner');",
+									"    pm.expect(responseData).to.have.property('releaseYear');",
+									"    pm.expect(responseData).to.have.property('color');",
+									"    pm.expect(responseData).to.have.property('fuelType');",
+									"    pm.expect(responseData).to.have.property('numberOfDoors');",
+									"    pm.expect(responseData).to.have.property('trunkCapacity');",
+									"    pm.expect(responseData).to.have.property('rentingCost');",
+									"    pm.expect(responseData).to.have.property('state');",
+									"    pm.expect(responseData).to.have.property('id');",
+									"});",
+									"",
+									"",
+									"pm.test(\"FuelType object contains a valid cost field\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.fuelType).to.exist.and.to.be.an('object');",
+									"    pm.expect(responseData.fuelType.cost).to.exist.and.to.be.a('number');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Release year is a non-negative integer\", function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData.releaseYear).to.be.a('number');",
+									"    pm.expect(responseData.releaseYear).to.be.at.least(0);",
+									"});",
+									"",
+									"pm.test(\"Number of doors is a non-negative integer\", function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData.numberOfDoors).to.be.a('number');",
+									"    pm.expect(responseData.numberOfDoors).to.be.at.least(0);",
+									"});",
+									"",
+									"pm.test(\"Trunk capacity is a non-negative integer\", function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData.trunkCapacity).to.be.a('number');",
+									"    pm.expect(responseData.trunkCapacity).to.be.at.least(0);",
+									"});",
+									"",
+									"pm.test(\"Renting cost is a non-negative integer\", function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData.rentingCost).to.be.a('number');",
+									"    pm.expect(responseData.rentingCost).to.be.at.least(0);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Name, brandOwner, color, and state are non-empty strings\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    ",
+									"    pm.expect(responseData.name).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Name should be a non-empty string\");",
+									"    pm.expect(responseData.brandOwner).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Brand owner should be a non-empty string\");",
+									"    pm.expect(responseData.color).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Color should be a non-empty string\");",
+									"    pm.expect(responseData.state).to.be.a('string').and.to.have.lengthOf.at.least(1, \"State should be a non-empty string\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -84,7 +225,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"make\": \"BMW\",\n  \"model\": \"X5\",\n  \"description\": \"Luxury SUV with advanced technology\",\n  \"year\": 2022,\n  \"color\": \"Blue\"\n}\n",
+							"raw": "{\n    \"type\": \"car\",\n    \"ID\": 1,\n    \"name\": \"Tesla Model 3\",\n    \"brandOwner\": \"Tesla\",\n    \"releaseYear\": 2023,\n    \"cost\": 50000.0,\n    \"color\": \"RED\",\n    \"fuelType\": {\n        \"type\": \"electric\"    },\n    \"vehicleState\": \"AVAILABLE\",\n    \"numberOfDoors\": 4,\n    \"trunkCapacity\": 400.0\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -113,7 +254,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": " {\n        \"id\": 2,\n        \"make\": \"Honda\",\n        \"model\": \"Civic\",\n        \"description\": \"Compact car with sporty performance\",\n        \"year\": 2019,\n        \"color\": \"Green\"\n    }",
+							"raw": "{\n    \"type\": \"car\",\n    \"ID\": 2,\n    \"name\": \"Honda Civic\",\n    \"brandOwner\": \"Honda\",\n    \"releaseYear\": 2019,\n    \"cost\": 25000.0,\n    \"color\": \"GREEN\",\n    \"fuelType\": {\n        \"type\": \"petrol\"\n    },\n    \"vehicleState\": \"AVAILABLE\",\n    \"numberOfDoors\": 4,\n    \"trunkCapacity\": 350.0\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -191,7 +332,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"make\": \"BMW\",\n  \"model\": \"X5\",\n  \"description\": \"Luxury SUV with advanced technology\",\n  \"year\": 2022,\n  \"color\": \"Blue\"\n}\n",
+							"raw": "\"GPS\"",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -328,11 +469,81 @@
 				},
 				{
 					"name": "GET bookings",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData).to.be.an('array');",
+									"",
+									"    responseData.forEach(function(vehicle) {",
+									"        pm.expect(vehicle).to.have.property('name');",
+									"        pm.expect(vehicle).to.have.property('brandOwner');",
+									"        pm.expect(vehicle).to.have.property('releaseYear');",
+									"        pm.expect(vehicle).to.have.property('color');",
+									"        pm.expect(vehicle).to.have.property('fuelType');",
+									"        pm.expect(vehicle).to.have.property('numberOfDoors');",
+									"        pm.expect(vehicle).to.have.property('trunkCapacity');",
+									"        pm.expect(vehicle).to.have.property('rentingCost');",
+									"        pm.expect(vehicle).to.have.property('state');",
+									"        pm.expect(vehicle).to.have.property('id');",
+									"    });",
+									"});",
+									"",
+									"",
+									"pm.test(\"Fuel type object has a cost property\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData).to.be.an('array');",
+									"  responseData.forEach(function(vehicle) {",
+									"    pm.expect(vehicle.fuelType.cost).to.exist;",
+									"  });",
+									"});",
+									"",
+									"",
+									"pm.test(\"Verify non-negative integers for releaseYear, numberOfDoors, trunkCapacity, rentingCost, and id\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('array');",
+									"    responseData.forEach(function(vehicle) {",
+									"        pm.expect(vehicle.releaseYear).to.be.a('number').and.to.be.at.least(0);",
+									"        pm.expect(vehicle.numberOfDoors).to.be.a('number').and.to.be.at.least(0);",
+									"        pm.expect(vehicle.trunkCapacity).to.be.a('number').and.to.be.at.least(0);",
+									"        pm.expect(vehicle.rentingCost).to.be.a('number').and.to.be.at.least(0);",
+									"        pm.expect(vehicle.id).to.be.a('number').and.to.be.at.least(0);",
+									"    });",
+									"});",
+									"",
+									"",
+									"pm.test(\"Name, brandOwner, color, and state are non-empty strings\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    responseData.forEach(function(vehicle) {",
+									"        pm.expect(vehicle.name).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Name should not be empty\");",
+									"        pm.expect(vehicle.brandOwner).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Brand owner should not be empty\");",
+									"        pm.expect(vehicle.color).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Color should not be empty\");",
+									"        pm.expect(vehicle.state).to.be.a('string').and.to.have.lengthOf.at.least(1, \"State should not be empty\");",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/vehicles",
+							"raw": "http://localhost:8080/api/renting/list_bookings",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -340,7 +551,8 @@
 							"port": "8080",
 							"path": [
 								"api",
-								"vehicles"
+								"renting",
+								"list_bookings"
 							]
 						}
 					},
