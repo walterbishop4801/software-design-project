@@ -4,9 +4,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthenticationService {
-
+    // TODO: Replace with actual verification logic (database or hardcoded)
     public boolean authenticate(String username, String password) {
-        // Replace with actual verification logic (database or hardcoded)
         return "user".equals(username) && "password".equals(password);
     }
 }

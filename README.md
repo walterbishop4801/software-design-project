@@ -1,6 +1,5 @@
 # Software Design Project - Vehicle Rental System
 
-
 Spring Boot application designed to simplify and streamline vehicle rental operations.
 
 ## Authors

@@ -1,12 +1,11 @@
 package com.ul.vrs.entity.booking;
 
 public class VoucherBookingDecorator  extends BookingDecorator{
-    // private long voucher_amount;
-
-    public VoucherBookingDecorator(Booking booking){
+    public VoucherBookingDecorator(Booking booking) {
         super(booking);
     }
 
+    // TODO: Adjust value based on real-life values
     public long getPrice() {
         return super.getPrice() - 10;
     }

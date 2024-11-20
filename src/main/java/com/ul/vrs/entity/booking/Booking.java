@@ -6,21 +6,24 @@ import com.ul.vrs.entity.account.Customer;
 import java.util.UUID;
 
 public class Booking {
-    private Customer customer;
-    private Vehicle vehicle;
-    private boolean is_authenticated;
-    private UUID bookingId;
-    private long price;
+    private final Customer customer;
+    private final Vehicle vehicle;
+    private final UUID bookingId;
+    private final long price;
+    private boolean isAuthenticated;
 
-    /*public Booking() {
-    }*/
-
-    public Booking(Customer customer, Vehicle vehicle) {
+    protected Booking(UUID bookingId, Customer customer, Vehicle vehicle) {
         this.customer = customer;
         this.vehicle = vehicle;
-        this.bookingId = UUID.randomUUID();
-        this.is_authenticated = false;
+        this.bookingId = bookingId;
+        this.isAuthenticated = false;
+
+        // TODO: Adjust cost based on vehicle cost and renting duration
         this.price = 10;
+    }
+
+    public Booking(Customer customer, Vehicle vehicle) {
+        this(UUID.randomUUID(), customer, vehicle);
     }
 
     public UUID getBookingId() {
@@ -28,7 +31,7 @@ public class Booking {
     }
 
     public void authenticatePayment() {
-        this.is_authenticated = true;
+        this.isAuthenticated = true;
     }
 
     public long getPrice() {
@@ -44,6 +47,6 @@ public class Booking {
     }
 
     public boolean getIsAuthenticated() {
-        return is_authenticated;
+        return isAuthenticated;
     }
 }

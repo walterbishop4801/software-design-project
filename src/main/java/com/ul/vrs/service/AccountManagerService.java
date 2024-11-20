@@ -1,16 +1,17 @@
-package com.ul.vrs.entity.account;
+package com.ul.vrs.service;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class AccountManager {
-    private Map<String, Account> accounts;  // Stores accounts by username
+import org.springframework.stereotype.Service;
 
-    public AccountManager() {
-        accounts = new HashMap<>();
-    }
+import com.ul.vrs.entity.account.Account;
+import com.ul.vrs.entity.account.Customer;
 
- // Sign up method that accepts different account types
+@Service
+public class AccountManagerService {
+    private Map<String, Account> accounts = new HashMap<>();
+
     public Account signUp(String username, String password, String accountType) {
         if (accounts.containsKey(username)) {
             System.out.println("Username already exists: " + username);
@@ -20,9 +21,9 @@ public class AccountManager {
         Account newAccount;
         String accountId = "ID" + (accounts.size() + 1);
 
-        // Only support Customer accounts for now
+        // TODO: Include rest of the account types (can be encapsulated using the factory design pattern)
         if (accountType == null || accountType.equalsIgnoreCase("customer")) {
-            newAccount = new Customer(username, accountId, password);  // No cast needed
+            newAccount = new Customer(username, accountId, password);
         } else {
             System.out.println("Currently, only Customer accounts are supported.");
             return null;
@@ -33,19 +34,18 @@ public class AccountManager {
         return newAccount;
     }
 
-
-    // Login method for all account types
     public Account logIn(String username, String password) {
         Account account = accounts.get(username);
+
         if (account != null && account.getPassword().equals(password)) {
             System.out.println("Login successful for user: " + username);
             return account;
         }
+
         System.out.println("Login failed for user: " + username);
         return null;
     }
 
-    // Retrieve an account by username
     public Account getAccount(String username) {
         return accounts.get(username);
     }

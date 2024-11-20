@@ -9,19 +9,18 @@ import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.service.RentalSystemService;
 import com.ul.vrs.service.VehicleManagerService;
 
+// TODO: This class doesn't look like an entity, as it has methods already defined at AccountController
 public class Customer extends Account {
-	
 	@Autowired
     private RentalSystemService rentalSystemService;
 
     @Autowired
     private VehicleManagerService vehicleManagerService;
 
-    // Constructor
     public Customer(String username, String accountId, String password) {
-        super(username, accountId, password);  // Call the superclass (Account) constructor
+        super(username, accountId, password);
     }
-    
+
     public List<Vehicle> searchAvailableVehicles() {
         return vehicleManagerService.getAllVehicles();
     }
@@ -44,14 +43,5 @@ public class Customer extends Account {
 
     public void cancelBooking(UUID vehicle) {
         rentalSystemService.cancelBooking(vehicle);
-    }
-
-
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "username='" + getUsername() + '\'' +
-                ", accountId='" + getAccountId() + '\'' +
-                '}';
     }
 }
