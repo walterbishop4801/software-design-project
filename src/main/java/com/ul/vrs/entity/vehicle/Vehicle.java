@@ -81,16 +81,9 @@ public abstract class Vehicle implements Subject {
         return this.vehicleState;
     }
 
-    public void updateState(VehicleState s) {
-        this.vehicleState = s;
-    }
-
-    public boolean checkDamage() {
-        return this.vehicleState.equals(VehicleState.DAMAGED);
-    }
-
-    public boolean checkAvailability() {
-        return this.vehicleState.equals(VehicleState.AVAILABLE);
+    public void updateState(VehicleState state) {
+        this.vehicleState = state;
+        this.vehicleState.handleRequest(this);
     }
 
     @Override
