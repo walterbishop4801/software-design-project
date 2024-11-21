@@ -4,52 +4,55 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
 {{#tags}}
 {{#ifReleaseTag .}}
-## [{{tagName name}}](https://github.com/{{ownerName}}/{{repoName}}/{{tagUrl name}}) ({{tagDate .}})
 
-{{#ifContainsBreaking commits}}
+## [{{tagName name}}](https://github.com/{{ownerName}}/{{repoName}}/{{tagUrl name}}) ({{tagDate .}})
+   {{#ifContainsBreaking commits}}
+
 ### Breaking changes
 
-{{#commits}}
-   {{#ifCommitBreaking .}}
+      {{#commits}}
+         {{#ifCommitBreaking .}}
 - {{#eachCommitScope .}} **{{.}}**: {{/eachCommitScope}} {{{commitDescription .}}} ([{{hash}}](https://github.com/{{ownerName}}/{{repoName}}/commit/{{hashFull}}) {{authorName}})
-   {{/ifCommitBreaking}}
-{{/commits}}
-{{/ifContainsBreaking}}
+         {{/ifCommitBreaking}}
+      {{/commits}}
+   {{/ifContainsBreaking}}
+   {{#ifContainsType commits type='feat'}}
 
-{{#ifContainsType commits type='feat'}}
 ### Features
 
-   {{#commits}}
-      {{#ifCommitType . type='feat'}}
+      {{#commits}}
+         {{#ifCommitType . type='feat'}}
 - {{#eachCommitScope .}} **{{.}}**: {{/eachCommitScope}} {{{commitDescription .}}} ([{{hash}}](https://github.com/{{ownerName}}/{{repoName}}/commit/{{hashFull}}) {{authorName}})
-      {{/ifCommitType}}
-   {{/commits}}
-{{/ifContainsType}}
+         {{/ifCommitType}}
+      {{/commits}}
+   {{/ifContainsType}}
+   {{#ifContainsType commits type='fix'}}
 
-{{#ifContainsType commits type='fix'}}
 ### Bug Fixes
 
-   {{#commits}}
-      {{#ifCommitType . type='fix'}}
+      {{#commits}}
+         {{#ifCommitType . type='fix'}}
 - {{#eachCommitScope .}} **{{.}}**: {{/eachCommitScope}} {{{commitDescription .}}} ([{{hash}}](https://github.com/{{ownerName}}/{{repoName}}/commit/{{hashFull}}) {{authorName}})
-      {{/ifCommitType}}
-   {{/commits}}
-{{/ifContainsType}}
+         {{/ifCommitType}}
+      {{/commits}}
+   {{/ifContainsType}}
+   {{#ifContainsTypeOtherThan commits type='feat'}}
+      {{#ifContainsTypeOtherThan commits type='fix'}}
 
 ### Other changes
 
-   {{#commits}}
-      {{#ifCommitTypeOtherThan . type='feat'}}
-         {{#ifCommitTypeOtherThan . type='fix'}}
-            {{#ifCommitTypeOtherThan . type='docs'}}
+         {{#commits}}
+            {{#ifCommitTypeOtherThan . type='feat'}}
+               {{#ifCommitTypeOtherThan . type='fix'}}
+                  {{#ifCommitTypeOtherThan . type='docs'}}
 - {{{messageTitle}}} {{{commitDescription .}}} ([{{hash}}](https://github.com/{{ownerName}}/{{repoName}}/commit/{{hashFull}}) {{authorName}})
+                  {{/ifCommitTypeOtherThan}}
+               {{/ifCommitTypeOtherThan}}
             {{/ifCommitTypeOtherThan}}
-         {{/ifCommitTypeOtherThan}}
-      {{/ifCommitTypeOtherThan}}
-   {{/commits}}
-
+         {{/commits}}
+      {{/ifContainsTypeOtherThan}}
+   {{/ifContainsTypeOtherThan}}
 {{/ifReleaseTag}}
 {{/tags}}
