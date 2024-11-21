@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ul.vrs.entity.booking.Booking;
-import com.ul.vrs.entity.booking.Customization;
+import com.ul.vrs.entity.booking.decorator.Customization;
 import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.service.RentalSystemService;
 import com.ul.vrs.service.VehicleManagerService;

@@ -101,8 +101,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -  **vehicle**:  add CRUD operations for vehicle management ([6680c3a4fb1ffe7](https://github.com/walterbishop4801/software-design-project/commit/6680c3a4fb1ffe7409a20b27ea9d2256a427fb0c) Rohan Sikder)
 
-### Other changes
-
 ## [v1.1.0](https://github.com/walterbishop4801/software-design-project/releases/tag/v1.1.0) (2024-10-22)
 
 ### Features
