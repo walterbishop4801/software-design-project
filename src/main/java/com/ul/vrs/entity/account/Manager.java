@@ -2,6 +2,7 @@ package com.ul.vrs.entity.account;
 
 import com.ul.vrs.service.VehicleManagerService;
 import com.ul.vrs.entity.vehicle.Vehicle;
+import com.ul.vrs.entity.vehicle.factory.VehicleFactory;
 import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
 import com.ul.vrs.entity.vehicle.VehicleState;
@@ -34,13 +35,15 @@ public class Manager {
     }
 
     // Adds a new vehicle to the system
-    public void add(String brandOwner, Color color, int releaseYear, Fuel fuel) {
-        if (brandOwner != null && color != null && fuel != null) {
-            Vehicle newVehicle = new Vehicle(vehicleManager.getAllVehicles().size() + 1, "New Vehicle", brandOwner, releaseYear, 0.0, color, fuel);
+    public void add(String vehicleType, long id, String name, String brandOwner, int releaseYear, double cost, 
+                    Color color, Fuel fuelType, Object... additionalParams) {
+        try {
+            VehicleFactory factory = VehicleFactory.getFactory(vehicleType, id, name, brandOwner, releaseYear, cost, color, fuelType, additionalParams);
+            Vehicle newVehicle = factory.createVehicle();
             vehicleManager.addVehicle(newVehicle);
             System.out.println("New vehicle added: " + newVehicle);
-        } else {
-            System.out.println("Failed to add vehicle. Invalid input.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Failed to add vehicle: " + e.getMessage());
         }
     }
 
