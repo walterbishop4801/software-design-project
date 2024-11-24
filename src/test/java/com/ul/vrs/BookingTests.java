@@ -1,9 +1,11 @@
-package com.ul.vrs.entity.booking;
+package com.ul.vrs;
+
 
 import com.ul.vrs.entity.account.Customer;
 import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.entity.vehicle.VehicleState;
 import com.ul.vrs.entity.Color;
+import com.ul.vrs.entity.booking.*;
 import com.ul.vrs.entity.vehicle.fuel.PetrolFuel;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -32,8 +34,9 @@ class BookingTest {
         booking = new Booking(customer, vehicle);
     }
 
+    // Test: Booking Constructor with Valid Parameters
     @Test
-    void testBookingInitialization() {
+    void testValidBookingInitialization() {
         assertNotNull(booking.getBookingId(), "Booking ID should not be null");
         assertEquals(customer, booking.getCustomer(), "Customer should be correctly initialized");
         assertEquals(vehicle, booking.getVehicle(), "Vehicle should be correctly initialized");
@@ -41,6 +44,21 @@ class BookingTest {
         assertEquals(10, booking.getPrice(), "Price should be initialized to 10");
     }
 
+    // Test: Booking Constructor with Null Customer
+    @Test
+    void testBookingInitializationWithNullCustomer() {
+        Exception exception = assertThrows(NullPointerException.class, () -> new Booking(null, vehicle));
+        assertEquals("Customer cannot be null", exception.getMessage(), "Constructor should throw an error for null customer");
+    }
+
+    // Test: Booking Constructor with Null Vehicle
+    @Test
+    void testBookingInitializationWithNullVehicle() {
+        Exception exception = assertThrows(NullPointerException.class, () -> new Booking(customer, null));
+        assertEquals("Vehicle cannot be null", exception.getMessage(), "Constructor should throw an error for null vehicle");
+    }
+
+    // Test: Authenticate Payment
     @Test
     void testAuthenticatePayment() {
         assertFalse(booking.getIsAuthenticated(), "Payment should not be authenticated initially");
@@ -48,25 +66,66 @@ class BookingTest {
         assertTrue(booking.getIsAuthenticated(), "Payment should be authenticated after calling authenticatePayment()");
     }
 
+    // Test: Booking ID Consistency
     @Test
-    void testGetBookingId() {
+    void testBookingIdConsistency() {
         UUID bookingId = booking.getBookingId();
         assertNotNull(bookingId, "Booking ID should not be null");
         assertEquals(bookingId, booking.getBookingId(), "Booking ID should remain consistent");
     }
 
+    // Test: BookingDecorator with Null Booking
     @Test
-    void testGetPrice() {
-        assertEquals(10, booking.getPrice(), "Price should be initialized to 10");
+    void testBookingDecoratorWithNullBooking() {
+        Exception exception = assertThrows(NullPointerException.class, () -> new BookingDecorator(null));
+        assertEquals("Booking cannot be null", exception.getMessage(), "Decorator should throw an error for null booking");
     }
 
+    // Test: BookingDecorator Price Delegation
     @Test
-    void testGetCustomer() {
-        assertEquals(customer, booking.getCustomer(), "getCustomer() should return the correct customer");
+    void testBookingDecoratorPriceDelegation() {
+        BookingDecorator decoratedBooking = new BookingDecorator(booking);
+        assertEquals(booking.getPrice(), decoratedBooking.getPrice(), "Decorator should delegate getPrice to the original booking");
     }
 
+    // Test: BookingDecorator Customer Delegation
     @Test
-    void testGetVehicle() {
-        assertEquals(vehicle, booking.getVehicle(), "getVehicle() should return the correct vehicle");
+    void testBookingDecoratorCustomerDelegation() {
+        BookingDecorator decoratedBooking = new BookingDecorator(booking);
+        assertEquals(booking.getCustomer(), decoratedBooking.getCustomer(), "Decorator should delegate getCustomer to the original booking");
+    }
+
+    // Test: BookingDecorator Vehicle Delegation
+    @Test
+    void testBookingDecoratorVehicleDelegation() {
+        BookingDecorator decoratedBooking = new BookingDecorator(booking);
+        assertEquals(booking.getVehicle(), decoratedBooking.getVehicle(), "Decorator should delegate getVehicle to the original booking");
+    }
+
+    // Test: BookingDecorator Payment Authentication
+    @Test
+    void testBookingDecoratorAuthenticatePayment() {
+        BookingDecorator decoratedBooking = new BookingDecorator(booking);
+        assertFalse(decoratedBooking.getIsAuthenticated(), "Decorator should initially report unauthenticated payment");
+        decoratedBooking.authenticatePayment();
+        assertTrue(decoratedBooking.getIsAuthenticated(), "Decorator should delegate payment authentication to the original booking");
+    }
+
+    // Test: BookingDecorator Override Behavior
+    @Test
+    void testBookingDecoratorOverrideBehavior() {
+        class CustomBookingDecorator extends BookingDecorator {
+            public CustomBookingDecorator(Booking booking) {
+                super(booking);
+            }
+
+            @Override
+            public long getPrice() {
+                return super.getPrice() + 20; // Add a custom fee
+            }
+        }
+
+        BookingDecorator customDecorator = new CustomBookingDecorator(booking);
+        assertEquals(30, customDecorator.getPrice(), "Custom decorator should override getPrice and add 20");
     }
 }
