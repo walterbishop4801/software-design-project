@@ -7,6 +7,7 @@ import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.Observer;
 import com.ul.vrs.entity.Subject;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
+import com.ul.vrs.jacoco.ExcludeConstructorFromGeneratedJacoco;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -18,7 +19,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 @JsonSubTypes({
     @JsonSubTypes.Type(value = Car.class, name = "car"),
-    @JsonSubTypes.Type(value = Truck.class, name = "truck")
+    @JsonSubTypes.Type(value = Truck.class, name = "scooter"),
+    @JsonSubTypes.Type(value = Truck.class, name = "truck"),
+    @JsonSubTypes.Type(value = Truck.class, name = "van")
 })
 public abstract class Vehicle implements Subject {
     private long ID;
@@ -43,9 +46,12 @@ public abstract class Vehicle implements Subject {
         this.observers = new ArrayList<>();
     }
 
+    @ExcludeConstructorFromGeneratedJacoco
     public Vehicle(long ID, String name, String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType) {
         this(ID, name, brandOwner, releaseYear, cost, color, fuelType, VehicleState.AVAILABLE);
     }
+
+    public abstract double getRentingCost(int numberOfRentingDays);
 
     public long getID() {
         return this.ID;
@@ -67,6 +73,10 @@ public abstract class Vehicle implements Subject {
         return releaseYear;
     }
 
+    public double getBaseCost() {
+        return cost;
+    }
+
     public Color getColor() {
         return color;
     }
@@ -74,8 +84,6 @@ public abstract class Vehicle implements Subject {
     public Fuel getFuelType() {
         return fuelType;
     }
-
-    public abstract double getRentingCost();
 
     public VehicleState getState() {
         return this.vehicleState;
@@ -103,7 +111,35 @@ public abstract class Vehicle implements Subject {
     @Override
     public void notifyObservers() {
         for (Observer observer : this.observers) {
-            observer.updateObserver();
+            observer.updateObserver(this);
         }
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (int) (ID ^ (ID >>> 32));
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((brandOwner == null) ? 0 : brandOwner.hashCode());
+        result = prime * result + releaseYear;
+
+        long temp;
+        temp = Double.doubleToLongBits(cost);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        result = prime * result + ((color == null) ? 0 : color.hashCode());
+        result = prime * result + ((fuelType == null) ? 0 : fuelType.hashCode());
+        result = prime * result + ((vehicleState == null) ? 0 : vehicleState.hashCode());
+        result = prime * result + ((observers == null) ? 0 : observers.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj != null && getClass() == obj.getClass()) {
+            return hashCode() == ((Vehicle) obj).hashCode();
+        }
+
+        return false;
     }
 }
