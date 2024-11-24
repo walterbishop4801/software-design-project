@@ -38,20 +38,78 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
          {{/ifCommitType}}
       {{/commits}}
    {{/ifContainsType}}
+   {{#ifContainsType commits type='style'}}
+
+### Style
+
+      {{#commits}}
+         {{#ifCommitType . type='style'}}
+- {{#eachCommitScope .}} **{{.}}**: {{/eachCommitScope}} {{{commitDescription .}}} ([{{hash}}](https://github.com/{{ownerName}}/{{repoName}}/commit/{{hashFull}}) {{authorName}})
+         {{/ifCommitType}}
+      {{/commits}}
+   {{/ifContainsType}}
+   {{#ifContainsType commits type='refactor'}}
+
+### Refactoring
+
+      {{#commits}}
+         {{#ifCommitType . type='refactor'}}
+- {{#eachCommitScope .}} **{{.}}**: {{/eachCommitScope}} {{{commitDescription .}}} ([{{hash}}](https://github.com/{{ownerName}}/{{repoName}}/commit/{{hashFull}}) {{authorName}})
+         {{/ifCommitType}}
+      {{/commits}}
+   {{/ifContainsType}}
+   {{#ifContainsType commits type='test'}}
+
+### Testing
+
+      {{#commits}}
+         {{#ifCommitType . type='test'}}
+- {{#eachCommitScope .}} **{{.}}**: {{/eachCommitScope}} {{{commitDescription .}}} ([{{hash}}](https://github.com/{{ownerName}}/{{repoName}}/commit/{{hashFull}}) {{authorName}})
+         {{/ifCommitType}}
+      {{/commits}}
+   {{/ifContainsType}}
+   {{#ifContainsType commits type='chore'}}
+
+### Chore
+
+      {{#commits}}
+         {{#ifCommitType . type='chore'}}
+- {{#eachCommitScope .}} **{{.}}**: {{/eachCommitScope}} {{{commitDescription .}}} ([{{hash}}](https://github.com/{{ownerName}}/{{repoName}}/commit/{{hashFull}}) {{authorName}})
+         {{/ifCommitType}}
+      {{/commits}}
+   {{/ifContainsType}}
    {{#ifContainsTypeOtherThan commits type='feat'}}
       {{#ifContainsTypeOtherThan commits type='fix'}}
+         {{#ifContainsTypeOtherThan commits type='docs'}}
+            {{#ifContainsTypeOtherThan commits type='style'}}
+               {{#ifContainsTypeOtherThan commits type='refactor'}}
+                  {{#ifContainsTypeOtherThan commits type='test'}}
+                     {{#ifContainsTypeOtherThan commits type='chore'}}
 
 ### Other changes
 
-         {{#commits}}
-            {{#ifCommitTypeOtherThan . type='feat'}}
-               {{#ifCommitTypeOtherThan . type='fix'}}
-                  {{#ifCommitTypeOtherThan . type='docs'}}
+                        {{#commits}}
+                           {{#ifCommitTypeOtherThan . type='feat'}}
+                              {{#ifCommitTypeOtherThan . type='fix'}}
+                                 {{#ifCommitTypeOtherThan . type='docs'}}
+                                    {{#ifCommitTypeOtherThan . type='style'}}
+                                       {{#ifCommitTypeOtherThan . type='refactor'}}
+                                          {{#ifCommitTypeOtherThan . type='test'}}
+                                             {{#ifCommitTypeOtherThan . type='chore'}}
 - {{{messageTitle}}} {{{commitDescription .}}} ([{{hash}}](https://github.com/{{ownerName}}/{{repoName}}/commit/{{hashFull}}) {{authorName}})
-                  {{/ifCommitTypeOtherThan}}
-               {{/ifCommitTypeOtherThan}}
-            {{/ifCommitTypeOtherThan}}
-         {{/commits}}
+                                             {{/ifCommitTypeOtherThan}}
+                                          {{/ifCommitTypeOtherThan}}
+                                       {{/ifCommitTypeOtherThan}}
+                                    {{/ifCommitTypeOtherThan}}
+                                 {{/ifCommitTypeOtherThan}}
+                              {{/ifCommitTypeOtherThan}}
+                           {{/ifCommitTypeOtherThan}}
+                        {{/commits}}
+                     {{/ifContainsTypeOtherThan}}
+                  {{/ifContainsTypeOtherThan}}
+               {{/ifContainsTypeOtherThan}}
+            {{/ifContainsTypeOtherThan}}
+         {{/ifContainsTypeOtherThan}}
       {{/ifContainsTypeOtherThan}}
    {{/ifContainsTypeOtherThan}}
 {{/ifReleaseTag}}
