@@ -4,45 +4,28 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
+import com.ul.vrs.jacoco.ExcludeConstructorFromGeneratedJacoco;
+import com.ul.vrs.jacoco.ExcludeMethodFromGeneratedJacoco;
 
-/**
- * Car: entity of a car
- *
- * @version 2.3.2
- * @since 1.0.0
- */
 public class Car extends Vehicle {
     private final int numberOfDoors;
     private final float trunkCapacity;
 
     @JsonCreator
-    public Car(
-            @JsonProperty("ID") long ID,
-            @JsonProperty("name") String name,
-            @JsonProperty("brandOwner") String brandOwner,
-            @JsonProperty("releaseYear") int releaseYear,
-            @JsonProperty("cost") double cost,
-            @JsonProperty("color") Color color,
-            @JsonProperty("fuelType") Fuel fuelType,
-            @JsonProperty("vehicleState") VehicleState vehicleState,
-            @JsonProperty("numberOfDoors") int numberOfDoors,
-            @JsonProperty("trunkCapacity") float trunkCapacity) {
+    public Car(@JsonProperty("ID") long ID, @JsonProperty("name") String name,
+            @JsonProperty("brandOwner") String brandOwner, @JsonProperty("releaseYear") int releaseYear,
+            @JsonProperty("cost") double cost, @JsonProperty("color") Color color,
+            @JsonProperty("fuelType") Fuel fuelType, @JsonProperty("vehicleState") VehicleState vehicleState,
+            @JsonProperty("numberOfDoors") int numberOfDoors, @JsonProperty("trunkCapacity") float trunkCapacity) {
+
         super(ID, name, brandOwner, releaseYear, cost, color, fuelType, vehicleState);
         this.numberOfDoors = numberOfDoors;
         this.trunkCapacity = trunkCapacity;
     }
 
     // TODO: Do we need @JsonProperty here?
-    public Car(
-            long ID,
-            String name,
-            String brandOwner,
-            int releaseYear,
-            double cost,
-            Color color,
-            Fuel fuelType,
-            int numberOfDoors,
-            float trunkCapacity) {
+    @ExcludeConstructorFromGeneratedJacoco
+    public Car(long ID, String name, String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType, int numberOfDoors, float trunkCapacity) {
         this(ID, name, brandOwner, releaseYear, cost, color, fuelType, VehicleState.AVAILABLE, numberOfDoors, trunkCapacity);
     }
 
@@ -54,9 +37,52 @@ public class Car extends Vehicle {
         return trunkCapacity;
     }
 
-    // TODO: Adjust this value based on real-life costs or with some function
     @Override
-    public double getRentingCost() {
-        return 0;
+    public double getRentingCost(int numberOfRentingDays) {
+        double fuelCost = this.getFuelType().getCost() * numberOfRentingDays;
+        double baseCost = this.getBaseCost() * numberOfRentingDays;
+        double featureCost = 0.0;
+
+        // Add extra cost for more doors
+        if (this.numberOfDoors > 4) {
+            featureCost += 50 * numberOfRentingDays;
+        }
+
+        // Add extra cost for larger trunk capacity
+        if (this.trunkCapacity > 300) {
+            featureCost += 30 * numberOfRentingDays;
+        }
+
+        return fuelCost + baseCost + featureCost;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+
+        result = prime * result + numberOfDoors;
+        result = prime * result + Float.floatToIntBits(trunkCapacity);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj != null && getClass() == obj.getClass()) {
+            return hashCode() == ((Car) obj).hashCode();
+        }
+
+        return false;
+    }
+
+    @ExcludeMethodFromGeneratedJacoco
+    @Override
+    public String toString() {
+        return "Car [numberOfDoors=" + numberOfDoors + ", trunkCapacity=" + trunkCapacity + ", cost=" + cost
+                + ", getNumberOfDoors()=" + getNumberOfDoors() + ", getTrunkCapacity()=" + getTrunkCapacity()
+                + ", getID()=" + getID() + ", getName()=" + getName() + ", getBrandOwner()=" + getBrandOwner()
+                + ", getReleaseYear()=" + getReleaseYear() + ", getBaseCost()=" + getBaseCost() + ", hashCode()="
+                + hashCode() + ", getColor()=" + getColor() + ", getFuelType()=" + getFuelType() + ", getState()="
+                + getState() + ", getClass()=" + getClass() + ", toString()=" + super.toString() + "]";
     }
 }

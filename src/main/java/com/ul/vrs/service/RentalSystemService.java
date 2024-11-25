@@ -25,7 +25,7 @@ public class RentalSystemService {
     }
 
     public UUID makeBooking(Customer customer, Vehicle vehicle) {
-        if (vehicle != null && vehicle.checkAvailability()) {
+        if (vehicle != null) {
             Booking booking = new Booking(customer, vehicle);
             UUID bookingId = booking.getBookingId();
 
