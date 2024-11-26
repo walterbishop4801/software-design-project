@@ -9,23 +9,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-// All API test are in Postman collections folder - Can be imported and viewed in postman
-
 @RestController
 @RequestMapping("/api/vehicles")
 public class VehicleController {
-
     @Autowired
     private VehicleManagerService vehicleService;
 
-
-    // Get all vehicles - http://localhost:8080/api/vehicles
+    // Get all vehicles in the system - http://localhost:8080/api/vehicles
     @GetMapping
     public List<Vehicle> getAllVehicles() {
         return vehicleService.getAllVehicles();
     }
 
-    // Get a vehicle by ID - http://localhost:8080/api/vehicles/1
+    // Get a specific vehicle by its ID - http://localhost:8080/api/vehicles/{id}
     @GetMapping("/{id}")
     public ResponseEntity<Vehicle> getVehicleById(@PathVariable Long id) {
         Optional<Vehicle> vehicle = vehicleService.getVehicleById(id);
@@ -37,13 +33,13 @@ public class VehicleController {
         }
     }
 
-    // Add a new vehicle
+    // Add a new vehicle to the system - http://localhost:8080/api/vehicles
     @PostMapping
     public Vehicle addVehicle(@RequestBody Vehicle vehicle) {
         return vehicleService.addVehicle(vehicle);
     }
 
-    // Update an existing vehicle
+    // Update an existing vehicle's details - http://localhost:8080/api/vehicles/{id}
     @PutMapping("/{id}")
     public ResponseEntity<Vehicle> updateVehicle(@PathVariable Long id, @RequestBody Vehicle vehicleDetails) {
         Vehicle updatedVehicle = vehicleService.updateVehicle(id, vehicleDetails);
@@ -55,7 +51,7 @@ public class VehicleController {
         }
     }
 
-    // Delete a vehicle - http://localhost:8080/api/vehicles/1
+    // Delete a vehicle by its ID - http://localhost:8080/api/vehicles/{id}
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteVehicle(@PathVariable Long id) {
         vehicleService.deleteVehicle(id);

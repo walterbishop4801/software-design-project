@@ -1,35 +1,22 @@
 package com.ul.vrs.entity.vehicle.factory;
 
+import org.springframework.stereotype.Component;
+
 import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.vehicle.Car;
 import com.ul.vrs.entity.vehicle.Vehicle;
+import com.ul.vrs.entity.vehicle.VehicleState;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
 
-public class CarFactory extends VehicleFactory {
-    private long ID;
-    private String name;
-    private String brandOwner;
-    private int releaseYear;
-    private double cost;
-    private Color color;
-    private Fuel fuelType;
-    private int numberOfDoors;
-    private float trunkCapacity;
-
-    public CarFactory(long ID, String name, String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType, int numberOfDoors, float trunkCapacity) {
-        this.ID = ID;
-        this.name = name;
-        this.brandOwner = brandOwner;
-        this.releaseYear = releaseYear;
-        this.cost = cost;
-        this.color = color;
-        this.fuelType = fuelType;
-        this.numberOfDoors = numberOfDoors;
-        this.trunkCapacity = trunkCapacity;
-    }
-
+@Component
+public class CarFactory implements VehicleFactory {
     @Override
-    public Vehicle createVehicle() {
-        return new Car(ID, name, brandOwner, releaseYear, cost, color, fuelType, numberOfDoors, trunkCapacity);
+    public Vehicle createVehicle(Object... params) {
+        return new Car(
+            (long) params[0], (String) params[1], (String) params[2],
+            (int) params[3], (double) params[4], (Color) params[5],
+            (Fuel) params[6], (VehicleState) params[7],
+            (int) params[8], (float) params[9]
+        );
     }
 }

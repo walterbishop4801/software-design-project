@@ -18,57 +18,31 @@ import com.ul.vrs.entity.booking.VoucherBookingDecorator;
 import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.entity.vehicle.VehicleState;
 
-/**
- * RentalSystemService
- *
- * @author David Parreño (losedavidpb)
- * @version 2.3.1
- * @since 1.0.0
- */
 @Service
 public class RentalSystemService {
-    // private final Customer customer;
-
-    // Map to store bookings
     private Map<UUID, Booking> bookings = new HashMap<>();
 
-    /**
-     * Get booking based on its ID
-     *
-     * @param bookingId id of the booking
-     * @return booking with passed ID
-     */
     public Optional<Booking> getBookingById(UUID bookingId) {
         return Optional.ofNullable(bookings.get(bookingId));
     }
 
-    /**
-     * Make booking for passed vehicle
-     *
-     * @param v vehicle to book
-     * @return booking
-     */
     public UUID makeBooking(Customer customer, Vehicle vehicle) {
         if (vehicle != null) {
-            if (vehicle.checkAvailability()) {
-                Booking booking = new Booking(customer, vehicle);
-                UUID bookingId = booking.getBookingId();
-                bookings.put(bookingId, booking);
-                vehicle.updateState(VehicleState.RESERVED);
-                return bookingId;
-            }
+            Booking booking = new Booking(customer, vehicle);
+            UUID bookingId = booking.getBookingId();
+
+            bookings.put(bookingId, booking);
+            vehicle.updateState(VehicleState.RESERVED);
+
+            return bookingId;
         }
+
         return null;
     }
 
-    /**
-     * Customize booking with passed decorator
-     *
-     * @param b booking to be customised
-     * @param c decorator for the customisation
-     */
     public Booking customizeBooking(UUID bookingId, Customization c) {
         Booking b = bookings.get(bookingId);
+
         if (b != null) {
             switch (c) {
                 case GPS:
@@ -91,21 +65,13 @@ public class RentalSystemService {
         return null;
     }
 
-    /**
-     * Authenticate booking payment
-     *
-     * @param b booking to be authenticated
-     */
     public void authenticateBookingPayment(UUID bookingId) {
         Booking b = bookings.get(bookingId);
-        if (b != null) b.authenticatePayment();
+        if (b != null)
+            b.authenticatePayment();
     }
 
-    /**
-     * Return vehicle of passed booking
-     *
-     * @param b booking
-     */
+    // TODO: We gotta later use Mechanic to check it out to then update its state
     public void returnVehicle(UUID bookingId) {
         Booking b = bookings.get(bookingId);
         if (b != null) {
@@ -115,11 +81,6 @@ public class RentalSystemService {
         }
     }
 
-    /**
-     * Cancel passed booking
-     *
-     * @param b booking to be cancelled
-     */
     public void cancelBooking(UUID bookingId) {
         Booking b = bookings.get(bookingId);
         if (b != null) {
@@ -129,10 +90,6 @@ public class RentalSystemService {
         }
     }
 
-    /**
-     * List all bookings
-     *
-     */
     public List<Booking> getAllBookings() {
         return new ArrayList<>(bookings.values());
     }

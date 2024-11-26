@@ -1,0 +1,21 @@
+{
+    "fromRepo": ".",
+    "fromCommit": "0000000000000000000000000000000000000000",
+    "toRef": "refs/heads/main",
+
+    "useIntegration": true,
+
+    "dateFormat": "YYYY-MM-dd HH:mm:ss",
+    "timeZone": "UTC",
+
+    "gitHubEnabled": true,
+    "gitHubApi": "https://github.com/walterbishop4801/software-design-project",
+    "gitHubIssuePattern": "#[A-Z]+-[0-9]+",
+
+    "readableTagName": "-([^-]+?)$",
+    "untaggedName": "Next release",
+    "noIssueName": "Other changes",
+    "ignoreCommitsWithoutIssue": "false",
+
+    "ignoreCommitsIfMessageMatches": "^\\[maven-release-plugin\\].*|^\\[Gradle Release Plugin\\].*|^Merge.*|^Revert.*"
+}
