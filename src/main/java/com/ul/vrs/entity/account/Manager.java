@@ -16,7 +16,7 @@ public class Manager {
 
     // Assigns a mechanic to a vehicle and updates the vehicle's state
     public void assignMechanic(Mechanic m, Vehicle v) {
-        if (v != null && m != null && v.checkAvailability()) {
+        if (v != null && m != null && VehicleState.AVAILABLE) {
             v.updateState(VehicleState.IN_MAINTENANCE); // Set state to 'IN_MAINTENANCE'
             System.out.println("Mechanic " + m.getName() + " assigned to Vehicle ID: " + v.getID());
         } else {
