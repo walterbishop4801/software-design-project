@@ -2,10 +2,10 @@ package com.ul.vrs.entity.account;
 
 import com.ul.vrs.service.VehicleManagerService;
 import com.ul.vrs.entity.vehicle.Vehicle;
-import com.ul.vrs.entity.vehicle.factory.VehicleFactory;
+import com.ul.vrs.entity.vehicle.factory.VehicleFactoryMethod;
 import com.ul.vrs.entity.Color;
-import com.ul.vrs.entity.vehicle.fuel.Fuel;
 import com.ul.vrs.entity.vehicle.VehicleState;
+import com.ul.vrs.entity.vehicle.fuel.Fuel;
 
 public class Manager {
     private VehicleManagerService vehicleManager;
@@ -16,7 +16,7 @@ public class Manager {
 
     // Assigns a mechanic to a vehicle and updates the vehicle's state
     public void assignMechanic(Mechanic m, Vehicle v) {
-        if (v != null && m != null && VehicleState.AVAILABLE) {
+        if (v != null && m != null && v.getState() == VehicleState.AVAILABLE) {
             v.updateState(VehicleState.IN_MAINTENANCE); // Set state to 'IN_MAINTENANCE'
             System.out.println("Mechanic " + m.getName() + " assigned to Vehicle ID: " + v.getID());
         } else {
@@ -35,13 +35,15 @@ public class Manager {
     }
 
     // Adds a new vehicle to the system
-    public void add(String vehicleType, long id, String name, String brandOwner, int releaseYear, double cost, 
-                    Color color, Fuel fuelType, Object... additionalParams) {
+    public void add(String vehicleType, Object... params) {
         try {
-            VehicleFactory factory = VehicleFactory.getFactory(vehicleType, id, name, brandOwner, releaseYear, cost, color, fuelType, additionalParams);
-            Vehicle newVehicle = factory.createVehicle();
-            vehicleManager.addVehicle(newVehicle);
-            System.out.println("New vehicle added: " + newVehicle);
+            Vehicle newVehicle = VehicleFactoryMethod.createVehicle(vehicleType, params);
+            if (newVehicle != null) {
+                vehicleManager.addVehicle(newVehicle);
+                System.out.println("New vehicle added: " + newVehicle);
+            } else {
+                System.out.println("Failed to add vehicle: Invalid vehicle type or parameters.");
+            }
         } catch (IllegalArgumentException e) {
             System.out.println("Failed to add vehicle: " + e.getMessage());
         }
