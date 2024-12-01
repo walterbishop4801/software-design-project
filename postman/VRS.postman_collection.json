@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "62f6b961-f12c-42f9-b31e-7fec3c7e6af0",
+		"_postman_id": "4d31e43a-f6aa-4ba8-8ea3-f45c9be1d388",
 		"name": "VRS",
 		"description": "Postman collection for VRS application",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "39629405"
+		"_exporter_id": "39265277"
 	},
 	"item": [
 		{
@@ -357,7 +357,7 @@
 					"response": []
 				},
 				{
-					"name": "Authenticate Payment",
+					"name": "Make Payment",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -369,7 +369,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "",
+							"raw": "{\n    \"method\" : \"CREDITCARD\",\n    \"card\" : {\n        \"cardNumber\" : \"431241313\",\n        \"expDate\" : \"11/23\",\n        \"cvv\" : \"123\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -377,7 +377,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/renting/authenticate_payment/c4d25887-2c2a-4d20-9c0f-12eb12373f26",
+							"raw": "http://localhost:8080/api/renting/make_payment/1a9568a6-27c2-45d4-83af-b98cf8812da6",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -386,8 +386,8 @@
 							"path": [
 								"api",
 								"renting",
-								"authenticate_payment",
-								"c4d25887-2c2a-4d20-9c0f-12eb12373f26"
+								"make_payment",
+								"1a9568a6-27c2-45d4-83af-b98cf8812da6"
 							]
 						}
 					},

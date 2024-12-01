@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ul.vrs.entity.booking.Booking;
 import com.ul.vrs.entity.booking.decorator.Customization;
+import com.ul.vrs.entity.booking.payment.PaymentRequest;
 import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.service.RentalSystemService;
 import com.ul.vrs.service.VehicleManagerService;
@@ -75,9 +76,9 @@ public class RentalSystemController {
     }
 
     // Authenticate payment for booking - http://localhost:8080/api/renting/authenticate_payment/{id}
-    @PutMapping("/authenticate_payment/{id}")
-    public ResponseEntity<Booking> authenticateBookingPayment(@PathVariable UUID id) {
-        rentalSystemService.authenticateBookingPayment(id);
+    @PutMapping("/make_payment/{id}")
+    public ResponseEntity<Booking> makeBookingPayment(@PathVariable UUID id, @RequestBody PaymentRequest payment) {
+        rentalSystemService.makeBookingPayment(id, payment);
         Optional<Booking> booking = rentalSystemService.getBookingById(id);
 
         if (booking.isPresent()) {
