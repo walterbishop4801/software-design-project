@@ -12,6 +12,9 @@ import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.account.Customer;
 import com.ul.vrs.entity.booking.Booking;
 import com.ul.vrs.entity.booking.decorator.Customization;
+import com.ul.vrs.entity.booking.payment.ApplePay;
+import com.ul.vrs.entity.booking.payment.PaymentMethod;
+import com.ul.vrs.entity.booking.payment.PaymentRequest;
 import com.ul.vrs.entity.vehicle.Car;
 import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.entity.vehicle.VehicleState;
@@ -99,7 +102,8 @@ public class RentalSystemServiceTest {
         Vehicle vehicle = mockVehicles.get(0);
         UUID bookingId = rentalSystemService.makeBooking(mockCustomer, vehicle);
 
-        rentalSystemService.authenticateBookingPayment(bookingId); // Authenticate payment
+        PaymentRequest mockPaymentRequest = new PaymentRequest(PaymentMethod.APPLEPAY, null, new ApplePay("xyz", "123"));
+        rentalSystemService.makeBookingPayment(bookingId, mockPaymentRequest); // Authenticate payment
         Optional<Booking> booking = rentalSystemService.getBookingById(bookingId);
 
         assertTrue(booking.isPresent(), "Booking should exist");
