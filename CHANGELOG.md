@@ -13,26 +13,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Other changes
 
-- Changes made to customer to add more custom features as per UML specs  ([320baf1476a5a07](https://github.com/walterbishop4801/software-design-project/commit/320baf1476a5a0739e12593d16ba40ef9d925d09) walterbishop4801)
-- Changes made to customer, account and manager as per UML specs  ([e3b40b6a10ec9f4](https://github.com/walterbishop4801/software-design-project/commit/e3b40b6a10ec9f431171c6782ff3cb3d9a7f4eb0) walterbishop4801)
-- Implement VRS with Customer, Account and AccountManager  ([5cf02ce2d27b1e0](https://github.com/walterbishop4801/software-design-project/commit/5cf02ce2d27b1e080e9378977db679a96e25b001) walterbishop4801)
+- Changes made to customer to add more custom features as per UML specs ([320baf1476a5a07](https://github.com/walterbishop4801/software-design-project/commit/320baf1476a5a0739e12593d16ba40ef9d925d09) walterbishop4801)
+- Changes made to customer, account and manager as per UML specs ([e3b40b6a10ec9f4](https://github.com/walterbishop4801/software-design-project/commit/e3b40b6a10ec9f431171c6782ff3cb3d9a7f4eb0) walterbishop4801)
+- Implement VRS with Customer, Account and AccountManager ([5cf02ce2d27b1e0](https://github.com/walterbishop4801/software-design-project/commit/5cf02ce2d27b1e080e9378977db679a96e25b001) walterbishop4801)
 
-## [v2.3.2](https://github.com/walterbishop4801/software-design-project/releases/tag/v2.3.2) (2024-11-12)
+## [v2.3.2](https://github.com/walterbishop4801/software-design-project/releases/tag/v2.3.2) (2024-11-14)
+
+### Features
+
+-  **config**:  include jacoco and update git-changelog settings ([44b936d9c8e92a7](https://github.com/walterbishop4801/software-design-project/commit/44b936d9c8e92a72a7936f6469ad749314291c74) losedavidpb)
+-  **booking**:  fix booking constructor ([2513e47147e4b8f](https://github.com/walterbishop4801/software-design-project/commit/2513e47147e4b8f957d2b084b9995ec74fbbcf82) Ivor D&#x27;Souza)
 
 ### Bug Fixes
 
--  **vehicle**:  fixed add/update vehicles by using JsonTypeInfo annotations ([eb20ee2ec0068e6](https://github.com/walterbishop4801/software-design-project/commit/eb20ee2ec0068e6b4ec66f167638fc7065159cc5) Rohan Sikder)
-
-### Other changes
-
+-  **pmd**:  fix version of last commit ([342c8cc9d6bd11b](https://github.com/walterbishop4801/software-design-project/commit/342c8cc9d6bd11bc4b320f3e73b8fde60e48a36f) losedavidpb)
+-  **pmd**:  fix violations from subject, observer, fuel and rental system service ([78ecabb7c49b41e](https://github.com/walterbishop4801/software-design-project/commit/78ecabb7c49b41e1c99f33c8dfa11627e7fc8dbf) losedavidpb)
 
 ## [v2.3.1](https://github.com/walterbishop4801/software-design-project/releases/tag/v2.3.1) (2024-11-12)
-
-## [2.3.1](https://github.com/walterbishop4801/software-design-project/releases/tag/2.3.1) (2024-11-12)
-
-### Breaking changes
-
--  **changelog**:  hot-fix of the versions ([947c06ebce9f430](https://github.com/walterbishop4801/software-design-project/commit/947c06ebce9f430cd41614197b54e7e7809f2171) losedavidpb)
 
 ### Features
 
@@ -45,15 +42,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -  **renting**:  fix customise and authenticate methods ([91b7215c111cbe1](https://github.com/walterbishop4801/software-design-project/commit/91b7215c111cbe12d9227829b603377fd23db04a) losedavidpb)
 -  **vehicle**:  include getter for name ([7e1ee914023ad79](https://github.com/walterbishop4801/software-design-project/commit/7e1ee914023ad79f5fc21789a03670e64ee94cc0) losedavidpb)
+
+### Other changes
+
+- booking: init booking class ([7e4a8c18ead6f67](https://github.com/walterbishop4801/software-design-project/commit/7e4a8c18ead6f67353ed75bbd45d3e3d1dc0b107) Ivor D&#x27;Souza)
+
+## [v2.3.0](https://github.com/walterbishop4801/software-design-project/releases/tag/v2.3.0) (2024-11-11)
+
+### Breaking changes
+
 -  **changelog**:  hot-fix of the versions ([947c06ebce9f430](https://github.com/walterbishop4801/software-design-project/commit/947c06ebce9f430cd41614197b54e7e7809f2171) losedavidpb)
 
-### Other changes
+### Bug Fixes
 
-- booking: init booking class init booking class ([7e4a8c18ead6f67](https://github.com/walterbishop4801/software-design-project/commit/7e4a8c18ead6f67353ed75bbd45d3e3d1dc0b107) Ivor D&#x27;Souza)
-
-## [v2.3.0](https://github.com/walterbishop4801/software-design-project/releases/tag/v2.3.0) (2024-11-10)
-
-### Other changes
+-  **changelog**:  hot-fix of the versions ([947c06ebce9f430](https://github.com/walterbishop4801/software-design-project/commit/947c06ebce9f430cd41614197b54e7e7809f2171) losedavidpb)
 
 - Factory Implementation within factory module  ([eddcb4c0289cca3](https://github.com/walterbishop4801/software-design-project/commit/eddcb4c0289cca32048400a39a8515ce359e9332) Shane Barden)
 - New Factory Package Created  ([9100efb8fa307c6](https://github.com/walterbishop4801/software-design-project/commit/9100efb8fa307c62170a42ce0004699938a93a02) Shane Barden)
