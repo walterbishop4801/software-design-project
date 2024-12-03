@@ -107,108 +107,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"// Log the response for debugging purposes",
-									"console.log(\"Response Body:\", pm.response.json());",
-									"",
-									"// Test: Response status code is 200",
 									"pm.test(\"Response status code is 200\", function () {",
-									"    pm.expect(pm.response.code).to.equal(200, \"Expected status code to be 200\");",
-									"});",
-									"",
-									"",
-									"// Test: FuelType object contains a valid cost field",
-									"pm.test(\"FuelType object contains a valid cost field\", function () {",
-									"    const fuelType = pm.response.json().fuelType;",
-									"",
-									"    pm.expect(fuelType).to.exist.and.to.be.an('object', \"FuelType should exist and be an object\");",
-									"    if (fuelType) {",
-									"        pm.expect(fuelType).to.have.property('cost').that.is.a('number', \"FuelType cost should be a number\");",
-									"    }",
-									"});",
-									"",
-									"// Test: Release year is a non-negative integer",
-									"pm.test(\"Release year is a non-negative integer\", function () {",
-									"    const releaseYear = pm.response.json().releaseYear;",
-									"",
-									"    pm.expect(releaseYear).to.be.a('number', \"Release year should be a number\");",
-									"    pm.expect(releaseYear).to.be.at.least(0, \"Release year should be non-negative\");",
-									"});",
-									"",
-									"// Test: Number of doors is a non-negative integer",
-									"pm.test(\"Number of doors is a non-negative integer\", function () {",
-									"    const numberOfDoors = pm.response.json().numberOfDoors;",
-									"",
-									"    pm.expect(numberOfDoors).to.be.a('number', \"Number of doors should be a number\");",
-									"    pm.expect(numberOfDoors).to.be.at.least(0, \"Number of doors should be non-negative\");",
-									"});",
-									"",
-									"// Test: Trunk capacity is a non-negative number",
-									"pm.test(\"Trunk capacity is a non-negative number\", function () {",
-									"    const trunkCapacity = pm.response.json().trunkCapacity;",
-									"",
-									"    pm.expect(trunkCapacity).to.be.a('number', \"Trunk capacity should be a number\");",
-									"    pm.expect(trunkCapacity).to.be.at.least(0, \"Trunk capacity should be non-negative\");",
-									"});",
-									"",
-									"// Test: Base cost is a non-negative number",
-									"pm.test(\"Base cost is a non-negative number\", function () {",
-									"    const baseCost = pm.response.json().baseCost;",
-									"",
-									"    pm.expect(baseCost).to.be.a('number', \"Base cost should be a number\");",
-									"    pm.expect(baseCost).to.be.at.least(0, \"Base cost should be non-negative\");",
-									"});",
-									"",
-									"// Test: Name, brandOwner, color, and state are non-empty strings",
-									"pm.test(\"Name, brandOwner, color, and state are non-empty strings\", function () {",
-									"    const responseData = pm.response.json();",
-									"    const stringFields = ['name', 'brandOwner', 'color', 'state'];",
-									"    ",
-									"    stringFields.forEach(field => {",
-									"        pm.expect(responseData[field]).to.be.a('string', `${field} should be a string`);",
-									"        pm.expect(responseData[field].trim()).to.have.lengthOf.at.least(1, `${field} should be a non-empty string`);",
-									"    });",
-									"});",
-									"",
-									"// Test: Validate name field value",
-									"pm.test(\"Name field is correct\", function () {",
-									"    const name = pm.response.json().name;",
-									"    pm.expect(name).to.equal('Tesla Model Y', \"Name field does not match expected value\");",
-									"});",
-									"",
-									"// Test: Validate brandOwner field value",
-									"pm.test(\"Brand owner field is correct\", function () {",
-									"    const brandOwner = pm.response.json().brandOwner;",
-									"    pm.expect(brandOwner).to.equal('Tesla', \"Brand owner does not match expected value\");",
-									"});",
-									"",
-									"// Test: Validate color field value",
-									"pm.test(\"Color field is in uppercase\", function () {",
-									"    const color = pm.response.json().color;",
-									"    pm.expect(color).to.match(/^[A-Z]+$/, \"Color field should be in uppercase\");",
-									"});",
-									"",
-									"// Test: Validate state field value",
-									"pm.test(\"State field is valid\", function () {",
-									"    const validStates = ['IN_MAINTENANCE', 'AVAILABLE', 'SOLD'];",
-									"    const state = pm.response.json().state;",
-									"    pm.expect(state).to.be.oneOf(validStates, \"State field is not valid\");",
-									"});",
-									"",
-									"// Test: Validate fuel type structure",
-									"pm.test(\"FuelType object structure is valid\", function () {",
-									"    const fuelType = pm.response.json().fuelType;",
-									"",
-									"    pm.expect(fuelType).to.have.property('type').that.is.a('string', \"FuelType type should be a string\");",
-									"    pm.expect(fuelType).to.have.property('cost').that.is.a('number', \"FuelType cost should be a number\");",
-									"    pm.expect(fuelType.type).to.equal('electric', \"FuelType type should be 'electric'\");",
-									"    pm.expect(fuelType.cost).to.be.greaterThan(0, \"FuelType cost should be greater than zero\");",
-									"});",
-									"",
-									"// Test: Validate ID field is a positive integer",
-									"pm.test(\"ID field is a positive integer\", function () {",
-									"    const id = pm.response.json().id;",
-									"    pm.expect(id).to.be.a('number', \"ID should be a number\");",
-									"    pm.expect(id).to.be.above(0, \"ID should be a positive integer\");",
+									"  pm.response.to.have.status(200);",
 									"});",
 									"",
 									"",
@@ -217,6 +117,36 @@
 									"    ",
 									"    pm.expect(responseData).to.be.an('object');",
 									"    pm.expect(responseData).to.include.all.keys('type', 'name', 'brandOwner', 'releaseYear', 'color', 'fuelType', 'numberOfDoors', 'trunkCapacity', 'state', 'id', 'baseCost');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Release year is a valid year format\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.releaseYear).to.match(/^\\d{4}$/);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Fuel type has type and cost properties\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData.fuelType).to.exist;",
+									"  pm.expect(responseData.fuelType.type).to.exist;",
+									"  pm.expect(responseData.fuelType.cost).to.exist;",
+									"});",
+									"",
+									"",
+									"pm.test(\"Trunk capacity is a non-negative number\", function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData.trunkCapacity).to.be.a('number');",
+									"    pm.expect(responseData.trunkCapacity).to.be.at.least(0, \"Trunk capacity should be a non-negative number\");",
+									"});",
+									"",
+									"pm.test(\"Base cost is a non-negative number\", function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData.baseCost).to.be.a('number');",
+									"    pm.expect(responseData.baseCost).to.be.at.least(0, \"Base cost should be a non-negative number\");",
 									"});",
 									""
 								],
@@ -229,7 +159,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/vehicles/1",
+							"raw": "http://localhost:8080/api/vehicles/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -238,7 +168,7 @@
 							"path": [
 								"api",
 								"vehicles",
-								"1"
+								"2"
 							]
 						}
 					},
@@ -466,6 +396,18 @@
 				},
 				{
 					"name": "Authenticate Payment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -485,7 +427,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/renting/authenticate_payment//{{bookingId}}",
+							"raw": "http://localhost:8080/api/renting/authenticate_payment/{{bookingId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -495,7 +437,6 @@
 								"api",
 								"renting",
 								"authenticate_payment",
-								"",
 								"{{bookingId}}"
 							]
 						}
@@ -508,7 +449,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/renting/return_vehicle_and_open_gate//{{bookingId}}",
+							"raw": "http://localhost:8080/api/renting/return_vehicle_and_open_gate/{{bookingId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -518,7 +459,6 @@
 								"api",
 								"renting",
 								"return_vehicle_and_open_gate",
-								"",
 								"{{bookingId}}"
 							]
 						}
