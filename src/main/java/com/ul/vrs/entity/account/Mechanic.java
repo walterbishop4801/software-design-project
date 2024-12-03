@@ -1,6 +1,7 @@
 package com.ul.vrs.entity.account;
 
 import com.ul.vrs.entity.Observer;
+import com.ul.vrs.entity.Subject;
 import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.entity.vehicle.VehicleState;
 
@@ -19,7 +20,7 @@ public class Mechanic implements Observer {
 
     // Assign a mechanic as an observer to a vehicle
     public void assignToVehicle(Vehicle v) {
-        if (v != null && v.checkAvailability()) {
+        if (v != null && v.getState() == VehicleState.AVAILABLE) {
             v.updateState(VehicleState.IN_MAINTENANCE); // Mark vehicle as in maintenance
             v.attach(this); // Attach this mechanic as an observer
             System.out.println("Vehicle ID: " + v.getID() + " assigned to Mechanic: " + name);
@@ -43,7 +44,6 @@ public class Mechanic implements Observer {
     public void serviceVehicle(Vehicle v) {
         if (v != null && v.getState() == VehicleState.IN_MAINTENANCE) {
             System.out.println("Mechanic " + name + " is servicing Vehicle ID: " + v.getID());
-            // Add custom servicing logic here if required
         } else {
             System.out.println("Vehicle is not in maintenance.");
         }
@@ -61,8 +61,7 @@ public class Mechanic implements Observer {
 
     // Observer method implementation
     @Override
-    public void updateObserver() {
+    public void updateObserver(Subject subject) {
         System.out.println("Mechanic " + name + " has been notified of a vehicle state change.");
-        // Add additional logic to handle notification if required
     }
 }
