@@ -44,36 +44,40 @@ public class VehicleManagerService {
     }
 
     public Optional<Vehicle> getVehicleById(long id) {
-        return vehicles.stream().filter(v -> v.getID() == id).findFirst();
+        return vehicles.stream()
+                       .filter(v -> v != null && v.getID() == id) // Skip null entries
+                       .findFirst();
     }
+
 
     // TODO: Include here database operations
     public Vehicle addVehicle(Vehicle vehicle) {
-        if (vehicle.getID() == 0L) {
-            vehicle.setID(currentId);
+        if (vehicle == null) {
+            throw new IllegalArgumentException("Cannot add null vehicle.");
         }
-
         vehicles.add(vehicle);
-        this.currentId++;
-
+        System.out.println("Vehicle added with ID: " + vehicle.getID());
         return vehicle;
     }
 
+
     // TODO: Include here database operations
     public Vehicle updateVehicle(Long id, Vehicle vehicleDetails) {
+        System.out.println("Attempting to update vehicle with ID: " + id);
         Optional<Vehicle> existingVehicle = getVehicleById(id);
-        Vehicle updatedVehicle = null;
 
         if (existingVehicle.isPresent()) {
             Vehicle existing = existingVehicle.get();
             int indexPrevious = vehicles.indexOf(existing);
-
-            updatedVehicle = VehicleFactoryMethod.createVehicle(vehicleDetails);
-            this.vehicles.set(indexPrevious, updatedVehicle);
+            System.out.println("Updating vehicle at index: " + indexPrevious);
+            vehicles.set(indexPrevious, vehicleDetails);
+            return vehicleDetails;
+        } else {
+            System.out.println("Vehicle with ID " + id + " not found for update.");
+            return null;
         }
-
-        return updatedVehicle;
     }
+
 
     // TODO: Include here database operations
     public void deleteVehicle(Long id) {
