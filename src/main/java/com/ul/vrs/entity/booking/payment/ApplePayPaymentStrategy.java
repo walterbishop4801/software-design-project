@@ -1,10 +1,10 @@
 package com.ul.vrs.entity.booking.payment;
 
-public class PayUsingApplePay implements PayStrategy {
+public class ApplePayPaymentStrategy implements PaymentStrategy {
 
-    private ApplePay wallet;
+    private ApplePayPayment wallet;
 
-    public PayUsingApplePay(ApplePay wallet) {
+    public ApplePayPaymentStrategy(ApplePayPayment wallet) {
         this.wallet = wallet;
     }
 
