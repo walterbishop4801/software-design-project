@@ -1,5 +1,5 @@
 package com.ul.vrs.entity.booking.payment;
 
-public interface PayStrategy {
+public interface PaymentStrategy {
     boolean pay(long amount);
 }

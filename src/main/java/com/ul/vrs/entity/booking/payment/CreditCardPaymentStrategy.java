@@ -1,10 +1,10 @@
 package com.ul.vrs.entity.booking.payment;
 
-public class PayUsingCreditCard implements PayStrategy {
+public class CreditCardPaymentStrategy implements PaymentStrategy {
 
-    private CreditCard card;
+    private CreditCardPayment card;
 
-    public PayUsingCreditCard(CreditCard card) {
+    public CreditCardPaymentStrategy(CreditCardPayment card) {
         this.card = card;
     }
 
