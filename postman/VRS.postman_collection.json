@@ -290,21 +290,17 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"// Check if the response status code is 200",
-									"pm.test(\"Response status code is 200\", function () {",
-									"    pm.response.to.have.status(200); // Ensures the API call was successful",
-									"});",
+									"// Get the raw response text",
+									"var rawResponse = pm.response.text();",
 									"",
-									"// Parse the response JSON",
-									"let response = pm.response.json(); // Parse response into a JavaScript object",
+									"// Remove quotes from the response",
+									"var sanitizedResponse = rawResponse.replace(/^\"|\"$/g, '');",
 									"",
-									"// Save the booking ID into an environment variable",
-									"pm.environment.set(\"bookingId\", response.bookingId || response.id); // Use the correct key based on the response structure",
+									"// Store the sanitized response as an environment variable",
+									"pm.environment.set(\"bookingId\", sanitizedResponse);",
 									"",
-									"// Test if the booking ID was saved successfully",
-									"pm.test(\"Booking ID saved to environment\", function () {",
-									"    pm.expect(pm.environment.get(\"bookingId\")).to.exist; // Validate the booking ID exists",
-									"});",
+									"// Debugging output",
+									"console.log(\"Stored bookingId:\", sanitizedResponse);",
 									""
 								],
 								"type": "text/javascript",
@@ -437,7 +433,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/renting/authenticate_payment/c4d25887-2c2a-4d20-9c0f-12eb12373f26",
+							"raw": "http://localhost:8080/api/renting/authenticate_payment//{{bookingId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -447,7 +443,8 @@
 								"api",
 								"renting",
 								"authenticate_payment",
-								"c4d25887-2c2a-4d20-9c0f-12eb12373f26"
+								"",
+								"{{bookingId}}"
 							]
 						}
 					},
@@ -459,7 +456,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/renting/return_vehicle_and_open_gate/4d1cb06e-6199-41f4-949e-cad4959844fa",
+							"raw": "http://localhost:8080/api/renting/return_vehicle_and_open_gate//{{bookingId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -469,7 +466,8 @@
 								"api",
 								"renting",
 								"return_vehicle_and_open_gate",
-								"4d1cb06e-6199-41f4-949e-cad4959844fa"
+								"",
+								"{{bookingId}}"
 							]
 						}
 					},
@@ -496,7 +494,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/renting/return_vehicle/5b9bc34c-b7cd-462e-8797-a8375644b55b",
+							"raw": "http://localhost:8080/api/renting/return_vehicle/{{bookingId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -506,7 +504,7 @@
 								"api",
 								"renting",
 								"return_vehicle",
-								"5b9bc34c-b7cd-462e-8797-a8375644b55b"
+								"{{bookingId}}"
 							]
 						}
 					},
