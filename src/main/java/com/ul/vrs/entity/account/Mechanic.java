@@ -32,13 +32,15 @@ public class Mechanic implements Observer {
     // Detach the mechanic as an observer from a vehicle
     public void releaseFromVehicle(Vehicle v) {
         if (v != null) {
-            v.updateState(VehicleState.AVAILABLE); // Mark vehicle as available
-            v.detach(this); // Detach this mechanic as an observer
-            System.out.println("Mechanic: " + name + " released from Vehicle ID: " + v.getID());
+            System.out.println("Releasing mechanic from vehicle with ID: " + v.getID());
+            v.updateState(VehicleState.AVAILABLE); // Update state to AVAILABLE
+            v.detach(this); // Detach mechanic as observer
+            System.out.println("Mechanic released from vehicle with ID: " + v.getID());
         } else {
-            System.out.println("Vehicle is invalid.");
+            System.out.println("Cannot release mechanic: Vehicle is null.");
         }
     }
+
 
     // Service a vehicle
     public void serviceVehicle(Vehicle v) {
