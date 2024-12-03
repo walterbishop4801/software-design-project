@@ -1,22 +1,74 @@
-name: Java CI with Maven
+name: Full Java CI Pipeline with Postman Tests
 
 on:
   push:
-    branches: [ "develop" ]
+    branches:
+      - "develop"
+      - "automation"
   pull_request:
-    branches: [ "develop" ]
+    branches:
+      - "develop"
+      - "automation"
 
 jobs:
-  build:
+  # Job to run Maven tests
+  junit-tests:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: maven
-    - name: Build with Maven (Run Tests)
-      run: mvn -B package --file pom.xml
+      - uses: actions/checkout@v4
+
+      # Set up JDK 17 for Maven and JUnit tests
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      # Run JUnit tests with Maven
+      - name: Run JUnit tests with Maven
+        run: mvn -B test --file pom.xml
+
+  # Job to build the Spring Boot app and run Postman tests
+  postman-tests:
+    runs-on: ubuntu-latest
+    needs: junit-tests  # Ensure that JUnit tests run first
+
+    steps:
+      # Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Set up JDK 17 for Spring Boot
+      - name: Set up JDK 17 for Spring Boot
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      # Build the Spring Boot application with Maven
+      - name: Build Spring Boot application with Maven
+        run: mvn -B package --file pom.xml
+
+      # Start the Spring Boot application
+      - name: Start Spring Boot application
+        run: |
+          nohup java -jar target/*.jar &
+          sleep 30  # Wait for the Spring Boot app to start
+
+      # Set up Node.js for Newman (Postman test runner)
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      # Install Newman
+      - name: Install Newman
+        run: npm install -g newman
+
+      # Run Postman collection tests
+      - name: Run Postman Collection Tests
+        run: |
+          newman run postman/VRS.postman_collection.json
