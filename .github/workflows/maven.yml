@@ -2,9 +2,13 @@ name: Full Java CI Pipeline with Postman Tests
 
 on:
   push:
-    branches: [ "develop" ]
+    branches:
+      - "develop"
+      - "automation"
   pull_request:
-    branches: [ "develop" ]
+    branches:
+      - "develop"
+      - "automation"
 
 jobs:
   # Job to run Maven tests
@@ -68,17 +72,3 @@ jobs:
       - name: Run Postman Collection Tests
         run: |
           newman run postman/VRS.postman_collection.json -e postman/your_environment.json
-
-      # Optional: Generate HTML Report
-      - name: Generate HTML Report
-        run: |
-          newman run postman/VRS.postman_collection.json -e postman/your_environment.json -r html
-        if: always()
-
-      # Optional: Save HTML Report as an Artifact
-      - name: Upload HTML Report
-        uses: actions/upload-artifact@v3
-        with:
-          name: Postman-HTML-Report
-          path: newman/
-        if: always()
