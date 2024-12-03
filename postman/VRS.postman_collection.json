@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "4d31e43a-f6aa-4ba8-8ea3-f45c9be1d388",
+		"_postman_id": "61ee89a3-7c48-4f1a-bbf8-4c9a986120cf",
 		"name": "VRS",
 		"description": "Postman collection for VRS application",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "39265277"
+		"_exporter_id": "25870780"
 	},
 	"item": [
 		{
@@ -168,7 +168,8 @@
 									"    pm.expect(responseData.state).to.be.a('string').and.to.have.lengthOf.at.least(1, \"State should be a non-empty string\");",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -176,7 +177,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/vehicles/2",
+							"raw": "http://localhost:8080/api/vehicles/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -185,7 +186,7 @@
 							"path": [
 								"api",
 								"vehicles",
-								"2"
+								"1"
 							]
 						}
 					},
@@ -254,7 +255,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"type\": \"car\",\n    \"ID\": 2,\n    \"name\": \"Honda Civic\",\n    \"brandOwner\": \"Honda\",\n    \"releaseYear\": 2019,\n    \"cost\": 25000.0,\n    \"color\": \"GREEN\",\n    \"fuelType\": {\n        \"type\": \"petrol\"\n    },\n    \"vehicleState\": \"AVAILABLE\",\n    \"numberOfDoors\": 4,\n    \"trunkCapacity\": 350.0\n}\n",
+							"raw": "{\n    \"type\": \"car\",\n    \"ID\": 1,\n    \"name\": \"Tesla Model Y\",\n    \"brandOwner\": \"Tesla\",\n    \"releaseYear\": 2023,\n    \"cost\": 50000.0,\n    \"color\": \"RED\",\n    \"fuelType\": {\n        \"type\": \"electric\"    },\n    \"vehicleState\": \"AVAILABLE\",\n    \"numberOfDoors\": 4,\n    \"trunkCapacity\": 400.0\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -262,7 +263,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/vehicles/2",
+							"raw": "http://localhost:8080/api/vehicles/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -271,7 +272,7 @@
 							"path": [
 								"api",
 								"vehicles",
-								"2"
+								"1"
 							]
 						}
 					},
@@ -284,6 +285,43 @@
 			"item": [
 				{
 					"name": "Make booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check if the response status code is 200",
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.response.to.have.status(200); // Ensures the API call was successful",
+									"});",
+									"",
+									"// Parse the response JSON",
+									"let response = pm.response.json(); // Parse response into a JavaScript object",
+									"",
+									"// Save the booking ID into an environment variable",
+									"pm.environment.set(\"bookingId\", response.bookingId || response.id); // Use the correct key based on the response structure",
+									"",
+									"// Test if the booking ID was saved successfully",
+									"pm.test(\"Booking ID saved to environment\", function () {",
+									"    pm.expect(pm.environment.get(\"bookingId\")).to.exist; // Validate the booking ID exists",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -321,6 +359,28 @@
 				},
 				{
 					"name": "Customize booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -340,7 +400,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/renting/customize_booking/c4d25887-2c2a-4d20-9c0f-12eb12373f26",
+							"raw": "http://localhost:8080/api/renting/customize_booking/{{bookingId}}\n",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -350,14 +410,14 @@
 								"api",
 								"renting",
 								"customize_booking",
-								"c4d25887-2c2a-4d20-9c0f-12eb12373f26"
+								"{{bookingId}}\n"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Make Payment",
+					"name": "Authenticate Payment",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -369,7 +429,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"method\" : \"CREDITCARD\",\n    \"card\" : {\n        \"cardNumber\" : \"431241313\",\n        \"expDate\" : \"11/23\",\n        \"cvv\" : \"123\"\n    }\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -377,7 +437,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/renting/make_payment/1a9568a6-27c2-45d4-83af-b98cf8812da6",
+							"raw": "http://localhost:8080/api/renting/authenticate_payment/c4d25887-2c2a-4d20-9c0f-12eb12373f26",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -386,8 +446,30 @@
 							"path": [
 								"api",
 								"renting",
-								"make_payment",
-								"1a9568a6-27c2-45d4-83af-b98cf8812da6"
+								"authenticate_payment",
+								"c4d25887-2c2a-4d20-9c0f-12eb12373f26"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Return and Open Gate",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/renting/return_vehicle_and_open_gate/4d1cb06e-6199-41f4-949e-cad4959844fa",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"renting",
+								"return_vehicle_and_open_gate",
+								"4d1cb06e-6199-41f4-949e-cad4959844fa"
 							]
 						}
 					},
@@ -414,7 +496,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/renting/return_vehicle/f88e4ebc-61e1-4072-8769-e105189847cb",
+							"raw": "http://localhost:8080/api/renting/return_vehicle/5b9bc34c-b7cd-462e-8797-a8375644b55b",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -424,7 +506,7 @@
 								"api",
 								"renting",
 								"return_vehicle",
-								"f88e4ebc-61e1-4072-8769-e105189847cb"
+								"5b9bc34c-b7cd-462e-8797-a8375644b55b"
 							]
 						}
 					},
@@ -451,7 +533,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/renting/cancel_booking/7e4d0902-cec9-4b86-86f5-03c8a9e962d1",
+							"raw": "http://localhost:8080/api/renting/cancel_booking/{{bookingId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -461,7 +543,7 @@
 								"api",
 								"renting",
 								"cancel_booking",
-								"7e4d0902-cec9-4b86-86f5-03c8a9e962d1"
+								"{{bookingId}}"
 							]
 						}
 					},
