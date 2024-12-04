@@ -1,4 +1,4 @@
-package com.ul.vrs.command;
+package com.ul.vrs.controller.command;
 
 import com.ul.vrs.service.GateService;
 

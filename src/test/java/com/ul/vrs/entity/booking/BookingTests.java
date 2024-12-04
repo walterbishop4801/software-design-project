@@ -4,7 +4,6 @@ import com.ul.vrs.entity.account.Customer;
 import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.entity.vehicle.VehicleState;
 import com.ul.vrs.entity.Color;
-import com.ul.vrs.entity.booking.Booking;
 import com.ul.vrs.entity.booking.decorator.BookingDecorator;
 import com.ul.vrs.entity.vehicle.fuel.PetrolFuel;
 

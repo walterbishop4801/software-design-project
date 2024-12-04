@@ -25,8 +25,7 @@ public class VehicleManagerService {
     }
 
     // TODO: Update this when database is available
-    // TODO: Based on Singleton, this should be private, but for now we can leave it
-    // like that
+    // TODO: Based on Singleton, this should be private, but for now we can leave it like that
     private VehicleManagerService() {
         this.vehicles = new ArrayList<>();
 
