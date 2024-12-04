@@ -1,4 +1,6 @@
-package com.ul.vrs.entity.booking;
+package com.ul.vrs.entity.booking.decorator;
+
+import com.ul.vrs.entity.booking.Booking;
 
 public class VoucherBookingDecorator  extends BookingDecorator{
     public VoucherBookingDecorator(Booking booking) {

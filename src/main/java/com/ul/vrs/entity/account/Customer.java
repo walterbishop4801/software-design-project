@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.ul.vrs.entity.booking.payment.PaymentRequest;
 import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.service.RentalSystemService;
 import com.ul.vrs.service.VehicleManagerService;
@@ -33,8 +34,8 @@ public class Customer extends Account {
         rentalSystemService.customizeBooking(booking, null);
     }
 
-    public void authenticateBookingPayment(UUID booking) {
-        rentalSystemService.authenticateBookingPayment(booking);
+    public void makeBookingPayment(UUID booking, PaymentRequest paymentRequest) {
+        rentalSystemService.makeBookingPayment(booking, paymentRequest);
     }
 
     public void returnVehicle(UUID booking) {
