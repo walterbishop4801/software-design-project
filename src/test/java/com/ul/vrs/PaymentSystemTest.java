@@ -7,15 +7,14 @@ import com.ul.vrs.entity.booking.payment.ApplePayPayment;
 import com.ul.vrs.entity.booking.payment.CreditCardPayment;
 import com.ul.vrs.entity.booking.payment.PaymentMethod;
 import com.ul.vrs.entity.booking.payment.PaymentRequest;
-import com.ul.vrs.entity.booking.payment.PaymentStrategy;
+import com.ul.vrs.entity.booking.payment.strategy.PaymentStrategy;
 
-class PaymentSystemTest {
-
+public class PaymentSystemTest {
     @Test
     public void testCreditCardPaymentSuccess() {
         CreditCardPayment card = new CreditCardPayment("1234", "12/25", "123");
         card.setAmount(10000);
-        PaymentRequest request = new PaymentRequest(PaymentMethod.CREDITCARD, card, null);
+        PaymentRequest request = new PaymentRequest(PaymentMethod.CREDITCARD, card);
 
         PaymentStrategy strategy = request.getPaymentStrategy();
         assertTrue(strategy.pay(5000));
@@ -26,7 +25,7 @@ class PaymentSystemTest {
     public void testCreditCardPaymentFailure() {
         CreditCardPayment card = new CreditCardPayment("1234", "12/25", "123");
         card.setAmount(5000);
-        PaymentRequest request = new PaymentRequest(PaymentMethod.CREDITCARD, card, null);
+        PaymentRequest request = new PaymentRequest(PaymentMethod.CREDITCARD, card);
 
         PaymentStrategy strategy = request.getPaymentStrategy();
         assertFalse(strategy.pay(10000));
@@ -37,7 +36,7 @@ class PaymentSystemTest {
     public void testApplePayPaymentSuccess() {
         ApplePayPayment wallet = new ApplePayPayment("user123", "authtoken");
         wallet.setAmount(15000);
-        PaymentRequest request = new PaymentRequest(PaymentMethod.APPLEPAY, null, wallet);
+        PaymentRequest request = new PaymentRequest(PaymentMethod.APPLEPAY, wallet);
 
         PaymentStrategy strategy = request.getPaymentStrategy();
         assertTrue(strategy.pay(10000));
@@ -48,11 +47,10 @@ class PaymentSystemTest {
     public void testApplePayPaymentFailure() {
         ApplePayPayment wallet = new ApplePayPayment("user123", "authtoken");
         wallet.setAmount(5000);
-        PaymentRequest request = new PaymentRequest(PaymentMethod.APPLEPAY, null, wallet);
+        PaymentRequest request = new PaymentRequest(PaymentMethod.APPLEPAY, wallet);
 
         PaymentStrategy strategy = request.getPaymentStrategy();
         assertFalse(strategy.pay(10000));
         assertEquals(5000, wallet.getAmount());
     }
-
 }

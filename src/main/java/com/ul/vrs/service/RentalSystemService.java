@@ -13,8 +13,8 @@ import com.ul.vrs.entity.account.Customer;
 import com.ul.vrs.entity.booking.Booking;
 import com.ul.vrs.entity.booking.decorator.Customization;
 import com.ul.vrs.entity.booking.decorator.factory.BookingDecoratorFactoryMethod;
-import com.ul.vrs.entity.booking.payment.PaymentStrategy;
 import com.ul.vrs.entity.booking.payment.PaymentRequest;
+import com.ul.vrs.entity.booking.payment.strategy.PaymentStrategy;
 import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.entity.vehicle.VehicleState;
 
