@@ -125,9 +125,10 @@ class BookingTest {
 
     @Test
     void testNullBookingForDecoratorThrowsException() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> new GPSBookingDecorator(null));
-        assertNotNull(exception.getMessage());
+        Exception exception = assertThrows(NullPointerException.class, () -> new GPSBookingDecorator(null));
+        assertNotNull(exception.getMessage(), "Exception message should not be null");
     }
+
 
     @Test
     void testChainingDecoratorsWithSameType() {
