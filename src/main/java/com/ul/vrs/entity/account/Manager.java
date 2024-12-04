@@ -3,9 +3,9 @@ package com.ul.vrs.entity.account;
 import com.ul.vrs.service.VehicleManagerService;
 import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.entity.vehicle.factory.VehicleFactoryMethod;
-import com.ul.vrs.entity.Color;
+
 import com.ul.vrs.entity.vehicle.VehicleState;
-import com.ul.vrs.entity.vehicle.fuel.Fuel;
+
 
 public class Manager {
     private VehicleManagerService vehicleManager;
