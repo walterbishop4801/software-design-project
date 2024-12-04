@@ -50,7 +50,7 @@ public class RentalSystemController {
 
     // Make booking - http://localhost:8080/api/renting/make_booking/{id}
     @PostMapping("/make_booking/{id}")
-    public ResponseEntity<UUID> makeBooking(@PathVariable long id) {
+    public ResponseEntity<UUID> makeBooking(@PathVariable long id, @RequestBody int numberOfRentingDays) {
         Optional<Vehicle> vehicleToBook = vehicleManager.getVehicleById(id);
 
         if (!vehicleToBook.isPresent()) {
@@ -58,7 +58,7 @@ public class RentalSystemController {
         }
 
         Vehicle vehicle = vehicleToBook.get();
-        UUID bookingId = rentalSystemService.makeBooking(customer, vehicle);
+        UUID bookingId = rentalSystemService.makeBooking(customer, vehicle, numberOfRentingDays);
 
         if (bookingId != null) {
             return ResponseEntity.ok(bookingId);

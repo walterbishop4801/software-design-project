@@ -26,9 +26,9 @@ public class RentalSystemService {
         return Optional.ofNullable(bookings.get(bookingId));
     }
 
-    public UUID makeBooking(Customer customer, Vehicle vehicle) {
+    public UUID makeBooking(Customer customer, Vehicle vehicle, int numberOfRentingDays) {
         if (vehicle != null) {
-            Booking booking = new Booking(customer, vehicle);
+            Booking booking = new Booking(customer, vehicle, numberOfRentingDays);
             UUID bookingId = booking.getBookingId();
 
             bookings.put(bookingId, booking);

@@ -26,8 +26,8 @@ public class Customer extends Account {
         return vehicleManagerService.getAllVehicles();
     }
 
-    public void makeBooking(Vehicle vehicle) {
-        rentalSystemService.makeBooking(this, vehicle);
+    public void makeBooking(Vehicle vehicle, int numberOfRentingDays) {
+        rentalSystemService.makeBooking(this, vehicle, numberOfRentingDays);
     }
 
     public void customizeVehicle(UUID booking) {
