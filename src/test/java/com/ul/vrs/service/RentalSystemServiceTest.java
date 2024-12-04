@@ -21,7 +21,6 @@ import com.ul.vrs.entity.vehicle.VehicleState;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
 
 public class RentalSystemServiceTest {
-
     // Service being tested
     private RentalSystemService rentalSystemService;
 
@@ -102,7 +101,7 @@ public class RentalSystemServiceTest {
         Vehicle vehicle = mockVehicles.get(0);
         UUID bookingId = rentalSystemService.makeBooking(mockCustomer, vehicle);
 
-        PaymentRequest mockPaymentRequest = new PaymentRequest(PaymentMethod.APPLEPAY, null, new ApplePayPayment("xyz", "123"));
+        PaymentRequest mockPaymentRequest = new PaymentRequest(PaymentMethod.APPLEPAY, new ApplePayPayment("xyz", "123"));
         rentalSystemService.makeBookingPayment(bookingId, mockPaymentRequest); // Authenticate payment
         Optional<Booking> booking = rentalSystemService.getBookingById(bookingId);
 
@@ -141,7 +140,7 @@ public class RentalSystemServiceTest {
         // Create bookings for all vehicles
         Map<Long, Vehicle> vehicleMap = new HashMap<>();
         for (Vehicle vehicle : mockVehicles) {
-            UUID bookingId = rentalSystemService.makeBooking(mockCustomer, vehicle);
+            rentalSystemService.makeBooking(mockCustomer, vehicle);
             vehicleMap.put(vehicle.getID(), vehicle); // Map vehicle IDs for comparison
         }
 
