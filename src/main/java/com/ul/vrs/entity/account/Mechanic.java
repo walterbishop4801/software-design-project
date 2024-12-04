@@ -1,47 +1,68 @@
 package com.ul.vrs.entity.account;
 
+import com.ul.vrs.entity.Observer;
+import com.ul.vrs.entity.Subject;
 import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.entity.vehicle.VehicleState;
-import com.ul.vrs.service.DamageCheckingService;
 
-public class Mechanic extends Account {
+public class Mechanic implements Observer {
+    private String name;
 
-    public Mechanic(String name, String id, String password) {
-        super(name, id, password);
+    // Constructor
+    public Mechanic(String name) {
+        this.name = name;
     }
 
-    /**
-     * Service the vehicle
-     * 
-     * @param vehicle The vehicle to service
-     */
-    public void serviceVehicle(Vehicle vehicle) {
-        System.out.println("Servicing vehicle: " + vehicle.getName() + " (ID: " + vehicle.getID() + ")");
-        // Logic for servicing the vehicle 
-        vehicle.updateState(VehicleState.IN_MAINTENANCE); // Vehicle goes to maintenance
+    // Getter for the mechanic's name
+    public String getName() {
+        return name;
     }
 
-    /**
-     * Fix the vehicle
-     * 
-     * @param vehicle The vehicle to fix
-     */
-    public void fixVehicle(Vehicle vehicle) {
-        System.out.println("Fixing vehicle: " + vehicle.getName() + " (ID: " + vehicle.getID() + ")");
-        // Logic for fixing the vehicle
-        vehicle.updateState(VehicleState.AVAILABLE); // Vehicle becomes available after fixing
+    // Assign a mechanic as an observer to a vehicle
+    public void assignToVehicle(Vehicle v) {
+        if (v != null && v.getState() == VehicleState.AVAILABLE) {
+            v.updateState(VehicleState.IN_MAINTENANCE); // Mark vehicle as in maintenance
+            v.attach(this); // Attach this mechanic as an observer
+            System.out.println("Vehicle ID: " + v.getID() + " assigned to Mechanic: " + name);
+        } else {
+            System.out.println("Vehicle is either null or not available for maintenance.");
+        }
     }
 
-    /**
-     * View damage assessment report for a vehicle
-     * 
-     * @param vehicle The vehicle for which to view the report
-     */
-    public String viewDamageAssessmentReport(Vehicle vehicle) {
-        System.out.println("Viewing damage assessment report for vehicle: " + vehicle.getName() + " (ID: " + vehicle.getID() + ")");
-        // Include logic to fetch and display the damage assessment report
-        String report = DamageCheckingService.generateReport();
-        System.out.println(report);
-        return report;
+    // Detach the mechanic as an observer from a vehicle
+    public void releaseFromVehicle(Vehicle v) {
+        if (v != null) {
+            System.out.println("Releasing mechanic from vehicle with ID: " + v.getID());
+            v.updateState(VehicleState.AVAILABLE); // Update state to AVAILABLE
+            v.detach(this); // Detach mechanic as observer
+            System.out.println("Mechanic released from vehicle with ID: " + v.getID());
+        } else {
+            System.out.println("Cannot release mechanic: Vehicle is null.");
+        }
+    }
+
+    // Service a vehicle
+    public void serviceVehicle(Vehicle v) {
+        if (v != null && v.getState() == VehicleState.IN_MAINTENANCE) {
+            System.out.println("Mechanic " + name + " is servicing Vehicle ID: " + v.getID());
+        } else {
+            System.out.println("Vehicle is not in maintenance.");
+        }
+    }
+
+    // Fix a damaged vehicle
+    public void fixVehicle(Vehicle v) {
+        if (v != null && v.getState() == VehicleState.DAMAGED) {
+            System.out.println("Mechanic " + name + " is fixing Vehicle ID: " + v.getID());
+            v.updateState(VehicleState.AVAILABLE); // Mark vehicle as available after fixing
+        } else {
+            System.out.println("Vehicle is either not damaged or invalid.");
+        }
+    }
+
+    // Observer method implementation
+    @Override
+    public void updateObserver(Subject subject) {
+        System.out.println("Mechanic " + name + " has been notified of a vehicle state change.");
     }
 }

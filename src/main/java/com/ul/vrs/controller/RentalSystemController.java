@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ul.vrs.entity.booking.Booking;
-import com.ul.vrs.entity.booking.Customization;
+import com.ul.vrs.entity.booking.decorator.Customization;
+import com.ul.vrs.entity.booking.payment.PaymentRequest;
 import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.service.RentalSystemService;
 import com.ul.vrs.service.VehicleManagerService;
+import com.ul.vrs.controller.command.CommandInvoker;
 import com.ul.vrs.entity.account.Customer;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,6 +38,9 @@ public class RentalSystemController {
 
     @Autowired
     private VehicleManagerService vehicleManager;
+
+    @Autowired
+    private CommandInvoker invoker;
 
     // Get all vehicles - http://localhost:8080/api/vehicles
     @GetMapping("/list_bookings")
@@ -75,9 +80,9 @@ public class RentalSystemController {
     }
 
     // Authenticate payment for booking - http://localhost:8080/api/renting/authenticate_payment/{id}
-    @PutMapping("/authenticate_payment/{id}")
-    public ResponseEntity<Booking> authenticateBookingPayment(@PathVariable UUID id) {
-        rentalSystemService.authenticateBookingPayment(id);
+    @PutMapping("/make_payment/{id}")
+    public ResponseEntity<Booking> makeBookingPayment(@PathVariable UUID id, @RequestBody PaymentRequest payment) {
+        rentalSystemService.makeBookingPayment(id, payment);
         Optional<Booking> booking = rentalSystemService.getBookingById(id);
 
         if (booking.isPresent()) {
@@ -101,5 +106,18 @@ public class RentalSystemController {
         rentalSystemService.cancelBooking(id);
 
         return ResponseEntity.ok("Booking (ID=" + id + ") has been canceled.");
+    }
+
+    // Return vehicle and open gate - http://localhost:8080/api/renting/return_vehicle_and_open_gate/{id}
+    @PutMapping("/return_vehicle_and_open_gate/{id}")
+    public ResponseEntity<String> returnVehicleAndOpenGate(@PathVariable UUID id) {
+        // Dynamically set the returnCar command with the current bookingId
+        invoker.setBookingID(id);
+
+        // Execute commands
+        invoker.executeCommand("openGate");
+        invoker.executeCommand("returnCar");
+
+        return ResponseEntity.ok("Vehicle of Booking (ID=" + id + ") has been returned and gate opened.");
     }
 }

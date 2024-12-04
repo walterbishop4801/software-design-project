@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 
 import com.ul.vrs.entity.account.Customer;
 import com.ul.vrs.entity.booking.Booking;
-import com.ul.vrs.entity.booking.Customization;
-import com.ul.vrs.entity.booking.GPSBookingDecorator;
-import com.ul.vrs.entity.booking.InsuranceBookingDecorator;
-import com.ul.vrs.entity.booking.VoucherBookingDecorator;
+import com.ul.vrs.entity.booking.decorator.Customization;
+import com.ul.vrs.entity.booking.decorator.factory.BookingDecoratorFactoryMethod;
+import com.ul.vrs.entity.booking.payment.PaymentRequest;
+import com.ul.vrs.entity.booking.payment.strategy.PaymentStrategy;
 import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.entity.vehicle.VehicleState;
 
@@ -27,7 +27,7 @@ public class RentalSystemService {
     }
 
     public UUID makeBooking(Customer customer, Vehicle vehicle) {
-        if (vehicle != null && vehicle.checkAvailability()) {
+        if (vehicle != null) {
             Booking booking = new Booking(customer, vehicle);
             UUID bookingId = booking.getBookingId();
 
@@ -40,35 +40,23 @@ public class RentalSystemService {
         return null;
     }
 
-    public Booking customizeBooking(UUID bookingId, Customization c) {
-        Booking b = bookings.get(bookingId);
+    public Booking customizeBooking(UUID bookingId, Customization customizationType) {
+        Booking booking = bookings.get(bookingId);
 
-        if (b != null) {
-            switch (c) {
-                case GPS:
-                    b = new GPSBookingDecorator(b);
-                    break;
-                case INSURANCE:
-                    b = new InsuranceBookingDecorator(b);
-                    break;
-                case VOUCHER:
-                    b = new VoucherBookingDecorator(b);
-                    break;
-                default:
-                    break;
-            }
-
-            bookings.put(bookingId, b);
-            return b;
+        if (booking != null) {
+            // Encapsulate booking decorator creation with Factory Method
+            booking = BookingDecoratorFactoryMethod.createBookingDecorator(booking, customizationType);
+            bookings.put(bookingId, booking);
+            return booking;
         }
 
         return null;
     }
 
-    public void authenticateBookingPayment(UUID bookingId) {
+    public void makeBookingPayment(UUID bookingId, PaymentRequest paymentRequest) {
         Booking b = bookings.get(bookingId);
-        if (b != null)
-            b.authenticatePayment();
+        PaymentStrategy strategy = paymentRequest.getPaymentStrategy();
+        b.setIsAuthenticated(strategy.pay(b.getPrice()));
     }
 
     // TODO: We gotta later use Mechanic to check it out to then update its state
