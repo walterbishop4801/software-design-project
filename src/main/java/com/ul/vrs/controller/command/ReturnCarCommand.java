@@ -1,4 +1,4 @@
-package com.ul.vrs.command;
+package com.ul.vrs.controller.command;
 
 import java.util.UUID;
 
@@ -11,14 +11,19 @@ public class ReturnCarCommand implements Command {
     private UUID bookingId; // ID of the booking to return.
 
     // Initializes the command with the rental service and booking ID.
-    public ReturnCarCommand(RentalSystemService rentalSystemService, UUID bookingId) {
+    public ReturnCarCommand(RentalSystemService rentalSystemService) {
         this.rentalSystemService = rentalSystemService;
+    }
+
+    public void setBookingID(UUID bookingId) {
         this.bookingId = bookingId;
     }
 
     // Executes the return vehicle operation.
     @Override
     public void execute() {
-        rentalSystemService.returnVehicle(bookingId);
+        if (bookingId != null) {
+            rentalSystemService.returnVehicle(bookingId);
+        }
     }
 }

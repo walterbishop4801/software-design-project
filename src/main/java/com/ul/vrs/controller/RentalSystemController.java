@@ -15,7 +15,7 @@ import com.ul.vrs.entity.booking.payment.PaymentRequest;
 import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.service.RentalSystemService;
 import com.ul.vrs.service.VehicleManagerService;
-import com.ul.vrs.command.Invoker;
+import com.ul.vrs.controller.command.CommandInvoker;
 import com.ul.vrs.entity.account.Customer;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,13 +38,10 @@ public class RentalSystemController {
 
     @Autowired
     private VehicleManagerService vehicleManager;
-   
 
     @Autowired
-    private Invoker invoker; // Automatically injected by Spring
+    private CommandInvoker invoker;
 
-
-    
     // Get all vehicles - http://localhost:8080/api/vehicles
     @GetMapping("/list_bookings")
     public List<Booking> getBookings() {
@@ -110,16 +107,16 @@ public class RentalSystemController {
 
         return ResponseEntity.ok("Booking (ID=" + id + ") has been canceled.");
     }
-    
+
     // Return vehicle and open gate - http://localhost:8080/api/renting/return_vehicle_and_open_gate/{id}
     @PutMapping("/return_vehicle_and_open_gate/{id}")
     public ResponseEntity<String> returnVehicleAndOpenGate(@PathVariable UUID id) {
         // Dynamically set the returnCar command with the current bookingId
-        invoker.setReturnCarCommand(id);
-        
+        invoker.setBookingID(id);
+
         // Execute commands
-        invoker.executeCommand("returnCar");
         invoker.executeCommand("openGate");
+        invoker.executeCommand("returnCar");
 
         return ResponseEntity.ok("Vehicle of Booking (ID=" + id + ") has been returned and gate opened.");
     }
