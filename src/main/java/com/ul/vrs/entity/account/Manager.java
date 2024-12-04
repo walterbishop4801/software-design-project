@@ -2,80 +2,82 @@ package com.ul.vrs.entity.account;
 
 import com.ul.vrs.service.VehicleManagerService;
 import com.ul.vrs.entity.vehicle.Vehicle;
+import com.ul.vrs.entity.vehicle.VehicleState;
 import com.ul.vrs.entity.vehicle.factory.VehicleFactoryMethod;
 import com.ul.vrs.entity.Color;
-import com.ul.vrs.entity.vehicle.VehicleState;
-import com.ul.vrs.entity.vehicle.fuel.Fuel;
+
+import java.util.Objects;
+import java.util.logging.Logger;
 
 public class Manager {
-    private VehicleManagerService vehicleManager;
+    private static final Logger logger = Logger.getLogger(Manager.class.getName());
+    private final VehicleManagerService vehicleManager;
 
     public Manager(VehicleManagerService vehicleManager) {
-        this.vehicleManager = vehicleManager;
+        this.vehicleManager = Objects.requireNonNull(vehicleManager, "VehicleManagerService cannot be null");
     }
 
-    // Assigns a mechanic to a vehicle and updates the vehicle's state
-    public void assignMechanic(Mechanic m, Vehicle v) {
-        if (v != null && m != null && v.getState() == VehicleState.AVAILABLE) {
-            v.updateState(VehicleState.IN_MAINTENANCE); // Set state to 'IN_MAINTENANCE'
-            System.out.println("Mechanic " + m.getName() + " assigned to Vehicle ID: " + v.getID());
+    public void assignMechanic(Mechanic mechanic, Vehicle vehicle) {
+        Objects.requireNonNull(vehicle, "Vehicle cannot be null");
+        Objects.requireNonNull(mechanic, "Mechanic cannot be null");
+
+        if (vehicle.getState() == VehicleState.AVAILABLE) {
+            vehicle.updateState(VehicleState.IN_MAINTENANCE);
+            logger.info("Mechanic " + mechanic.getName() + " assigned to Vehicle ID: " + vehicle.getID());
         } else {
-            System.out.println("Cannot assign mechanic. Vehicle is either null, unavailable, or already in maintenance.");
+            logger.warning("Cannot assign mechanic. Vehicle is unavailable or already in maintenance.");
         }
     }
 
-    // Releases a mechanic from a vehicle and updates the vehicle's state
-    public void liberateMechanic(Mechanic m, Vehicle v) {
-        if (v != null && m != null && v.getState() == VehicleState.IN_MAINTENANCE) {
-            v.updateState(VehicleState.AVAILABLE); // Set state to 'AVAILABLE'
-            System.out.println("Mechanic " + m.getName() + " liberated from Vehicle ID: " + v.getID());
+    public void liberateMechanic(Mechanic mechanic, Vehicle vehicle) {
+        Objects.requireNonNull(vehicle, "Vehicle cannot be null");
+        Objects.requireNonNull(mechanic, "Mechanic cannot be null");
+
+        if (vehicle.getState() == VehicleState.IN_MAINTENANCE) {
+            vehicle.updateState(VehicleState.AVAILABLE);
+            logger.info("Mechanic " + mechanic.getName() + " liberated from Vehicle ID: " + vehicle.getID());
         } else {
-            System.out.println("Cannot liberate mechanic. Vehicle is either null or not in maintenance.");
+            logger.warning("Cannot liberate mechanic. Vehicle is not in maintenance.");
         }
     }
 
-    // Adds a new vehicle to the system
     public void add(String vehicleType, Object... params) {
+        Objects.requireNonNull(vehicleType, "Vehicle type cannot be null");
         try {
             Vehicle newVehicle = VehicleFactoryMethod.createVehicle(vehicleType, params);
             if (newVehicle != null) {
                 vehicleManager.addVehicle(newVehicle);
-                System.out.println("New vehicle added: " + newVehicle);
+                logger.info("New vehicle added: " + newVehicle);
             } else {
-                System.out.println("Failed to add vehicle: Invalid vehicle type or parameters.");
+                logger.warning("Failed to add vehicle: Invalid vehicle type or parameters.");
             }
         } catch (IllegalArgumentException e) {
-            System.out.println("Failed to add vehicle: " + e.getMessage());
+            logger.severe("Failed to add vehicle: " + e.getMessage());
         }
     }
 
-    // Updates an existing vehicle's details
     public void update(Long vehicleId, Vehicle updatedVehicle) {
-        if (vehicleId != null && updatedVehicle != null) {
-            Vehicle existingVehicle = vehicleManager.getVehicleById(vehicleId).orElse(null);
-            if (existingVehicle != null) {
+        Objects.requireNonNull(vehicleId, "Vehicle ID cannot be null");
+        Objects.requireNonNull(updatedVehicle, "Updated vehicle cannot be null");
+
+        vehicleManager.getVehicleById(vehicleId).ifPresentOrElse(
+            existingVehicle -> {
                 vehicleManager.updateVehicle(vehicleId, updatedVehicle);
-                System.out.println("Vehicle ID: " + vehicleId + " updated successfully.");
-            } else {
-                System.out.println("Failed to update vehicle. Vehicle with ID: " + vehicleId + " does not exist.");
-            }
-        } else {
-            System.out.println("Invalid input. Vehicle ID or updated vehicle cannot be null.");
-        }
+                logger.info("Vehicle ID: " + vehicleId + " updated successfully.");
+            },
+            () -> logger.warning("Failed to update vehicle. Vehicle with ID: " + vehicleId + " does not exist.")
+        );
     }
 
-    // Removes a vehicle from the system
     public void remove(Long vehicleId) {
-        if (vehicleId != null) {
-            Vehicle existingVehicle = vehicleManager.getVehicleById(vehicleId).orElse(null);
-            if (existingVehicle != null) {
+        Objects.requireNonNull(vehicleId, "Vehicle ID cannot be null");
+
+        vehicleManager.getVehicleById(vehicleId).ifPresentOrElse(
+            existingVehicle -> {
                 vehicleManager.deleteVehicle(vehicleId);
-                System.out.println("Vehicle ID: " + vehicleId + " removed successfully.");
-            } else {
-                System.out.println("Failed to remove vehicle. Vehicle with ID: " + vehicleId + " does not exist.");
-            }
-        } else {
-            System.out.println("Vehicle ID cannot be null.");
-        }
+                logger.info("Vehicle ID: " + vehicleId + " removed successfully.");
+            },
+            () -> logger.warning("Failed to remove vehicle. Vehicle with ID: " + vehicleId + " does not exist.")
+        );
     }
 }
