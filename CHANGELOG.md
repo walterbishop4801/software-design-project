@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v2.3.1](https://github.com/walterbishop4801/software-design-project/releases/tag/v2.3.1) (2024-12-04)
+
+### Bug Fixes
+
+-  **booking**:  adjust booking price based on the vehicle (#47) ([23b326bb750234b](https://github.com/walterbishop4801/software-design-project/commit/23b326bb750234b0c61f53bddf0817788c37c12f) David Parreño Barbuzano)
+
+### Refactoring
+
+-  **payment**:  refactor payment package ([b2ec04d5d526c5c](https://github.com/walterbishop4801/software-design-project/commit/b2ec04d5d526c5c48b2ff5b5a566bc33b89ece87) David Parreño Barbuzano)
+-  **command**:  simplify command invoker initialisation ([2b3ae2a62cfe971](https://github.com/walterbishop4801/software-design-project/commit/2b3ae2a62cfe971e7b7752c24aeeadf0401f310b) David Parreño Barbuzano)
+
+### Testing
+
+-  **payment-auth**:  merge with develop ([89f21c2a96aa3e7](https://github.com/walterbishop4801/software-design-project/commit/89f21c2a96aa3e7771dd3b6860d43ecc7a109c19) Ivor D&#x27;Souza)
+-  **payment-auth**:  add payment system tests ([86367f3a67c5b7a](https://github.com/walterbishop4801/software-design-project/commit/86367f3a67c5b7aea8a62639db753e5e7747694e) Ivor D&#x27;Souza)
+-  **payment-auth**:  fix payment auth class names ([13a1c7fef7d3b7e](https://github.com/walterbishop4801/software-design-project/commit/13a1c7fef7d3b7eda9ce8c8fc46bb5a26c5a4498) Ivor D&#x27;Souza)
+
+### Other changes
+
+- Refactor Command and Invoker implementation for extensibility and dynamic command execution  ([07a6e9d2bee805e](https://github.com/walterbishop4801/software-design-project/commit/07a6e9d2bee805e9907cf4a28170d649d694a4dd) Rohan Sikder)
+- Update application.properties  ([26f2a57347e3477](https://github.com/walterbishop4801/software-design-project/commit/26f2a57347e3477c84791ad17f03f15ffcad16a4) Shane Barden)
+- Update application.properties  ([93afece39a3abf8](https://github.com/walterbishop4801/software-design-project/commit/93afece39a3abf82790f7046acab443f5936df61) Rohan Sikder)
+- Tests passed  ([6aea75cadaa0eda](https://github.com/walterbishop4801/software-design-project/commit/6aea75cadaa0eda3e8f6f567cd52f8b6f50cb158) Shane Barden)
+- Update BookingTests.java  ([2314f8904dc2db7](https://github.com/walterbishop4801/software-design-project/commit/2314f8904dc2db7c5070da8923222dd54f19c7ad) Shane Barden)
+- Update BookingTests.java  ([2ba12c21f323714](https://github.com/walterbishop4801/software-design-project/commit/2ba12c21f323714c8a04fe8026f012fabbbfd2be) Shane Barden)
+- Create BookingTests.java  ([b3c58bbcddd87ba](https://github.com/walterbishop4801/software-design-project/commit/b3c58bbcddd87ba6d65f00ef670ca4239be67baf) Shane Barden)
+
 ## [v2.3.0](https://github.com/walterbishop4801/software-design-project/releases/tag/v2.3.0) (2024-12-04)
 
 ### Features
