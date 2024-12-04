@@ -52,6 +52,7 @@ public class VehicleManagerService {
         return vehicleRepository.findById(id);
     }
 
+
     // TODO: Include here database operations
     public Vehicle addVehicle(Vehicle vehicle) {
         vehicleRepository.save(vehicle);
@@ -66,6 +67,7 @@ public class VehicleManagerService {
 
         return vehicleDetails;
     }
+
 
     // TODO: Include here database operations
     public void deleteVehicle(Long id) {

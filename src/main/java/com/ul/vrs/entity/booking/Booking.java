@@ -59,8 +59,8 @@ public class Booking {
         return bookingId;
     }
 
-    public void authenticatePayment() {
-        this.isAuthenticated = true;
+    public void setIsAuthenticated(boolean isAuthenticated) {
+        this.isAuthenticated = isAuthenticated;
     }
 
     public long getPrice() {

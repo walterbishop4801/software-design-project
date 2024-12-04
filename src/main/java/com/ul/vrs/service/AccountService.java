@@ -30,10 +30,6 @@ public class AccountService {
         rentalSystemService.customizeBooking(booking, null);
     }
 
-    public void authenticateBookingPayment(UUID booking) {
-        rentalSystemService.authenticateBookingPayment(booking);
-    }
-
     public void returnVehicle(UUID booking) {
         rentalSystemService.returnVehicle(booking);
     }

@@ -14,6 +14,8 @@ import com.ul.vrs.entity.account.Customer;
 import com.ul.vrs.entity.booking.Booking;
 import com.ul.vrs.entity.booking.decorator.Customization;
 import com.ul.vrs.entity.booking.decorator.factory.BookingDecoratorFactoryMethod;
+import com.ul.vrs.entity.booking.payment.PaymentStrategy;
+import com.ul.vrs.entity.booking.payment.PaymentRequest;
 import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.entity.vehicle.VehicleState;
 
@@ -57,10 +59,10 @@ public class RentalSystemService {
         return b;
     }
 
-    public void authenticateBookingPayment(UUID bookingId) {
+    public void makeBookingPayment(UUID bookingId, PaymentRequest paymentRequest) {
         Booking b = bookings.get(bookingId);
-        if (b != null)
-            b.authenticatePayment();
+        PaymentStrategy strategy = paymentRequest.getPaymentStrategy();
+        b.setIsAuthenticated(strategy.pay(b.getPrice()));
     }
 
     // TODO: We gotta later use Mechanic to check it out to then update its state
