@@ -1,4 +1,6 @@
-package com.ul.vrs.entity.booking;
+package com.ul.vrs.entity.booking.decorator;
+
+import com.ul.vrs.entity.booking.Booking;
 
 public class GPSBookingDecorator extends BookingDecorator {
     public GPSBookingDecorator(Booking booking) {
