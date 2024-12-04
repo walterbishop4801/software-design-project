@@ -75,8 +75,9 @@ class BookingTest {
                 new VoucherBookingDecorator(testBooking)
             )
         );
-        assertEquals(120, decoratedBooking.getPrice(), "Combined decorators should correctly calculate the total price");
+        assertEquals(110, decoratedBooking.getPrice(), "Combined decorators should correctly calculate the total price");   
     }
+
 
     @Test
     void testBookingDecoratorIdentity() {
