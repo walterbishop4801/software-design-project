@@ -15,27 +15,27 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ManagerTest {
-
+public class ManagerTest {
     private Manager manager;
     private VehicleManagerService vehicleManagerService;
+
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         manager = new Manager("John Doe", "M001", "securePassword");
-        vehicleManagerService = new VehicleManagerService();
+        vehicleManagerService = VehicleManagerService.getInstance();
         new DamageCheckingService();
         new SalesReportService(vehicleManagerService);
     }
 
     @Test
-    void testManagerCreation() {
+    public void testManagerCreation() {
         assertEquals("John Doe", manager.getUsername(), "Manager's name should match.");
         assertEquals("M001", manager.getAccountId(), "Manager's ID should match.");
         assertEquals("securePassword", manager.getPassword(), "Manager's password should match.");
     }
 
     @Test
-    void testAddVehicle() {
+    public void testAddVehicle() {
         Vehicle newVehicle = new Car(65165167, "Tesla Model S", "Tesla", 2023, 75_000, Color.BLUE, new PetrolFuel(), 5, 396);
         manager.addVehicle(vehicleManagerService, newVehicle);
 
@@ -47,7 +47,7 @@ class ManagerTest {
     }
 
     @Test
-    void testModifyVehicle() {
+    public void testModifyVehicle() {
         // Arrange
         Vehicle existingVehicle = vehicleManagerService.getAllVehicles().get(0); // Get the first vehicle
         long newId = 999L; // New ID for the vehicle
@@ -61,9 +61,8 @@ class ManagerTest {
         assertEquals(newId, modifiedVehicle.get().getID(), "Updated ID should match.");
     }
 
-
     @Test
-    void testRemoveVehicle() {
+    public void testRemoveVehicle() {
         Vehicle existingVehicle = vehicleManagerService.getAllVehicles().get(0); // Get the first vehicle
         manager.removeVehicle(vehicleManagerService, existingVehicle);
 
@@ -72,14 +71,14 @@ class ManagerTest {
     }
 
     @Test
-    void testGenerateVehicleSalesReport() {
+    public void testGenerateVehicleSalesReport() {
         String report = manager.generateVehicleSalesReport();
         assertNotNull(report, "The sales report should not be null.");
         assertTrue(report.contains("Vehicle Sales Report"), "The report should contain the header.");
     }
 
     @Test
-    void testAssignMechanicToVehicle() {
+    public void testAssignMechanicToVehicle() {
         Vehicle existingVehicle = vehicleManagerService.getAllVehicles().get(0); // Get the first vehicle
         manager.assignMechanicToVehicle(existingVehicle);
 

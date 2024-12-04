@@ -21,7 +21,7 @@ public class SalesReportService {
             report.append("ID: ").append(vehicle.getID())
                   .append(", Name: ").append(vehicle.getName())
                   .append(", Manufacturer: ").append(vehicle.getBrandOwner())
-                  .append(", Price: ").append(vehicle.getRentingCost())
+                  .append(", 1-day price: ").append(vehicle.getRentingCost(1))
                   .append("\n");
         }
 

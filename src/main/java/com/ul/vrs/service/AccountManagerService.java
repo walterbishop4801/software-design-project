@@ -1,43 +1,74 @@
 package com.ul.vrs.service;
 
-import com.ul.vrs.entity.account.Customer;
-import org.springframework.stereotype.Service;
-
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import com.ul.vrs.entity.account.Account;
+import com.ul.vrs.entity.account.Customer;
+import com.ul.vrs.entity.account.Manager;
 
 @Service
 public class AccountManagerService {
+    // --------------------------------------------
+    // Current logged account
+    // --------------------------------------------
+    private Account loggedAccount;
 
-    private final Map<String, Customer> accounts = new HashMap<>(); 
+    public final Account getLoggedAccount() {
+        return this.loggedAccount;
+    }
+    // --------------------------------------------
 
-    public Customer signUp(String name, String id, String password) {
-        if (accounts.containsKey(name)) {
-        		System.out.println("Username already exists: " + name);
+    private Map<String, Account> accounts = new HashMap<>();
+
+    public Account signUp(String username, String password, String accountType) {
+        if (accounts.containsKey(username)) {
+            System.out.println("Username already exists: " + username);
             return null;
         }
 
-        Customer newAccount = new Customer(name, id, password);  // Creates a new Customer account
+        Account newAccount = null;
+        String accountId = "ID" + (accounts.size() + 1);
 
-        accounts.put(name, newAccount);
-        System.out.println("Account created for username: " + name);
+        switch (accountType.toLowerCase()) {
+            case "customer" -> newAccount = new Customer(username, accountId, password);
+            case "manager" -> newAccount = new Manager(username, accountId, password);
+            default -> System.err.println("Unkown account type");
+        }
+
+        if (newAccount != null) {
+            accounts.put(username, newAccount);
+            System.out.println("Account created for username: " + username + " as " + accountType);
+        }
+
         return newAccount;
     }
 
-    // Login method for all account types
-    public Optional<Customer> logIn(String username, String password) {
-    	Customer account = accounts.get(username);
+    public Account logIn(String username, String password) {
+        Account account = accounts.get(username);
+
         if (account != null && account.getPassword().equals(password)) {
             System.out.println("Login successful for user: " + username);
-            return Optional.of(account);
+            loggedAccount = account;
+            return account;
         }
+
         System.out.println("Login failed for user: " + username);
-        return Optional.empty();
+        return null;
     }
 
-    // Retrieve an account by username
-    public Optional<Customer> getAccount(String username) {
-        return Optional.ofNullable(accounts.get(username));
+    public boolean logout() {
+        if (loggedAccount != null) {
+            loggedAccount = null;
+            return true;
+        }
+
+        return false;
+    }
+
+    public Account getAccount(String username) {
+        return accounts.get(username);
     }
 }
