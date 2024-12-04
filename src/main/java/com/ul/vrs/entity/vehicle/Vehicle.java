@@ -113,7 +113,6 @@ public abstract class Vehicle implements Subject {
 
     public void updateState(VehicleState state) {
         this.vehicleState = state;
-        this.vehicleState.handleRequest(this);
     }
 
     @Override

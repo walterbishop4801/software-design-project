@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "61ee89a3-7c48-4f1a-bbf8-4c9a986120cf",
+		"_postman_id": "8b9c914d-0c85-4165-9601-312800b8934b",
 		"name": "VRS",
 		"description": "Postman collection for VRS application",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "25870780"
+		"_exporter_id": "39265277"
 	},
 	"item": [
 		{
@@ -311,7 +311,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "",
+							"raw": "10",
 							"options": {
 								"raw": {
 									"language": "json"

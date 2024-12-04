@@ -14,12 +14,15 @@ import com.ul.vrs.entity.account.Customer;
 import com.ul.vrs.entity.booking.Booking;
 import com.ul.vrs.entity.booking.decorator.Customization;
 import com.ul.vrs.entity.booking.decorator.factory.BookingDecoratorFactoryMethod;
-import com.ul.vrs.entity.booking.payment.PaymentStrategy;
 import com.ul.vrs.entity.booking.payment.PaymentRequest;
+import com.ul.vrs.entity.booking.payment.strategy.PaymentStrategy;
 import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.entity.vehicle.VehicleState;
 
 import com.ul.vrs.repository.BookingRepository;
+import com.ul.vrs.repository.VehicleRepository;
+
+import jakarta.persistence.*;
 
 @Service
 public class RentalSystemService {
@@ -27,19 +30,23 @@ public class RentalSystemService {
     @Autowired 
     BookingRepository bookingRepository;
 
+    @Autowired
+    private VehicleManagerService vehicleManagerService;
+
     private Map<UUID, Booking> bookings = new HashMap<>();
 
     public Optional<Booking> getBookingById(UUID bookingId) {
         return bookingRepository.findById(bookingId);
     }
 
-    public UUID makeBooking(Customer customer, Vehicle vehicle) {
+    public UUID makeBooking(Customer customer, Vehicle vehicle, int numberOfRentingDays) {
         if (vehicle != null) {
-            Booking booking = new Booking(customer, vehicle);
+            Booking booking = new Booking(customer, vehicle, numberOfRentingDays);
             UUID bookingId = booking.getBookingId();
 
             bookingRepository.save(booking);
-            // vehicle.updateState(VehicleState.RESERVED);
+            vehicle.updateState(VehicleState.RESERVED);
+            vehicleManagerService.updateVehicle(vehicle.getID(), vehicle);
 
             return bookingId;
         }
@@ -52,6 +59,7 @@ public class RentalSystemService {
 
         if(b.isPresent()) {
             Booking booking = BookingDecoratorFactoryMethod.createBookingDecorator(b.get(), customizationType);
+            bookingRepository.delete(b.get());
             bookingRepository.save(booking);
             b = Optional.ofNullable(booking);
         };
@@ -60,9 +68,13 @@ public class RentalSystemService {
     }
 
     public void makeBookingPayment(UUID bookingId, PaymentRequest paymentRequest) {
-        Booking b = bookings.get(bookingId);
+        Optional<Booking> b = bookingRepository.findById(bookingId);
         PaymentStrategy strategy = paymentRequest.getPaymentStrategy();
-        b.setIsAuthenticated(strategy.pay(b.getPrice()));
+        if(b.isPresent()) {
+            Booking booking = b.get();
+            booking.setIsAuthenticated(strategy.pay(booking.getPrice()));
+            bookingRepository.save(booking);
+        }
     }
 
     // TODO: We gotta later use Mechanic to check it out to then update its state
@@ -70,8 +82,9 @@ public class RentalSystemService {
         Optional<Booking> b = bookingRepository.findById(bookingId);
         if(b.isPresent()) {
             Booking booking = b.get();
-            // Vehicle v = booking.getVehicle();
-            // v.updateState(VehicleState.IN_MAINTENANCE);
+            Vehicle v = booking.getVehicle();
+            v.updateState(VehicleState.IN_MAINTENANCE);
+            vehicleManagerService.updateVehicle(v.getID(), v);
             bookingRepository.delete(booking);
         }
     }
@@ -80,8 +93,9 @@ public class RentalSystemService {
         Optional<Booking> b = bookingRepository.findById(bookingId);
         if(b.isPresent()) {
             Booking booking = b.get();
-            // Vehicle v = booking.getVehicle();
-            // v.updateState(VehicleState.AVAILABLE);
+            Vehicle v = booking.getVehicle();
+            v.updateState(VehicleState.AVAILABLE);
+            vehicleManagerService.updateVehicle(v.getID(), v);
             bookingRepository.delete(booking);
         }
     }

@@ -5,6 +5,7 @@ import com.ul.vrs.entity.booking.Booking;
 import jakarta.persistence.*;
 
 @Entity
+@DiscriminatorValue("GPS")
 public class GPSBookingDecorator extends BookingDecorator {
     public GPSBookingDecorator(Booking booking) {
         super(booking);
@@ -17,7 +18,7 @@ public class GPSBookingDecorator extends BookingDecorator {
     }
 
     // TODO: Adjust value based on real-life values
-    public long getPrice() {
+    public double getPrice() {
         return super.getPrice() + 10;
     }
 }

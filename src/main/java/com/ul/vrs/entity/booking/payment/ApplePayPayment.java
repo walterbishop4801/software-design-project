@@ -16,5 +16,4 @@ public class ApplePayPayment extends Payment{
     public String geAuth() {
         return auth;
     }
-
 }

@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "booking_type")
+@DiscriminatorValue("BASE")
 public class Booking {
     @ManyToOne
     @JoinColumn(name = "customer_id")
@@ -26,24 +29,26 @@ public class Booking {
     
     @Id
     private final UUID bookingId;
-    private final long price;
+    private final double price;
+    private final int numberOfRentingDays;
     private boolean isAuthenticated;
 
     @ElementCollection
     @CollectionTable(name = "booking_decorators", joinColumns = @JoinColumn(name = "booking_id"))
     protected List<Customization> decorators;
 
-    protected Booking(UUID bookingId, Customer customer, Vehicle vehicle) {
+    protected Booking(UUID bookingId, Customer customer, Vehicle vehicle, int numberOfRentingDays) {
         this.customer = customer;
         this.vehicle = vehicle;
         this.bookingId = bookingId;
         this.isAuthenticated = false;
-        this.price = 10;
+        this.numberOfRentingDays = numberOfRentingDays;
+        this.price = this.vehicle.getRentingCost(numberOfRentingDays);
         this.decorators = new ArrayList<>();
     }
 
-    public Booking(Customer customer, Vehicle vehicle) {
-        this(UUID.randomUUID(), customer, vehicle);
+    public Booking(Customer customer, Vehicle vehicle, int numberOfRentingDays) {
+        this(UUID.randomUUID(), customer, vehicle, numberOfRentingDays);
     }
 
     public Booking() {
@@ -52,6 +57,7 @@ public class Booking {
         this.bookingId = UUID.randomUUID();
         this.isAuthenticated = false;
         this.price = 10;
+        this.numberOfRentingDays = 1;
         this.decorators = new ArrayList<>();
     }
 
@@ -63,7 +69,11 @@ public class Booking {
         this.isAuthenticated = isAuthenticated;
     }
 
-    public long getPrice() {
+    public int getNumberOfRentingDays() {
+        return this.numberOfRentingDays;
+    }
+
+    public double getPrice() {
         return this.price;
     }
 

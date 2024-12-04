@@ -11,6 +11,8 @@ CREATE TABLE booking (
     vehicle_id BIGINT,
     is_authenticated BOOLEAN,
     price DECIMAL(10,2),
+    number_of_renting_days INT,
+    booking_type varchar,
     DTYPE varchar
 );
 

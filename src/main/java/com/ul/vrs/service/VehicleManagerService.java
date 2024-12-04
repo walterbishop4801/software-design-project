@@ -3,7 +3,6 @@ package com.ul.vrs.service;
 import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.vehicle.Car;
 import com.ul.vrs.entity.vehicle.Vehicle;
-import com.ul.vrs.entity.vehicle.factory.VehicleFactoryMethod;
 import com.ul.vrs.entity.vehicle.fuel.PetrolFuel;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +33,7 @@ public class VehicleManagerService {
 
     // TODO: Update this when database is available
     // TODO: Based on Singleton, this should be private, but for now we can leave it like that
-    public VehicleManagerService() {
+    private VehicleManagerService() {
         this.vehicles = new ArrayList<>();
 
         // addVehicle(new Car(1L, "Camry", "Toyota", 2020, 25_000, Color.WHITE, new PetrolFuel(), 4, 425));
@@ -52,7 +51,6 @@ public class VehicleManagerService {
         return vehicleRepository.findById(id);
     }
 
-
     // TODO: Include here database operations
     public Vehicle addVehicle(Vehicle vehicle) {
         vehicleRepository.save(vehicle);
@@ -67,7 +65,6 @@ public class VehicleManagerService {
 
         return vehicleDetails;
     }
-
 
     // TODO: Include here database operations
     public void deleteVehicle(Long id) {

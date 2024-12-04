@@ -23,7 +23,7 @@ public class AccountService {
     }
 
     public void makeBooking(Customer customer, Vehicle vehicle) {
-        rentalSystemService.makeBooking(customer, vehicle);
+        rentalSystemService.makeBooking(customer, vehicle, 1);
     }
 
     public void customizeVehicle(UUID booking) {

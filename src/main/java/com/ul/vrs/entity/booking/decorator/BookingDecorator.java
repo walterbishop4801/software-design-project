@@ -3,13 +3,12 @@ package com.ul.vrs.entity.booking.decorator;
 import com.ul.vrs.entity.booking.Booking;
 import jakarta.persistence.*;
 
-
 public class BookingDecorator extends Booking {
     @ManyToOne
     private final Booking booking;
 
     public BookingDecorator(Booking booking) {
-        super(booking.getBookingId(), booking.getCustomer(), booking.getVehicle());
+        super(booking.getBookingId(), booking.getCustomer(), booking.getVehicle(), booking.getNumberOfRentingDays());
         this.booking = booking;
     }
 
@@ -18,7 +17,7 @@ public class BookingDecorator extends Booking {
         this.booking = booking;
     }
 
-    public long getPrice() {
+    public double getPrice() {
         return this.booking.getPrice();
     }
 }
