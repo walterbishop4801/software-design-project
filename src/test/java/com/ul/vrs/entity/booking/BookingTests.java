@@ -108,4 +108,3 @@ class BookingTest {
         assertEquals(bookingId, testBooking.getBookingId());
     }
 }
-
