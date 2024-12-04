@@ -3,7 +3,6 @@ package com.ul.vrs.service;
 import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.vehicle.Car;
 import com.ul.vrs.entity.vehicle.Vehicle;
-import com.ul.vrs.entity.vehicle.factory.VehicleFactoryMethod;
 import com.ul.vrs.entity.vehicle.fuel.PetrolFuel;
 
 import org.springframework.stereotype.Service;
