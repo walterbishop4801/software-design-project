@@ -75,9 +75,8 @@ class BookingTest {
                 new VoucherBookingDecorator(testBooking)
             )
         );
-        assertEquals(110, decoratedBooking.getPrice(), "Combined decorators should correctly calculate the total price");   
+        assertEquals(110, decoratedBooking.getPrice(), "Combined decorators should correctly calculate the total price");
     }
-
 
     @Test
     void testBookingDecoratorIdentity() {
@@ -108,5 +107,31 @@ class BookingTest {
         assertNotNull(bookingId);
         assertEquals(bookingId, testBooking.getBookingId());
     }
-}
 
+    @Test
+    void testDecoratorOrderDoesNotChangeBaseValues() {
+        Booking gpsBooking = new GPSBookingDecorator(testBooking);
+        Booking insuranceBooking = new InsuranceBookingDecorator(gpsBooking);
+        assertEquals(20, gpsBooking.getPrice(), "GPS price should remain consistent even when wrapped in other decorators");
+        assertEquals(120, insuranceBooking.getPrice(), "Insurance price should remain consistent when wrapping GPS");
+    }
+
+    @Test
+    void testDecoratorChainingMaintainsIntegrity() {
+        Booking voucherBooking = new VoucherBookingDecorator(testBooking);
+        Booking gpsBooking = new GPSBookingDecorator(voucherBooking);
+        assertEquals(10, gpsBooking.getPrice(), "Combined price should reflect the effects of both decorators");
+    }
+
+    @Test
+    void testNullBookingForDecoratorThrowsException() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> new GPSBookingDecorator(null));
+        assertNotNull(exception.getMessage());
+    }
+
+    @Test
+    void testChainingDecoratorsWithSameType() {
+        Booking doubleGPSBooking = new GPSBookingDecorator(new GPSBookingDecorator(testBooking));
+        assertEquals(30, doubleGPSBooking.getPrice(), "Chaining GPS decorators should add price twice");
+    }
+}
