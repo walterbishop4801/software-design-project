@@ -5,6 +5,52 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v2.3.0](https://github.com/walterbishop4801/software-design-project/releases/tag/v2.3.0) (2024-12-04)
+
+### Features
+
+-  add API endpoint to return vehicle and open gate ([ae80f18ad9a3fcb](https://github.com/walterbishop4801/software-design-project/commit/ae80f18ad9a3fcbcee1d1ac0d0321b956a1aa2d0) Rohan Sikder)
+-  **strategy-payment**:  add payment strategy ([3d1cbf24822b01a](https://github.com/walterbishop4801/software-design-project/commit/3d1cbf24822b01ad89d48f578ba278f9b4cfe89d) Ivor D&#x27;Souza)
+-  include vehicle factory method ([21ec9603387270f](https://github.com/walterbishop4801/software-design-project/commit/21ec9603387270febc81e9d5d821eaca59cdb0e2) David Parreño Barbuzano)
+-  **vehicle**:  include vehicle state design pattern ([369b58ffb40d862](https://github.com/walterbishop4801/software-design-project/commit/369b58ffb40d862736d100fb8520f588f9e58e92) David Parreño Barbuzano)
+-  **booking**:  encapsulate booking decorator creation ([4a45f4ad5293449](https://github.com/walterbishop4801/software-design-project/commit/4a45f4ad52934497af1df8530958062658ec16d6) David Parreño Barbuzano)
+
+### Bug Fixes
+
+-  postman query find vehicle by id ([ddb90e995a4bf74](https://github.com/walterbishop4801/software-design-project/commit/ddb90e995a4bf74c1f4318b9eed662e93b8ac543) Rohan Sikder)
+-  resolved broken tests by adjusting property checks and handling optional fields ([a27ecc43249c555](https://github.com/walterbishop4801/software-design-project/commit/a27ecc43249c555e4591aef20a0d1d791222a533) Rohan Sikder)
+-  **mechanic**:  resolved vehicle update issues and added MechanicTests ([f561f66bd439a1b](https://github.com/walterbishop4801/software-design-project/commit/f561f66bd439a1b90a88ffdcd63574b59dd0f268) Rohan Sikder)
+-  **mechanic**:  Implement required Observer methods and update state checks in Mechanic class ([ef9c189349012ef](https://github.com/walterbishop4801/software-design-project/commit/ef9c189349012efc2d7d498e6d4772136ca80666) Rohan Sikder)
+-  **changelog**:  include the rest of conventional scopes ([82c55dca6fd9883](https://github.com/walterbishop4801/software-design-project/commit/82c55dca6fd9883c41b539bddfdc97760776c7d6) David Parreño Barbuzano)
+-  **changelog**:  adjust blank lines ([2bdf208a9197af3](https://github.com/walterbishop4801/software-design-project/commit/2bdf208a9197af3492073089f66dc376557d1706) David Parreño Barbuzano)
+
+### Refactoring
+
+-  change the methods' signature of vehicle factories ([7f1fc8f1ccd513a](https://github.com/walterbishop4801/software-design-project/commit/7f1fc8f1ccd513a68076266da75dd657264cea21) David Parreño Barbuzano)
+
+### Testing
+
+-  include tests for all vehicles and their factories ([d3bfe56700c7e39](https://github.com/walterbishop4801/software-design-project/commit/d3bfe56700c7e39d4665c72ff0f4b77fb61fbc59) David Parreño Barbuzano)
+-  include exclude annotations for JaCoCo ([6a093fbf51076e3](https://github.com/walterbishop4801/software-design-project/commit/6a093fbf51076e346b42384dc82b6ce3320cff8c) David Parreño Barbuzano)
+
+### Other changes
+
+- Delete src/test/java/com/ul/vrs/BookingTests.java  ([c35012e4e8f9033](https://github.com/walterbishop4801/software-design-project/commit/c35012e4e8f9033de2eb7afe08fdc4e09f5bfc10) Rohan Sikder)
+- Removed enviroment.json maven.yml  ([39073e7ca7149b9](https://github.com/walterbishop4801/software-design-project/commit/39073e7ca7149b969504e3ea94ab40c21a78c977) Rohan Sikder)
+- Update maven.yml to make it run on automation branch also for trial  ([2e09a136969af6b](https://github.com/walterbishop4801/software-design-project/commit/2e09a136969af6b9625e0770b81b193cdbc7d188) Rohan Sikder)
+- Update maven.yml to include auto postman test  ([388ff305aeca539](https://github.com/walterbishop4801/software-design-project/commit/388ff305aeca539f3da5c1eb3d210276786eac28) Rohan Sikder)
+- Updated postman collection for automation  ([1750b186b390c39](https://github.com/walterbishop4801/software-design-project/commit/1750b186b390c3953d3c0f3f26686455c6dab2c3) Rohan Sikder)
+- Fixed PMD violation by removing unused import in VehicleManagerService. Updated build to run tests during Maven build process.  ([63cafa7524a4b70](https://github.com/walterbishop4801/software-design-project/commit/63cafa7524a4b708e0c057c0dbe36ce8e1b533d6) Rohan Sikder)
+- Update maven.yml  ([ab679e66bfcef5c](https://github.com/walterbishop4801/software-design-project/commit/ab679e66bfcef5c3f5a339d1b3c480b722b73118) Rohan Sikder)
+- Create maven.yml  ([1ccea1f6a735bd4](https://github.com/walterbishop4801/software-design-project/commit/1ccea1f6a735bd445bfe115119e7e8c0699c2220) Rohan Sikder)
+- Update pom.xml  ([122cb632f5dfece](https://github.com/walterbishop4801/software-design-project/commit/122cb632f5dfece7a17100600b3a9e3e1f1288a8) Shane Barden)
+- Add unit tests for RentalSystemService  ([45ee4c9ef78f439](https://github.com/walterbishop4801/software-design-project/commit/45ee4c9ef78f439fc46760d064afb1baae38c030) Rohan Sikder)
+- Update BookingTests.java  ([6dd574ff990594f](https://github.com/walterbishop4801/software-design-project/commit/6dd574ff990594f978b551820ad7462eebc3a9d8) Shane Barden)
+- Update Mechanic.java  ([73832d306b4bb20](https://github.com/walterbishop4801/software-design-project/commit/73832d306b4bb20b1ae5846378369f73ce38cfa7) Shane Barden)
+- Update Mechanic.java  ([765b391e39a5ada](https://github.com/walterbishop4801/software-design-project/commit/765b391e39a5adada81022f352fe448e457b7e7e) Shane Barden)
+- Create BookingTests.java  ([15302ba1caafe58](https://github.com/walterbishop4801/software-design-project/commit/15302ba1caafe58f10b3e08760a24c71ba7370f6) Shane Barden)
+- Create Mechanic.java  ([09ec294e4bfa401](https://github.com/walterbishop4801/software-design-project/commit/09ec294e4bfa401577f24b04050c74847c01160b) Shane Barden)
+
 ## [v2.2.0](https://github.com/walterbishop4801/software-design-project/releases/tag/v2.2.0) (2024-11-20)
 
 ### Features
