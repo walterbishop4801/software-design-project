@@ -1,10 +1,10 @@
-// package com.ul.vrs.repository;
+package com.ul.vrs.repository;
 
-// import com.ul.vrs.entity.account.Customer;
-// import org.springframework.data.jpa.repository.JpaRepository;
-// import org.springframework.stereotype.Repository;
+import com.ul.vrs.entity.account.Customer;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-// @Repository
-// public interface CustomerRepository extends JpaRepository<Customer, String> {
-//     // Add specific query methods for Customer if needed
-// }
+@Repository
+public interface CustomerRepository extends JpaRepository<Customer, String> {
+    // Add specific query methods for Customer if needed
+}

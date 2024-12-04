@@ -9,16 +9,26 @@ import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.service.RentalSystemService;
 import com.ul.vrs.service.VehicleManagerService;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Transient;
+
+@Entity
 // TODO: This class doesn't look like an entity, as it has methods already defined at AccountController
 public class Customer extends Account {
+    @Transient
 	@Autowired
     private RentalSystemService rentalSystemService;
 
+    @Transient
     @Autowired
     private VehicleManagerService vehicleManagerService;
 
     public Customer(String username, String accountId, String password) {
         super(username, accountId, password);
+    }
+
+    public Customer() {
+        super("test_username", "test_id", "test_password");
     }
 
     public List<Vehicle> searchAvailableVehicles() {

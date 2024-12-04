@@ -1,5 +1,5 @@
 -- Inserting a new customer
-INSERT INTO account (account_id, username, password, dtype) VALUES ('test_id', 'test_username', 'test_password', 'Customer');
+INSERT INTO customer (account_id, username, password) VALUES ('test_id', 'test_username', 'test_password');
 
 -- Insert a Car
 INSERT INTO vehicle (id, name, brand_owner, release_year, cost, color, fuel_type, vehicle_state) VALUES (1, 'Tesla Model 3', 'Tesla', 2023, 50000.0, 'RED', 'electric', 'AVAILABLE');

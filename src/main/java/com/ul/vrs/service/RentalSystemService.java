@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ul.vrs.entity.account.Customer;
@@ -16,12 +17,18 @@ import com.ul.vrs.entity.booking.decorator.factory.BookingDecoratorFactoryMethod
 import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.entity.vehicle.VehicleState;
 
+import com.ul.vrs.repository.BookingRepository;
+
 @Service
 public class RentalSystemService {
+
+    @Autowired 
+    BookingRepository bookingRepository;
+
     private Map<UUID, Booking> bookings = new HashMap<>();
 
     public Optional<Booking> getBookingById(UUID bookingId) {
-        return Optional.ofNullable(bookings.get(bookingId));
+        return bookingRepository.findById(bookingId);
     }
 
     public UUID makeBooking(Customer customer, Vehicle vehicle) {
@@ -29,8 +36,8 @@ public class RentalSystemService {
             Booking booking = new Booking(customer, vehicle);
             UUID bookingId = booking.getBookingId();
 
-            bookings.put(bookingId, booking);
-            vehicle.updateState(VehicleState.RESERVED);
+            bookingRepository.save(booking);
+            // vehicle.updateState(VehicleState.RESERVED);
 
             return bookingId;
         }
@@ -38,17 +45,16 @@ public class RentalSystemService {
         return null;
     }
 
-    public Booking customizeBooking(UUID bookingId, Customization customizationType) {
-        Booking booking = bookings.get(bookingId);
+    public Optional<Booking> customizeBooking(UUID bookingId, Customization customizationType) {
+        Optional<Booking> b = bookingRepository.findById(bookingId);
 
-        if (booking != null) {
-            // Encapsulate booking decorator creation with Factory Method
-            booking = BookingDecoratorFactoryMethod.createBookingDecorator(booking, customizationType);
-            bookings.put(bookingId, booking);
-            return booking;
-        }
+        if(b.isPresent()) {
+            Booking booking = BookingDecoratorFactoryMethod.createBookingDecorator(b.get(), customizationType);
+            bookingRepository.save(booking);
+            b = Optional.ofNullable(booking);
+        };
 
-        return null;
+        return b;
     }
 
     public void authenticateBookingPayment(UUID bookingId) {
@@ -59,24 +65,26 @@ public class RentalSystemService {
 
     // TODO: We gotta later use Mechanic to check it out to then update its state
     public void returnVehicle(UUID bookingId) {
-        Booking b = bookings.get(bookingId);
-        if (b != null) {
-            Vehicle v = b.getVehicle();
-            v.updateState(VehicleState.IN_MAINTENANCE);
-            bookings.remove(bookingId);
+        Optional<Booking> b = bookingRepository.findById(bookingId);
+        if(b.isPresent()) {
+            Booking booking = b.get();
+            // Vehicle v = booking.getVehicle();
+            // v.updateState(VehicleState.IN_MAINTENANCE);
+            bookingRepository.delete(booking);
         }
     }
 
     public void cancelBooking(UUID bookingId) {
-        Booking b = bookings.get(bookingId);
-        if (b != null) {
-            Vehicle v = b.getVehicle();
-            v.updateState(VehicleState.AVAILABLE);
-            bookings.remove(bookingId);
+        Optional<Booking> b = bookingRepository.findById(bookingId);
+        if(b.isPresent()) {
+            Booking booking = b.get();
+            // Vehicle v = booking.getVehicle();
+            // v.updateState(VehicleState.AVAILABLE);
+            bookingRepository.delete(booking);
         }
     }
 
     public List<Booking> getAllBookings() {
-        return new ArrayList<>(bookings.values());
+        return bookingRepository.findAll();
     }
 }

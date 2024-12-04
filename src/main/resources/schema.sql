@@ -1,9 +1,22 @@
-create table account (
+create table customer (
     account_id varchar not null,
     username varchar not null,
     password varchar not null,
-    dtype varchar not null,
     primary key(account_id)
+);
+
+CREATE TABLE booking (
+    booking_id UUID PRIMARY KEY,
+    customer_id varchar,
+    vehicle_id BIGINT,
+    is_authenticated BOOLEAN,
+    price DECIMAL(10,2),
+    DTYPE varchar
+);
+
+CREATE TABLE booking_decorators (
+    booking_id UUID,
+    decorators VARCHAR(50)
 );
 
 CREATE TABLE vehicle (

@@ -23,10 +23,20 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.ul.vrs.repository.*;
+
 @RestController
 @RequestMapping("/api/renting")
 public class RentalSystemController {
+
+    @Autowired 
+    CustomerRepository customerRepository;
+
     // TODO: Change method signatures to have a dynamic customer account
+    // private Customer customer = new Customer(
+    //     "test_username", "test_id", "test_password"
+    // );
+
     private Customer customer = new Customer(
         "test_username", "test_id", "test_password"
     );
@@ -65,10 +75,10 @@ public class RentalSystemController {
     // Customise booking - http://localhost:8080/api/renting/customize_booking/{id}
     @PutMapping("/customize_booking/{id}")
     public ResponseEntity<Booking> customizeBooking(@PathVariable UUID id, @RequestBody Customization decorator) {
-        Booking booking = rentalSystemService.customizeBooking(id, decorator);
+        Optional<Booking> booking = rentalSystemService.customizeBooking(id, decorator);
 
-        if(booking != null) {
-            return ResponseEntity.ok(booking);
+        if(booking.isPresent()) {
+            return ResponseEntity.ok(booking.get());
         } else {
             return ResponseEntity.notFound().build();
         }
