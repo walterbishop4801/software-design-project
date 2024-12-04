@@ -8,7 +8,7 @@ public class GPSBookingDecorator extends BookingDecorator {
     }
 
     // TODO: Adjust value based on real-life values
-    public long getPrice() {
+    public double getPrice() {
         return super.getPrice() + 10;
     }
 }

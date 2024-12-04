@@ -1,7 +1,6 @@
 package com.ul.vrs.entity.account;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -127,7 +126,7 @@ public class MechanicTests {
         assertTrue(retrievedVehicle.isPresent(), "Vehicle should exist in the VehicleManagerService");
         System.out.println("Vehicle successfully assigned to mechanic. State: " + vehicle.getState());
     }
-    
+
     @Test
     public void testReleaseFromVehicle() {
         MockVehicle vehicle = testMockVehicles.get(0);
@@ -155,8 +154,6 @@ public class MechanicTests {
         assertEquals(VehicleState.AVAILABLE, vehicle.getState(), "Vehicle state should be AVAILABLE.");
         assertTrue(retrievedVehicle.isPresent(), "Vehicle should still exist in VehicleManagerService.");
     }
-
-
 
     @Test
     public void testFixVehicle() {

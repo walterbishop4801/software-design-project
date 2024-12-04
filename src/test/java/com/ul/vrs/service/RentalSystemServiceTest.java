@@ -12,7 +12,7 @@ import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.account.Customer;
 import com.ul.vrs.entity.booking.Booking;
 import com.ul.vrs.entity.booking.decorator.Customization;
-import com.ul.vrs.entity.booking.payment.ApplePay;
+import com.ul.vrs.entity.booking.payment.ApplePayPayment;
 import com.ul.vrs.entity.booking.payment.PaymentMethod;
 import com.ul.vrs.entity.booking.payment.PaymentRequest;
 import com.ul.vrs.entity.vehicle.Car;
@@ -21,7 +21,6 @@ import com.ul.vrs.entity.vehicle.VehicleState;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
 
 public class RentalSystemServiceTest {
-
     // Service being tested
     private RentalSystemService rentalSystemService;
 
@@ -55,7 +54,7 @@ public class RentalSystemServiceTest {
     public void testMakeBooking_Success() {
         // Test for successfully making a booking
         Vehicle vehicle = mockVehicles.get(0); // Select the first vehicle
-        UUID bookingId = rentalSystemService.makeBooking(mockCustomer, vehicle); // Create a booking
+        UUID bookingId = rentalSystemService.makeBooking(mockCustomer, vehicle, 1); // Create a booking
 
         assertNotNull(bookingId, "Booking ID should not be null"); // Booking ID must not be null
         Optional<Booking> booking = rentalSystemService.getBookingById(bookingId);
@@ -67,7 +66,7 @@ public class RentalSystemServiceTest {
     @Test
     public void testMakeBooking_NullVehicle() {
         // Test for attempting to book a null vehicle
-        UUID bookingId = rentalSystemService.makeBooking(mockCustomer, null);
+        UUID bookingId = rentalSystemService.makeBooking(mockCustomer, null, 0);
         assertNull(bookingId, "Booking ID should be null when vehicle is null"); // Booking ID must be null
     }
 
@@ -75,7 +74,7 @@ public class RentalSystemServiceTest {
     public void testCustomizeBooking_Success() {
         // Test for successfully customizing a booking
         Vehicle vehicle = mockVehicles.get(0);
-        UUID bookingId = rentalSystemService.makeBooking(mockCustomer, vehicle);
+        UUID bookingId = rentalSystemService.makeBooking(mockCustomer, vehicle, 1);
 
         // Use a valid customization (e.g., GPS)
         Customization mockCustomization = Customization.GPS;
@@ -100,9 +99,9 @@ public class RentalSystemServiceTest {
     public void testAuthenticateBookingPayment_Success() {
         // Test for successful payment authentication
         Vehicle vehicle = mockVehicles.get(0);
-        UUID bookingId = rentalSystemService.makeBooking(mockCustomer, vehicle);
+        UUID bookingId = rentalSystemService.makeBooking(mockCustomer, vehicle, 1);
 
-        PaymentRequest mockPaymentRequest = new PaymentRequest(PaymentMethod.APPLEPAY, null, new ApplePay("xyz", "123"));
+        PaymentRequest mockPaymentRequest = new PaymentRequest(PaymentMethod.APPLEPAY, new ApplePayPayment("xyz", "123"));
         rentalSystemService.makeBookingPayment(bookingId, mockPaymentRequest); // Authenticate payment
         Optional<Booking> booking = rentalSystemService.getBookingById(bookingId);
 
@@ -114,7 +113,7 @@ public class RentalSystemServiceTest {
     public void testReturnVehicle_Success() {
         // Test for returning a vehicle
         Vehicle vehicle = mockVehicles.get(0);
-        UUID bookingId = rentalSystemService.makeBooking(mockCustomer, vehicle);
+        UUID bookingId = rentalSystemService.makeBooking(mockCustomer, vehicle, 1);
 
         rentalSystemService.returnVehicle(bookingId); // Return the vehicle
 
@@ -127,7 +126,7 @@ public class RentalSystemServiceTest {
     public void testCancelBooking_Success() {
         // Test for canceling a booking
         Vehicle vehicle = mockVehicles.get(0);
-        UUID bookingId = rentalSystemService.makeBooking(mockCustomer, vehicle);
+        UUID bookingId = rentalSystemService.makeBooking(mockCustomer, vehicle, 1);
 
         rentalSystemService.cancelBooking(bookingId); // Cancel the booking
 
@@ -141,7 +140,7 @@ public class RentalSystemServiceTest {
         // Create bookings for all vehicles
         Map<Long, Vehicle> vehicleMap = new HashMap<>();
         for (Vehicle vehicle : mockVehicles) {
-            UUID bookingId = rentalSystemService.makeBooking(mockCustomer, vehicle);
+            rentalSystemService.makeBooking(mockCustomer, vehicle, 1);
             vehicleMap.put(vehicle.getID(), vehicle); // Map vehicle IDs for comparison
         }
 
@@ -157,7 +156,6 @@ public class RentalSystemServiceTest {
             assertEquals(expectedVehicle, booking.getVehicle(), "Booking should match the corresponding vehicle");
         }
     }
-
 
     @Test
     public void testCarRentingCost() {

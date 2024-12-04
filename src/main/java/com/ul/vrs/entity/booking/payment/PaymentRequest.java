@@ -1,28 +1,27 @@
 package com.ul.vrs.entity.booking.payment;
 
+import com.ul.vrs.entity.booking.payment.strategy.ApplePayPaymentStrategy;
+import com.ul.vrs.entity.booking.payment.strategy.CreditCardPaymentStrategy;
+import com.ul.vrs.entity.booking.payment.strategy.PaymentStrategy;
+
 public class PaymentRequest {
     private PaymentMethod method;
-    private CreditCard card;
-    private ApplePay wallet;
+    private Payment payment;
 
-    public PaymentRequest(PaymentMethod method, CreditCard card, ApplePay wallet) {
+    public PaymentRequest(PaymentMethod method, Payment payment) {
         this.method = method;
-        this.card = card;
-        this.wallet = wallet;
+        this.payment = payment;
     }
 
-    public PaymentMethod getMethod() {
-        return method;
-    }
+    public PaymentStrategy getPaymentStrategy() {
+        PaymentStrategy strategy = null;
 
-    public PayStrategy getPaymentStrategy() {
         switch (method) {
-            case CREDITCARD:
-                return new PayUsingCreditCard(card);
-            case APPLEPAY:
-                return new PayUsingApplePay(wallet);
-            default:
-                return null;
+            case CREDITCARD -> strategy = new CreditCardPaymentStrategy(payment);
+            case APPLEPAY -> strategy = new ApplePayPaymentStrategy(payment);
+            default -> System.err.println("Unkown payment strategy: " + method.name());
         }
+
+        return strategy;
     }
 }
