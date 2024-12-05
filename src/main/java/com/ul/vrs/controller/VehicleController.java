@@ -1,6 +1,9 @@
 package com.ul.vrs.controller;
 
+import com.ul.vrs.entity.account.Account;
+import com.ul.vrs.entity.account.Manager;
 import com.ul.vrs.entity.vehicle.Vehicle;
+import com.ul.vrs.service.AccountManagerService;
 import com.ul.vrs.service.VehicleManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +17,27 @@ import java.util.Optional;
 public class VehicleController {
     @Autowired
     private VehicleManagerService vehicleService;
+
+    @Autowired
+    private AccountManagerService accountManagerService;
+
+    // -------------------------------------------
+    // Check user permissions
+    // -------------------------------------------
+    private Manager getManager() throws IllegalAccessException {
+        Account account = accountManagerService.getLoggedAccount();
+
+        if (account == null || !(account instanceof Manager)) {
+            throw new IllegalAccessException("The account does not have the required permissions");
+        }
+
+        return (Manager) account;
+    }
+
+    private void checkAccountType() throws IllegalAccessException {
+        getManager();
+    }
+    // -------------------------------------------
 
     // Get all vehicles in the system - http://localhost:8080/api/vehicles
     @GetMapping
@@ -36,25 +60,43 @@ public class VehicleController {
     // Add a new vehicle to the system - http://localhost:8080/api/vehicles
     @PostMapping
     public Vehicle addVehicle(@RequestBody Vehicle vehicle) {
-        return vehicleService.addVehicle(vehicle);
+        try {
+            checkAccountType();
+
+            return vehicleService.addVehicle(vehicle);
+        } catch (IllegalAccessException exe) {
+            return null;
+        }
     }
 
     // Update an existing vehicle's details - http://localhost:8080/api/vehicles/{id}
     @PutMapping("/{id}")
     public ResponseEntity<Vehicle> updateVehicle(@PathVariable Long id, @RequestBody Vehicle vehicleDetails) {
-        Vehicle updatedVehicle = vehicleService.updateVehicle(id, vehicleDetails);
+        try {
+            checkAccountType();
 
-        if (updatedVehicle != null) {
-            return ResponseEntity.ok(updatedVehicle);
-        } else {
-            return ResponseEntity.notFound().build();
+            Vehicle updatedVehicle = vehicleService.updateVehicle(id, vehicleDetails);
+
+            if (updatedVehicle != null) {
+                return ResponseEntity.ok(updatedVehicle);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (IllegalAccessException exe) {
+            return ResponseEntity.status(403).body(null);
         }
     }
 
     // Delete a vehicle by its ID - http://localhost:8080/api/vehicles/{id}
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteVehicle(@PathVariable Long id) {
-        vehicleService.deleteVehicle(id);
-        return ResponseEntity.noContent().build();
+        try {
+            checkAccountType();
+
+            vehicleService.deleteVehicle(id);
+            return ResponseEntity.noContent().build();
+        } catch (IllegalAccessException exe) {
+            return ResponseEntity.status(403).body(null);
+        }
     }
 }

@@ -43,7 +43,6 @@ public class Mechanic implements Observer {
         }
     }
 
-
     // Service a vehicle
     public void serviceVehicle(Vehicle v) {
         if (v != null && v.getState().check(InMaintenanceVehicleState.class)) {
