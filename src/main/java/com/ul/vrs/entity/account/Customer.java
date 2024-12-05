@@ -12,7 +12,7 @@ import com.ul.vrs.service.VehicleManagerService;
 
 // TODO: This class doesn't look like an entity, as it has methods already defined at AccountController
 public class Customer extends Account {
-	@Autowired
+    @Autowired
     private RentalSystemService rentalSystemService;
 
     @Autowired
