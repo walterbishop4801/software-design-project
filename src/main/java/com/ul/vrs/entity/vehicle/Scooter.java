@@ -6,7 +6,9 @@ import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
 import com.ul.vrs.jacoco.ExcludeConstructorFromGeneratedJacoco;
 import com.ul.vrs.jacoco.ExcludeMethodFromGeneratedJacoco;
+import jakarta.persistence.*;
 
+@Entity
 public class Scooter extends Vehicle {
     private final boolean hasHelmetIncluded;
     private final int maxPassengers;
@@ -25,6 +27,12 @@ public class Scooter extends Vehicle {
         this.hasHelmetIncluded = hasHelmetIncluded;
         this.maxPassengers = maxPassengers;
         this.rangePerFuelTank = rangePerFuelTank;
+    }
+
+    public Scooter() {
+        this.hasHelmetIncluded = true;
+        this.maxPassengers = 2;
+        this.rangePerFuelTank = 1000;
     }
 
     // TODO: Do we need @JsonProperty here?

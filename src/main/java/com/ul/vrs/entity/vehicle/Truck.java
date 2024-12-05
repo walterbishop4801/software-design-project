@@ -7,6 +7,9 @@ import com.ul.vrs.entity.vehicle.fuel.Fuel;
 import com.ul.vrs.jacoco.ExcludeConstructorFromGeneratedJacoco;
 import com.ul.vrs.jacoco.ExcludeMethodFromGeneratedJacoco;
 
+import jakarta.persistence.*;
+
+@Entity
 public class Truck extends Vehicle {
     private final float payloadCapacity;
     private final float towingCapacity;
@@ -26,6 +29,13 @@ public class Truck extends Vehicle {
         this.towingCapacity = towingCapacity;
         this.numberOfAxles = numberOfAxles;
     }
+    
+    public Truck() {
+        this.payloadCapacity = 100;
+        this.towingCapacity = 2000;
+        this.numberOfAxles = 2;
+    }
+
 
     // TODO: Do we need @JsonProperty here?
     @ExcludeConstructorFromGeneratedJacoco

@@ -1,9 +1,11 @@
 package com.ul.vrs.entity.vehicle;
 
+
 import com.ul.vrs.service.VehicleManagerService;
 
 // TODO: This is not really extensible, so we should split it into classes
 public enum VehicleState {
+
     AVAILABLE {
         @Override
         public void handleRequest(Vehicle vehicle) {

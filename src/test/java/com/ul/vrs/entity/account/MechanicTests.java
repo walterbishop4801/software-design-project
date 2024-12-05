@@ -2,30 +2,33 @@ package com.ul.vrs.entity.account;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.Observer;
 import com.ul.vrs.entity.Subject;
 import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.entity.vehicle.VehicleState;
-import com.ul.vrs.service.VehicleManagerService;
+import com.ul.vrs.repository.VehicleRepository;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ExtendWith(MockitoExtension.class)
 public class MechanicTests {
     private List<MockVehicle> testMockVehicles;
     private MockObserver testMockObserver;
     private Mechanic testMechanic;
-    private VehicleManagerService vehicleManagerService;
+
+    @Mock
+    private VehicleRepository vehicleRepository;
 
     private static final List<Map<String, Object>> EXPECTED_ATTRIBUTES = new ArrayList<>(List.of(
         Map.ofEntries(
@@ -53,13 +56,44 @@ public class MechanicTests {
     // ------------------------
 
     private static class MockVehicle extends Vehicle {
+        private VehicleState currentState;
+
         public MockVehicle(long ID, String name, String brandOwner, int releaseYear, double cost, Color color, VehicleState vehicleState) {
             super(ID, name, brandOwner, releaseYear, cost, color, null, vehicleState);
+            this.currentState = vehicleState;
         }
 
         @Override
         public double getRentingCost(int numberOfRentingDays) {
             return numberOfRentingDays * 50.0;
+        }
+
+        // Add methods to support Subject interface
+        private List<Observer> observers = new ArrayList<>();
+
+        public void attach(Observer observer) {
+            if (!observers.contains(observer)) {
+                observers.add(observer);
+            }
+        }
+
+        public void detach(Observer observer) {
+            observers.remove(observer);
+        }
+
+        public void notifyObservers() {
+            for (Observer observer : observers) {
+                observer.updateObserver(this);
+            }
+        }
+
+        public void updateState(VehicleState newState) {
+            this.currentState = newState;
+        }
+
+        @Override
+        public VehicleState getState() {
+            return this.currentState;
         }
     }
 
@@ -72,31 +106,18 @@ public class MechanicTests {
         }
     }
 
-    @BeforeAll
-    public void setup() {
-        this.testMechanic = new Mechanic("John Doe");
-        this.testMockObserver = new MockObserver();
-        this.vehicleManagerService = VehicleManagerService.getInstance();
-
-        initMockVehicles();
-        for (Vehicle vehicle : testMockVehicles) {
-            vehicleManagerService.addVehicle(vehicle);
-            System.out.println("Registered vehicle ID: " + vehicle.getID());
-        }
-    }
-
     @BeforeEach
-    public void resetMocks() {
+    public void setup() {
+        // Initialize test objects with a mock VehicleRepository
+        this.testMechanic = new Mechanic("John Doe", vehicleRepository);
+        this.testMockObserver = new MockObserver();
         initMockVehicles();
-        vehicleManagerService.getAllVehicles().clear(); // Clear all vehicles before each test
-        for (Vehicle vehicle : testMockVehicles) {
-            vehicleManagerService.addVehicle(vehicle);
-        }
     }
 
     private void initMockVehicles() {
         this.testMockVehicles = new ArrayList<>();
 
+        // Initialize vehicles with predefined attributes
         for (Map<String, Object> attrs : EXPECTED_ATTRIBUTES) {
             Long id = (Long) attrs.get("ID");
             String name = (String) attrs.get("name");
@@ -119,11 +140,14 @@ public class MechanicTests {
         MockVehicle vehicle = testMockVehicles.get(0);
         System.out.println("Testing assign to vehicle with ID: " + vehicle.getID());
 
+        // Add necessary mock when needed
+        when(vehicleRepository.save(vehicle)).thenReturn(vehicle);
+
         testMechanic.assignToVehicle(vehicle);
 
+        // Verify state update and save interaction
         assertEquals(VehicleState.IN_MAINTENANCE, vehicle.getState(), "Vehicle state should be IN_MAINTENANCE");
-        Optional<Vehicle> retrievedVehicle = vehicleManagerService.getVehicleById(vehicle.getID());
-        assertTrue(retrievedVehicle.isPresent(), "Vehicle should exist in the VehicleManagerService");
+        verify(vehicleRepository, times(1)).save(vehicle);
         System.out.println("Vehicle successfully assigned to mechanic. State: " + vehicle.getState());
     }
 
@@ -132,27 +156,19 @@ public class MechanicTests {
         MockVehicle vehicle = testMockVehicles.get(0);
         System.out.println("Testing release from vehicle with ID: " + vehicle.getID());
 
-        // Verify vehicle registration before assignment
-        assertTrue(vehicleManagerService.getVehicleById(vehicle.getID()).isPresent(), "Vehicle must be registered before assignment.");
+        // Add necessary mock when needed
+        when(vehicleRepository.save(vehicle)).thenReturn(vehicle);
 
         // Assign mechanic to vehicle
         testMechanic.assignToVehicle(vehicle);
-        System.out.println("Assigned mechanic to vehicle. Current state: " + vehicle.getState());
-
-        // Verify vehicle registration after assignment
-        assertTrue(vehicleManagerService.getVehicleById(vehicle.getID()).isPresent(), "Vehicle must still be registered after assignment.");
 
         // Release mechanic from vehicle
         testMechanic.releaseFromVehicle(vehicle);
-        System.out.println("Released mechanic from vehicle. Current state: " + vehicle.getState());
 
-        // Verify vehicle registration after release
-        Optional<Vehicle> retrievedVehicle = vehicleManagerService.getVehicleById(vehicle.getID());
-        System.out.println("Vehicle registration after release: " + retrievedVehicle.isPresent());
-
-        // Assertions
+        // Verify state update and save interaction
         assertEquals(VehicleState.AVAILABLE, vehicle.getState(), "Vehicle state should be AVAILABLE.");
-        assertTrue(retrievedVehicle.isPresent(), "Vehicle should still exist in VehicleManagerService.");
+        verify(vehicleRepository, times(2)).save(vehicle); 
+        System.out.println("Vehicle successfully released from mechanic. State: " + vehicle.getState());
     }
 
     @Test
@@ -160,10 +176,15 @@ public class MechanicTests {
         MockVehicle vehicle = testMockVehicles.get(0);
         System.out.println("Testing fix vehicle with ID: " + vehicle.getID());
 
+        // Add necessary mock when needed
+        when(vehicleRepository.save(vehicle)).thenReturn(vehicle);
+
         vehicle.updateState(VehicleState.DAMAGED);
         testMechanic.fixVehicle(vehicle);
 
+        // Verify state update and save interaction
         assertEquals(VehicleState.AVAILABLE, vehicle.getState(), "Vehicle state should be AVAILABLE after fixing");
+        verify(vehicleRepository, times(1)).save(vehicle);
         System.out.println("Vehicle successfully fixed. State: " + vehicle.getState());
     }
 
@@ -172,10 +193,15 @@ public class MechanicTests {
         MockVehicle vehicle = testMockVehicles.get(0);
         System.out.println("Testing service vehicle with ID: " + vehicle.getID());
 
+        // Add necessary mock when needed
+        when(vehicleRepository.save(vehicle)).thenReturn(vehicle);
+
         testMechanic.assignToVehicle(vehicle);
         testMechanic.serviceVehicle(vehicle);
 
+        // Verify state remains IN_MAINTENANCE and save interaction
         assertEquals(VehicleState.IN_MAINTENANCE, vehicle.getState(), "Vehicle state should remain IN_MAINTENANCE");
+        verify(vehicleRepository, times(2)).save(vehicle); 
         System.out.println("Vehicle successfully serviced. State: " + vehicle.getState());
     }
 
@@ -186,7 +212,9 @@ public class MechanicTests {
 
         vehicle.attach(testMockObserver);
         vehicle.updateState(VehicleState.DAMAGED);
+        vehicle.notifyObservers();
 
+        // Verify observer notification
         assertTrue(testMockObserver.signalReceived, "Observer should be notified of vehicle state change");
         System.out.println("Observer successfully notified of state change.");
     }

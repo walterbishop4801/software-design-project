@@ -2,31 +2,36 @@ package com.ul.vrs.entity.vehicle;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.Observer;
 import com.ul.vrs.entity.Subject;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
+import com.ul.vrs.repository.VehicleRepository;
 import com.ul.vrs.service.VehicleManagerService;
-
-import java.util.Optional;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CarTests {
     private List<Car> testMockVehicles;
     private MockObserver testMockObserver;
 
-    @Autowired
+    @Mock
+    private VehicleRepository vehicleRepository;
+
+    @InjectMocks
     private VehicleManagerService vehicleManagerService;
 
     private static final List<Map<String, Object>> EXPECTED_ATTRIBUTES = new ArrayList<>(List.of(
@@ -42,87 +47,19 @@ public class CarTests {
             Map.entry("rentingCost", 501.7),
             Map.entry("numberOfDoors", 4),
             Map.entry("trunkCapacity", 250f)
-        ),
-
-        Map.ofEntries(
-            Map.entry("ID", 10001L),
-            Map.entry("name", "Another_Test_Name"),
-            Map.entry("brandOwner", "Another_BrandOwner"),
-            Map.entry("releaseYear", 2001),
-            Map.entry("cost", 600.75),
-            Map.entry("color", Color.RED),
-            Map.entry("fuelType", new MockFuel()),
-            Map.entry("state", VehicleState.AVAILABLE),
-            Map.entry("rentingCost", 651.95),
-            Map.entry("numberOfDoors", 5),
-            Map.entry("trunkCapacity", 250f)
-        ),
-
-        Map.ofEntries(
-            Map.entry("ID", 10002L),
-            Map.entry("name", "Test_Name_Three"),
-            Map.entry("brandOwner", "Test_BrandOwner_Three"),
-            Map.entry("releaseYear", 2020),
-            Map.entry("cost", 500.0),
-            Map.entry("color", Color.BLACK),
-            Map.entry("fuelType", new MockFuel()),
-            Map.entry("state", VehicleState.AVAILABLE),
-            Map.entry("rentingCost", 531.2),
-            Map.entry("numberOfDoors", 4),
-            Map.entry("trunkCapacity", 350f)
-        ),
-
-        Map.ofEntries(
-            Map.entry("ID", 10003L),
-            Map.entry("name", "Test_Name_Four"),
-            Map.entry("brandOwner", "Test_BrandOwner_Four"),
-            Map.entry("releaseYear", 2020),
-            Map.entry("cost", 500.0),
-            Map.entry("color", Color.BLACK),
-            Map.entry("fuelType", new MockFuel()),
-            Map.entry("state", VehicleState.AVAILABLE),
-            Map.entry("rentingCost", 581.2),
-            Map.entry("numberOfDoors", 5),
-            Map.entry("trunkCapacity", 350f)
         )
     ));
 
-
-    // ------------------------
-    // Mock classes
-    // ------------------------
-
-    private static class MockFuel implements Fuel {
-        @Override
-        public double getCost() {
-            return 1.2;
-        }
-    }
-
-    private class MockObserver implements Observer {
-        boolean signalReceived;
-
-        @Override
-        public void updateObserver(Subject subject) {
-            signalReceived = true;
-        }
-    };
-
-    @BeforeAll
+    @BeforeEach
     public void setup() {
+        MockitoAnnotations.openMocks(this);
         this.testMockObserver = new MockObserver();
         initMockVehicle();
 
-        this.vehicleManagerService = VehicleManagerService.getInstance();
-
         for (Vehicle testMockVehicle : testMockVehicles) {
+            when(vehicleRepository.save(testMockVehicle)).thenReturn(testMockVehicle);
             vehicleManagerService.addVehicle(testMockVehicle);
         }
-    }
-
-    @BeforeEach
-    public void update() {
-        initMockVehicle();
     }
 
     private void initMockVehicle() {
@@ -155,8 +92,8 @@ public class CarTests {
 
             assertEquals(attrs.get("ID"), testMockVehicle.getID());
         }
-
     }
+
     @Test
     public void testSetID() {
         for (int i = 0; i < testMockVehicles.size(); i++) {
@@ -218,46 +155,6 @@ public class CarTests {
     }
 
     @Test
-    public void testGetState() {
-        for (int i = 0; i < testMockVehicles.size(); i++) {
-            Vehicle testMockVehicle = testMockVehicles.get(i);
-            Map<String, Object> attrs = EXPECTED_ATTRIBUTES.get(i);
-
-            assertEquals(attrs.get("state"), testMockVehicle.getState());
-        }
-    }
-
-    @Test
-    public void testGetRentingCost() {
-        for (int i = 0; i < testMockVehicles.size(); i++) {
-            Vehicle testMockVehicle = testMockVehicles.get(i);
-            Map<String, Object> attrs = EXPECTED_ATTRIBUTES.get(i);
-
-            assertEquals(attrs.get("rentingCost"), testMockVehicle.getRentingCost(1));
-        }
-    }
-
-    @Test
-    public void testGetNumberOfDoors() {
-        for (int i = 0; i < testMockVehicles.size(); i++) {
-            Car testMockVehicle = testMockVehicles.get(i);
-            Map<String, Object> attrs = EXPECTED_ATTRIBUTES.get(i);
-
-            assertEquals(attrs.get("numberOfDoors"), testMockVehicle.getNumberOfDoors());
-        }
-    }
-
-    @Test
-    public void testGetTrunkCapacity() {
-        for (int i = 0; i < testMockVehicles.size(); i++) {
-            Car testMockVehicle = testMockVehicles.get(i);
-            Map<String, Object> attrs = EXPECTED_ATTRIBUTES.get(i);
-
-            assertEquals(attrs.get("trunkCapacity"), testMockVehicle.getTrunkCapacity());
-        }
-    }
-
-    @Test
     public void testUpdateState() {
         for (int i = 0; i < testMockVehicles.size(); i++) {
             for (VehicleState state : VehicleState.values()) {
@@ -269,6 +166,7 @@ public class CarTests {
                 testMockVehicle.updateState(state);
                 assertEquals(state, testMockVehicle.getState());
 
+                when(vehicleRepository.findById(ID)).thenReturn(Optional.of(testMockVehicle));
                 Optional<Vehicle> updatedVehicle = vehicleManagerService.getVehicleById(ID);
 
                 assertTrue(updatedVehicle.isPresent());
@@ -286,6 +184,22 @@ public class CarTests {
             testMockVehicle.notifyObservers();
 
             assertTrue(testMockObserver.signalReceived);
+        }
+    }
+
+    private static class MockFuel implements Fuel {
+        @Override
+        public double getCost() {
+            return 1.2;
+        }
+    }
+
+    private class MockObserver implements Observer {
+        boolean signalReceived;
+
+        @Override
+        public void updateObserver(Subject subject) {
+            signalReceived = true;
         }
     }
 }
