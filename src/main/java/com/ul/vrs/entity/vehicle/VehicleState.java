@@ -1,6 +1,5 @@
 package com.ul.vrs.entity.vehicle;
 
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ul.vrs.service.VehicleManagerService;
 

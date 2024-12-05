@@ -1,6 +1,5 @@
 package com.ul.vrs.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,9 +19,6 @@ import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.entity.vehicle.VehicleState;
 
 import com.ul.vrs.repository.BookingRepository;
-import com.ul.vrs.repository.VehicleRepository;
-
-import jakarta.persistence.*;
 
 @Service
 public class RentalSystemService {
@@ -62,7 +58,7 @@ public class RentalSystemService {
             bookingRepository.delete(b.get());
             bookingRepository.save(booking);
             b = Optional.ofNullable(booking);
-        };
+        }
 
         return b;
     }

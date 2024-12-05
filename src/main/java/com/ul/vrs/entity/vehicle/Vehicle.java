@@ -115,6 +115,10 @@ public abstract class Vehicle implements Subject {
         this.vehicleState = state;
     }
 
+    public List<Observer> getObservers() {
+        return this.observers;
+    }
+
     @Override
     public void attach(Observer o) {
         if (!this.observers.contains(o)) {
