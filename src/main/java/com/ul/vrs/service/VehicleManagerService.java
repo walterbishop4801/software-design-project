@@ -5,7 +5,6 @@ import com.ul.vrs.entity.vehicle.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -14,8 +13,6 @@ import com.ul.vrs.repository.VehicleRepository;
 
 @Service
 public class VehicleManagerService {
-    private final List<Vehicle> vehicles;
-
     @Autowired
     VehicleRepository vehicleRepository;
 
@@ -30,8 +27,6 @@ public class VehicleManagerService {
     }
 
     private VehicleManagerService() {
-        this.vehicles = new ArrayList<>();
-
         //addVehicle(new Car(1L, "Camry", "Toyota", 2020, 25_000, Color.WHITE, new PetrolFuel(), 4, 425));
         //addVehicle(new Car(2L, "Civic", "Honda", 2010, 8_000, Color.BLACK, new PetrolFuel(), 4, 354));
         //addVehicle(new Car(3L, "Mustang", "Ford", 2021, 27_000, Color.RED, new PetrolFuel(), 2, 382));
@@ -54,9 +49,7 @@ public class VehicleManagerService {
             vehicle.setID(vehicleID);
         }
 
-        vehicles.add(vehicle);
         vehicleRepository.save(vehicle);
-
         System.out.println("Vehicle added with ID: " + vehicle.getID());
         return vehicle;
     }
@@ -66,22 +59,14 @@ public class VehicleManagerService {
         Optional<Vehicle> existingVehicle = getVehicleById(id);
 
         if (existingVehicle.isPresent()) {
-            Vehicle existing = existingVehicle.get();
-            int indexPrevious = vehicles.indexOf(existing);
-            System.out.println("Updating vehicle at index: " + indexPrevious);
-            vehicles.set(indexPrevious, vehicleDetails);
             vehicleDetails.setID(id);
             vehicleRepository.save(vehicleDetails);
-        } else {
-            System.out.println("Vehicle with ID " + id + " not found for update.");
-            return null;
         }
 
         return vehicleDetails;
     }
 
     public void deleteVehicle(Long id) {
-        vehicles.removeIf(v -> v.getID() == id);
         vehicleRepository.deleteById(id);
     }
 
