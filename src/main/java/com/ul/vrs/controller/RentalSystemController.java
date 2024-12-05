@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.ul.vrs.repository.*;
 
 @RestController
 @RequestMapping("/api/renting")
