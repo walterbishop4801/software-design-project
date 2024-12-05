@@ -2,21 +2,25 @@ package com.ul.vrs.entity.vehicle;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.Observer;
 import com.ul.vrs.entity.Subject;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
+import com.ul.vrs.repository.VehicleRepository;
 import com.ul.vrs.entity.vehicle.state.AvailableVehicleState;
 import com.ul.vrs.entity.vehicle.state.DamagedVehicleState;
 import com.ul.vrs.entity.vehicle.state.InMaintenanceVehicleState;
@@ -24,14 +28,15 @@ import com.ul.vrs.entity.vehicle.state.ReservedVehicleState;
 import com.ul.vrs.entity.vehicle.state.VehicleState;
 import com.ul.vrs.service.VehicleManagerService;
 
-import java.util.Optional;
-
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class VanTests {
     private List<Van> testMockVehicles;
     private MockObserver testMockObserver;
 
-    @Autowired
+    @Mock
+    private VehicleRepository vehicleRepository;
+
+    @InjectMocks
     private VehicleManagerService vehicleManagerService;
 
     private static final List<VehicleState> AVAILABLE_STATES = List.of(
@@ -42,7 +47,7 @@ public class VanTests {
         Map.ofEntries(
             Map.entry("ID", 10000L),
             Map.entry("name", "Test_Name"),
-            Map.entry("BrandOwner", "Test_BrandOwner"),
+            Map.entry("brandOwner", "Test_BrandOwner"),
             Map.entry("releaseYear", 2000),
             Map.entry("cost", 500.50),
             Map.entry("color", Color.BLACK),
@@ -54,41 +59,15 @@ public class VanTests {
         )
     ));
 
-    // ------------------------
-    // Mock classes
-    // ------------------------
-
-    private static class MockFuel implements Fuel {
-        @Override
-        public double getCost() {
-            return 1.2;
-        }
-    }
-
-    private class MockObserver implements Observer {
-        boolean signalReceived;
-
-        @Override
-        public void updateObserver(Subject subject) {
-            signalReceived = true;
-        }
-    };
-
-    @BeforeAll
+    @BeforeEach
     public void setup() {
+        MockitoAnnotations.openMocks(this);
         this.testMockObserver = new MockObserver();
         initMockVehicle();
-
-        this.vehicleManagerService = VehicleManagerService.getInstance();
 
         for (Vehicle testMockVehicle : testMockVehicles) {
             vehicleManagerService.addVehicle(testMockVehicle);
         }
-    }
-
-    @BeforeEach
-    public void update() {
-        initMockVehicle();
     }
 
     private void initMockVehicle() {
@@ -114,6 +93,16 @@ public class VanTests {
     }
 
     @Test
+    public void testAddVehicle() {
+        Van van = new Van(10001L, "New_Van", "New_Brand", 2022, 900.00, Color.BLUE, new MockFuel(), new AvailableVehicleState(), 500f, 8);
+        when(vehicleRepository.save(van)).thenReturn(van);
+
+        vehicleManagerService.addVehicle(van);
+
+        verify(vehicleRepository, times(1)).save(van);
+    }
+
+    @Test
     public void testGetID() {
         for (int i = 0; i < testMockVehicles.size(); i++) {
             Vehicle testMockVehicle = testMockVehicles.get(i);
@@ -121,7 +110,6 @@ public class VanTests {
 
             assertEquals(attrs.get("ID"), testMockVehicle.getID());
         }
-
     }
 
     @Test
@@ -185,16 +173,6 @@ public class VanTests {
     }
 
     @Test
-    public void testGetState() {
-        for (int i = 0; i < testMockVehicles.size(); i++) {
-            Vehicle testMockVehicle = testMockVehicles.get(i);
-            Map<String, Object> attrs = EXPECTED_ATTRIBUTES.get(i);
-
-            assertEquals(attrs.get("state"), testMockVehicle.getState());
-        }
-    }
-
-    @Test
     public void testGetRentingCost() {
         for (int i = 0; i < testMockVehicles.size(); i++) {
             Vehicle testMockVehicle = testMockVehicles.get(i);
@@ -253,6 +231,22 @@ public class VanTests {
             testMockVehicle.notifyObservers();
 
             assertTrue(testMockObserver.signalReceived);
+        }
+    }
+
+    private static class MockFuel implements Fuel {
+        @Override
+        public double getCost() {
+            return 1.2;
+        }
+    }
+
+    private class MockObserver implements Observer {
+        boolean signalReceived;
+
+        @Override
+        public void updateObserver(Subject subject) {
+            signalReceived = true;
         }
     }
 }

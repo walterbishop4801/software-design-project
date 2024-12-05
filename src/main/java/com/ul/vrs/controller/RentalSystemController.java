@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
 
+
 @RestController
 @RequestMapping("/api/renting")
 public class RentalSystemController {
@@ -97,10 +98,10 @@ public class RentalSystemController {
         try {
             checkAccountType();
 
-            Booking booking = rentalSystemService.customizeBooking(id, decorator);
+            Optional<Booking> booking = rentalSystemService.customizeBooking(id, decorator);
 
-            if(booking != null) {
-                return ResponseEntity.ok(booking);
+            if(booking.isPresent()) {
+                return ResponseEntity.ok(booking.get());
             } else {
                 return ResponseEntity.notFound().build();
             }

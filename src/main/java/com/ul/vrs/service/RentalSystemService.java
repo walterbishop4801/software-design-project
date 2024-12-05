@@ -1,12 +1,12 @@
 package com.ul.vrs.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ul.vrs.entity.account.Customer;
@@ -20,12 +20,21 @@ import com.ul.vrs.entity.vehicle.state.AvailableVehicleState;
 import com.ul.vrs.entity.vehicle.state.InMaintenanceVehicleState;
 import com.ul.vrs.entity.vehicle.state.ReservedVehicleState;
 
+import com.ul.vrs.repository.BookingRepository;
+
 @Service
 public class RentalSystemService {
+
+    @Autowired
+    BookingRepository bookingRepository;
+
+    @Autowired
+    private VehicleManagerService vehicleManagerService;
+
     private Map<UUID, Booking> bookings = new HashMap<>();
 
     public Optional<Booking> getBookingById(UUID bookingId) {
-        return Optional.ofNullable(bookings.get(bookingId));
+        return bookingRepository.findById(bookingId);
     }
 
     public UUID makeBooking(Customer customer, Vehicle vehicle, int numberOfRentingDays) {
@@ -33,8 +42,9 @@ public class RentalSystemService {
             Booking booking = new Booking(customer, vehicle, numberOfRentingDays);
             UUID bookingId = booking.getBookingId();
 
-            bookings.put(bookingId, booking);
+            bookingRepository.save(booking);
             vehicle.updateState(new ReservedVehicleState());
+            vehicleManagerService.updateVehicle(vehicle.getID(), vehicle);
 
             return bookingId;
         }
@@ -42,46 +52,54 @@ public class RentalSystemService {
         return null;
     }
 
-    public Booking customizeBooking(UUID bookingId, Customization customizationType) {
-        Booking booking = bookings.get(bookingId);
+    public Optional<Booking> customizeBooking(UUID bookingId, Customization customizationType) {
+        Optional<Booking> b = bookingRepository.findById(bookingId);
 
-        if (booking != null) {
-            // Encapsulate booking decorator creation with Factory Method
-            booking = BookingDecoratorFactoryMethod.createBookingDecorator(booking, customizationType);
-            bookings.put(bookingId, booking);
-            return booking;
+        if(b.isPresent()) {
+            Booking booking = BookingDecoratorFactoryMethod.createBookingDecorator(b.get(), customizationType);
+            bookingRepository.delete(b.get());
+            bookingRepository.save(booking);
+            b = Optional.ofNullable(booking);
         }
 
-        return null;
+        return b;
     }
 
     public void makeBookingPayment(UUID bookingId, PaymentRequest paymentRequest) {
-        Booking b = bookings.get(bookingId);
+        Optional<Booking> b = bookingRepository.findById(bookingId);
         PaymentStrategy strategy = paymentRequest.getPaymentStrategy();
-        b.setIsAuthenticated(strategy.pay(b.getPrice()));
+        if(b.isPresent()) {
+            Booking booking = b.get();
+            booking.setIsAuthenticated(strategy.pay(booking.getPrice()));
+            bookingRepository.save(booking);
+        }
     }
 
     // TODO: We gotta later use Mechanic to check it out to then update its state
     public void returnVehicle(UUID bookingId) {
-        Booking b = bookings.get(bookingId);
+        Optional<Booking> b = bookingRepository.findById(bookingId);
 
-        if (b != null) {
-            Vehicle v = b.getVehicle();
+        if(b.isPresent()) {
+            Booking booking = b.get();
+            Vehicle v = booking.getVehicle();
             v.updateState(new InMaintenanceVehicleState());
-            bookings.remove(bookingId);
+            vehicleManagerService.updateVehicle(v.getID(), v);
+            bookingRepository.delete(booking);
         }
     }
 
     public void cancelBooking(UUID bookingId) {
-        Booking b = bookings.get(bookingId);
-        if (b != null) {
-            Vehicle v = b.getVehicle();
+        Optional<Booking> b = bookingRepository.findById(bookingId);
+        if(b.isPresent()) {
+            Booking booking = b.get();
+            Vehicle v = booking.getVehicle();
             v.updateState(new AvailableVehicleState());
-            bookings.remove(bookingId);
+            vehicleManagerService.updateVehicle(v.getID(), v);
+            bookingRepository.delete(booking);
         }
     }
 
     public List<Booking> getAllBookings() {
-        return new ArrayList<>(bookings.values());
+        return bookingRepository.findAll();
     }
 }

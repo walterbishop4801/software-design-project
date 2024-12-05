@@ -3,6 +3,7 @@ package com.ul.vrs.entity.account;
 import java.util.Optional;
 
 import com.ul.vrs.entity.vehicle.Vehicle;
+import com.ul.vrs.entity.vehicle.state.InMaintenanceVehicleState;
 import com.ul.vrs.service.DamageCheckingService;
 import com.ul.vrs.service.SalesReportService;
 import com.ul.vrs.service.VehicleManagerService;
@@ -15,7 +16,7 @@ public class Manager extends Account {
 
     /**
      * Add a new vehicle to the inventory
-     * 
+     *
      * @param service The vehicle management service
      * @param vehicle The new vehicle to add
      */
@@ -23,11 +24,11 @@ public class Manager extends Account {
         service.addVehicle(vehicle);
         System.out.println("Added new vehicle: " + vehicle.getName() + " (ID: " + vehicle.getID() + ")");
     }
-    
+
 
     /**
      * Modify or update details of an existing vehicle
-     * 
+     *
      * @param service The vehicle management service
      * @param vehicle The vehicle with updated details
      */
@@ -54,7 +55,7 @@ public class Manager extends Account {
 
     /**
      * Remove a vehicle from the inventory
-     * 
+     *
      * @param service The vehicle management service
      * @param vehicleId The ID of the vehicle to remove
      */
@@ -62,16 +63,32 @@ public class Manager extends Account {
         service.deleteVehicle(vehicle.getID());
         System.out.println("Removed vehicle with ID: " + vehicle.getID());
     }
-    
+
     /**
      * Assign a mechanic to a vehicle
-     * 
+     *
+     * @param service The vehicle management service
      * @param vehicle The vehicle to assign a mechanic to
      */
-    public void assignMechanicToVehicle(Vehicle vehicle) {
-        System.out.println("Assigning mechanic to vehicle: " + vehicle.getName() + " (ID: " + vehicle.getID() + ")");
-        // Include logic to assign a mechanic (could involve additional services)
+    public void assignMechanicToVehicle(VehicleManagerService service, Vehicle vehicle) {
+        Optional<Vehicle> optionalVehicle = service.getVehicleById(vehicle.getID());
+        if (optionalVehicle.isPresent()) {
+            Vehicle foundVehicle = optionalVehicle.get();
+
+            // Update the vehicle state to IN_MAINTENANCE
+            foundVehicle.updateState(new InMaintenanceVehicleState());
+
+            // Save the updated vehicle state using the service
+            service.updateVehicle(foundVehicle.getID(), foundVehicle);
+
+            // Log success message
+            System.out.println("Assigned mechanic to vehicle: " + foundVehicle.getName() + " (ID: " + foundVehicle.getID() + ")");
+        } else {
+            // Log if the vehicle was not found
+            System.out.println("Vehicle not found for ID: " + vehicle.getID());
+        }
     }
+
 
     /**
      * Review customer feedback
@@ -83,7 +100,7 @@ public class Manager extends Account {
 
     /**
      * Generate and view the sales report for all vehicles.
-     * @return 
+     * @return
      *
      * @return Sales report as a string.
      */
@@ -97,7 +114,7 @@ public class Manager extends Account {
 
     /**
      * View damage assessment report for a vehicle
-     * 
+     *
      * @param vehicle The vehicle for which to view the report
      */
     public String viewDamageAssessmentReport(Vehicle vehicle) {

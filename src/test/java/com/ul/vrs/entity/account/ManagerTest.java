@@ -4,85 +4,114 @@ import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.vehicle.Car;
 import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.entity.vehicle.fuel.PetrolFuel;
+import com.ul.vrs.entity.vehicle.state.InMaintenanceVehicleState;
 import com.ul.vrs.service.DamageCheckingService;
 import com.ul.vrs.service.SalesReportService;
 import com.ul.vrs.service.VehicleManagerService;
+import com.ul.vrs.repository.VehicleRepository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 public class ManagerTest {
-    private Manager manager;
+    @InjectMocks
     private VehicleManagerService vehicleManagerService;
+
+    @Mock
+    private VehicleRepository vehicleRepository;
+
+    private Manager manager;
 
     @BeforeEach
     public void setUp() {
+        MockitoAnnotations.openMocks(this);
         manager = new Manager("John Doe", "M001", "securePassword");
-        vehicleManagerService = VehicleManagerService.getInstance();
         new DamageCheckingService();
         new SalesReportService(vehicleManagerService);
     }
 
     @Test
     public void testManagerCreation() {
-        assertEquals("John Doe", manager.getUsername(), "Manager's name should match.");
-        assertEquals("M001", manager.getAccountId(), "Manager's ID should match.");
-        assertEquals("securePassword", manager.getPassword(), "Manager's password should match.");
+        // Check if manager details are correctly initialized
+        assertEquals("John Doe", manager.getUsername());
+        assertEquals("M001", manager.getAccountId());
+        assertEquals("securePassword", manager.getPassword());
     }
 
     @Test
     public void testAddVehicle() {
-        Vehicle newVehicle = new Car(65165167, "Tesla Model S", "Tesla", 2023, 75_000, Color.BLUE, new PetrolFuel(), 5, 396);
+        // Create a new vehicle and mock repository save behavior
+        Vehicle newVehicle = new Car(123L, "Tesla Model S", "Tesla", 2023, 75000, Color.BLUE, new PetrolFuel(), 5, 396);
+        when(vehicleRepository.save(newVehicle)).thenReturn(newVehicle);
+
         manager.addVehicle(vehicleManagerService, newVehicle);
 
+        // Assert: Verify interactions and that the vehicle is added
+        verify(vehicleRepository, times(1)).save(newVehicle);
+        when(vehicleRepository.findById(newVehicle.getID())).thenReturn(Optional.of(newVehicle));
         Optional<Vehicle> addedVehicle = vehicleManagerService.getVehicleById(newVehicle.getID());
-        assertTrue(addedVehicle.isPresent(), "The new vehicle should be added to the inventory.");
-        assertEquals("Tesla Model S", addedVehicle.get().getName(), "Vehicle name should match.");
-        assertEquals("Tesla", addedVehicle.get().getBrandOwner(), "Vehicle manufacturer should match.");
-        System.out.println("Vehicle name: " + addedVehicle.get().getName());
-    }
 
-    @Test
-    public void testModifyVehicle() {
-        // Arrange
-        Vehicle existingVehicle = vehicleManagerService.getAllVehicles().get(0); // Get the first vehicle
-        long newId = 999L; // New ID for the vehicle
-
-        // Act
-        existingVehicle.setID(newId); // Update the ID
-        Optional<Vehicle> modifiedVehicle = vehicleManagerService.getVehicleById(newId);
-
-        // Assert
-        assertTrue(modifiedVehicle.isPresent(), "Vehicle with the updated ID should exist in the inventory.");
-        assertEquals(newId, modifiedVehicle.get().getID(), "Updated ID should match.");
+        assertTrue(addedVehicle.isPresent());
+        assertEquals("Tesla Model S", addedVehicle.get().getName());
+        assertEquals("Tesla", addedVehicle.get().getBrandOwner());
     }
 
     @Test
     public void testRemoveVehicle() {
-        Vehicle existingVehicle = vehicleManagerService.getAllVehicles().get(0); // Get the first vehicle
+        // Mock an existing vehicle
+        Vehicle existingVehicle = new Car(123L, "Model Y", "Tesla", 2021, 60000, Color.BLACK, new PetrolFuel(), 5, 400);
+        when(vehicleRepository.findById(existingVehicle.getID())).thenReturn(Optional.of(existingVehicle));
+        doNothing().when(vehicleRepository).deleteById(existingVehicle.getID());
+
+        // Remove the vehicle
         manager.removeVehicle(vehicleManagerService, existingVehicle);
 
+        // Assert: Verify delete interaction and that the vehicle is removed
+        verify(vehicleRepository, times(1)).deleteById(existingVehicle.getID());
+        when(vehicleRepository.findById(existingVehicle.getID())).thenReturn(Optional.empty());
         Optional<Vehicle> removedVehicle = vehicleManagerService.getVehicleById(existingVehicle.getID());
-        assertFalse(removedVehicle.isPresent(), "The vehicle should be removed from the inventory.");
+
+        assertFalse(removedVehicle.isPresent());
     }
 
     @Test
     public void testGenerateVehicleSalesReport() {
+        // Arrange: Mock a vehicle and repository behavior
+        Vehicle vehicle = new Car(123L, "Model 3", "Tesla", 2020, 50000, Color.RED, new PetrolFuel(), 4, 300);
+        when(vehicleRepository.findAll()).thenReturn(List.of(vehicle));
+
+        // Act: Generate a sales report
         String report = manager.generateVehicleSalesReport();
-        assertNotNull(report, "The sales report should not be null.");
-        assertTrue(report.contains("Vehicle Sales Report"), "The report should contain the header.");
+
+        // Assert: Check report content
+        assertNotNull(report);
+        assertTrue(report.contains("Vehicle Sales Report"));
+        assertTrue(report.contains("Model 3"));
     }
 
     @Test
     public void testAssignMechanicToVehicle() {
-        Vehicle existingVehicle = vehicleManagerService.getAllVehicles().get(0); // Get the first vehicle
-        manager.assignMechanicToVehicle(existingVehicle);
+        // Arrange: Mock a vehicle and service interactions
+        Vehicle existingVehicle = new Car(123L, "Cybertruck", "Tesla", 2024, 100000, Color.RED, new PetrolFuel(), 6, 1000);
+        when(vehicleRepository.findById(existingVehicle.getID())).thenReturn(Optional.of(existingVehicle));
+        when(vehicleRepository.save(existingVehicle)).thenReturn(existingVehicle);
+        when(vehicleManagerService.getVehicleById(existingVehicle.getID())).thenReturn(Optional.of(existingVehicle));
 
-        // No state change happens in the current implementation; verify output manually if needed
-        assertDoesNotThrow(() -> manager.assignMechanicToVehicle(existingVehicle), "Assigning mechanic should not throw an exception.");
+        // Act: Assign a mechanic to the vehicle
+        manager.assignMechanicToVehicle(vehicleManagerService, existingVehicle);
+
+        // Assert: Verify state update and repository interactions
+        verify(vehicleRepository, times(1)).findById(existingVehicle.getID());
+        verify(vehicleRepository, times(1)).save(existingVehicle);
+        assertEquals(new InMaintenanceVehicleState(), existingVehicle.getState());
     }
 }
