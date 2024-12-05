@@ -20,8 +20,10 @@ import com.ul.vrs.entity.booking.payment.PaymentMethod;
 import com.ul.vrs.entity.booking.payment.PaymentRequest;
 import com.ul.vrs.entity.vehicle.Car;
 import com.ul.vrs.entity.vehicle.Vehicle;
-import com.ul.vrs.entity.vehicle.VehicleState;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
+import com.ul.vrs.entity.vehicle.state.AvailableVehicleState;
+import com.ul.vrs.entity.vehicle.state.InMaintenanceVehicleState;
+import com.ul.vrs.entity.vehicle.state.ReservedVehicleState;
 import com.ul.vrs.repository.BookingRepository;
 import com.ul.vrs.repository.VehicleRepository;
 
@@ -89,7 +91,7 @@ public class RentalSystemServiceTest {
         Optional<Booking> retrievedBooking = rentalSystemService.getBookingById(bookingId);
         assertTrue(retrievedBooking.isPresent(), "Booking should exist"); // Booking should exist
         assertEquals(vehicle, retrievedBooking.get().getVehicle(), "The vehicle in the booking should match the one provided");
-        assertEquals(VehicleState.RESERVED, vehicle.getState(), "Vehicle should be RESERVED after booking");
+        assertEquals(new ReservedVehicleState(), vehicle.getState(), "Vehicle should be RESERVED after booking");
     }
 
     @Test
@@ -147,7 +149,7 @@ public class RentalSystemServiceTest {
         // Test for returning a vehicle
         Vehicle vehicle = mockVehicles.get(0);
         Booking booking = new Booking(mockCustomer, vehicle, 1);
-        
+
         // Mock the repository behavior
         when(bookingRepository.findById(booking.getBookingId())).thenReturn(Optional.of(booking));
 
@@ -156,7 +158,7 @@ public class RentalSystemServiceTest {
 
         // Verify the booking was deleted
         verify(bookingRepository, times(1)).delete(booking);
-        assertEquals(VehicleState.IN_MAINTENANCE, vehicle.getState(), "Vehicle state should be IN_MAINTENANCE");
+        assertEquals(new InMaintenanceVehicleState(), vehicle.getState(), "Vehicle state should be IN_MAINTENANCE");
     }
 
 
@@ -173,8 +175,8 @@ public class RentalSystemServiceTest {
         rentalSystemService.cancelBooking(booking.getBookingId());
 
         // Verify the booking was deleted
-        verify(bookingRepository, times(1)).delete(booking); 
-        assertEquals(VehicleState.AVAILABLE, vehicle.getState(), "Vehicle state should be AVAILABLE after cancellation");
+        verify(bookingRepository, times(1)).delete(booking);
+        assertEquals(new AvailableVehicleState(), vehicle.getState(), "Vehicle state should be AVAILABLE after cancellation");
     }
 
 

@@ -7,6 +7,8 @@ import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.Observer;
 import com.ul.vrs.entity.Subject;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
+import com.ul.vrs.entity.vehicle.state.AvailableVehicleState;
+import com.ul.vrs.entity.vehicle.state.VehicleState;
 import com.ul.vrs.entity.vehicle.fuel.PetrolFuel;
 import com.ul.vrs.jacoco.ExcludeConstructorFromGeneratedJacoco;
 
@@ -15,12 +17,7 @@ import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type"
-)
-
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @JsonSubTypes({
@@ -39,7 +36,6 @@ public abstract class Vehicle implements Subject {
     @Enumerated(EnumType.STRING)
     private final Color color;
     private final Fuel fuelType;
-    @Enumerated(EnumType.STRING)
     private VehicleState vehicleState;
     @Transient
     private List<Observer> observers;
@@ -64,13 +60,13 @@ public abstract class Vehicle implements Subject {
         this.cost = 25_000;
         this.color = Color.WHITE;
         this.fuelType = new PetrolFuel();
-        this.vehicleState = VehicleState.AVAILABLE;
+        this.vehicleState = new AvailableVehicleState();
         this.observers = new ArrayList<>();
     }
 
     @ExcludeConstructorFromGeneratedJacoco
     public Vehicle(long ID, String name, String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType) {
-        this(ID, name, brandOwner, releaseYear, cost, color, fuelType, VehicleState.AVAILABLE);
+        this(ID, name, brandOwner, releaseYear, cost, color, fuelType, new AvailableVehicleState());
     }
 
     public abstract double getRentingCost(int numberOfRentingDays);

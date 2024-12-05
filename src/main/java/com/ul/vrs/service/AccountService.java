@@ -9,7 +9,6 @@ import java.util.UUID;
 
 @Service
 public class AccountService {
-
     private final RentalSystemService rentalSystemService;
     private final VehicleManagerService vehicleManagerService;
 

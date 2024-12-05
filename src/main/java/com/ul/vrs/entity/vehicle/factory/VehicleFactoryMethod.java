@@ -6,8 +6,8 @@ import com.ul.vrs.entity.vehicle.Scooter;
 import com.ul.vrs.entity.vehicle.Truck;
 import com.ul.vrs.entity.vehicle.Van;
 import com.ul.vrs.entity.vehicle.Vehicle;
-import com.ul.vrs.entity.vehicle.VehicleState;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
+import com.ul.vrs.entity.vehicle.state.VehicleState;
 
 public class VehicleFactoryMethod {
     // Encapsulate constructor ...

@@ -21,6 +21,11 @@ import com.ul.vrs.entity.Observer;
 import com.ul.vrs.entity.Subject;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
 import com.ul.vrs.repository.VehicleRepository;
+import com.ul.vrs.entity.vehicle.state.AvailableVehicleState;
+import com.ul.vrs.entity.vehicle.state.DamagedVehicleState;
+import com.ul.vrs.entity.vehicle.state.InMaintenanceVehicleState;
+import com.ul.vrs.entity.vehicle.state.ReservedVehicleState;
+import com.ul.vrs.entity.vehicle.state.VehicleState;
 import com.ul.vrs.service.VehicleManagerService;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -34,6 +39,10 @@ public class VanTests {
     @InjectMocks
     private VehicleManagerService vehicleManagerService;
 
+    private static final List<VehicleState> AVAILABLE_STATES = List.of(
+        new AvailableVehicleState(), new DamagedVehicleState(), new InMaintenanceVehicleState(), new ReservedVehicleState()
+    );
+
     private static final List<Map<String, Object>> EXPECTED_ATTRIBUTES = new ArrayList<>(List.of(
         Map.ofEntries(
             Map.entry("ID", 10000L),
@@ -43,7 +52,7 @@ public class VanTests {
             Map.entry("cost", 500.50),
             Map.entry("color", Color.BLACK),
             Map.entry("fuelType", new MockFuel()),
-            Map.entry("state", VehicleState.AVAILABLE),
+            Map.entry("state", new AvailableVehicleState()),
             Map.entry("rentingCost", 579.2),
             Map.entry("cargoCapacity", 250f),
             Map.entry("numberOfSeats", 4)
@@ -85,33 +94,12 @@ public class VanTests {
 
     @Test
     public void testAddVehicle() {
-        Van van = new Van(10001L, "New_Van", "New_Brand", 2022, 900.00, Color.BLUE, new MockFuel(), VehicleState.AVAILABLE, 500f, 8);
+        Van van = new Van(10001L, "New_Van", "New_Brand", 2022, 900.00, Color.BLUE, new MockFuel(), new AvailableVehicleState(), 500f, 8);
         when(vehicleRepository.save(van)).thenReturn(van);
 
         vehicleManagerService.addVehicle(van);
 
         verify(vehicleRepository, times(1)).save(van);
-    }
-
-    @Test
-    public void testUpdateState() {
-        for (int i = 0; i < testMockVehicles.size(); i++) {
-            for (VehicleState state : VehicleState.values()) {
-                Vehicle testMockVehicle = testMockVehicles.get(i);
-                Map<String, Object> attrs = EXPECTED_ATTRIBUTES.get(i);
-
-                final long ID = (Long) attrs.get("ID");
-
-                testMockVehicle.updateState(state);
-                assertEquals(state, testMockVehicle.getState());
-
-                when(vehicleRepository.findById(ID)).thenReturn(Optional.of(testMockVehicle));
-                Optional<Vehicle> updatedVehicle = vehicleManagerService.getVehicleById(ID);
-
-                assertTrue(updatedVehicle.isPresent());
-                assertEquals(testMockVehicle, updatedVehicle.get());
-            }
-        }
     }
 
     @Test
@@ -213,6 +201,29 @@ public class VanTests {
             assertEquals(attrs.get("numberOfSeats"), testMockVehicle.getNumberOfSeats());
         }
     }
+
+    @Test
+    public void testUpdateState() {
+        for (int i = 0; i < testMockVehicles.size(); i++) {
+            Vehicle testMockVehicle = testMockVehicles.get(i);
+            Map<String, Object> attrs = EXPECTED_ATTRIBUTES.get(i);
+            final long ID = (Long) attrs.get("ID");
+
+            for (VehicleState state : AVAILABLE_STATES) {
+                testMockVehicle.updateState(state);
+
+                assertEquals(state, testMockVehicle.getState());
+
+                when(vehicleRepository.findById(ID)).thenReturn(Optional.of(testMockVehicle));
+
+                Optional<Vehicle> updatedVehicle = vehicleManagerService.getVehicleById(ID);
+
+                assertTrue(updatedVehicle.isPresent());
+                assertEquals(state, updatedVehicle.get().getState());
+            }
+        }
+    }
+
 
     @Test
     public void testNotifyObservers() {

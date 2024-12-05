@@ -175,7 +175,7 @@
 									"        pm.expect(vehicle.name).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Name should not be empty\");",
 									"        pm.expect(vehicle.brandOwner).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Brand owner should not be empty\");",
 									"        pm.expect(vehicle.color).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Color should not be empty\");",
-									"        pm.expect(vehicle.state).to.be.a('string').and.to.have.lengthOf.at.least(1, \"State should not be empty\");",
+									"        pm.expect(vehicle.state).to.have.property('type').that.is.a('string').and.to.have.lengthOf.at.least(1, \"State should not be empty\");",
 									"    });",
 									"});",
 									""
@@ -311,7 +311,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"type\": \"car\",\n    \"ID\": 1,\n    \"name\": \"Tesla Model 3\",\n    \"brandOwner\": \"Tesla\",\n    \"releaseYear\": 2023,\n    \"cost\": 50000.0,\n    \"color\": \"RED\",\n    \"fuelType\": {\n        \"type\": \"electric\"    },\n    \"vehicleState\": \"AVAILABLE\",\n    \"numberOfDoors\": 4,\n    \"trunkCapacity\": 400.0\n}\n",
+							"raw": "{\n    \"type\": \"car\",\n    \"ID\": 1,\n    \"name\": \"Tesla Model 3\",\n    \"brandOwner\": \"Tesla\",\n    \"releaseYear\": 2023,\n    \"cost\": 50000.0,\n    \"color\": \"RED\",\n    \"fuelType\": {\n        \"type\": \"electric\"    \n    },\n    \"vehicleState\": {\n        \"type\": \"Available\"\n    },\n    \"numberOfDoors\": 4,\n    \"trunkCapacity\": 400.0\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"

@@ -59,13 +59,14 @@ public class VehicleController {
 
     // Add a new vehicle to the system - http://localhost:8080/api/vehicles
     @PostMapping
-    public Vehicle addVehicle(@RequestBody Vehicle vehicle) {
+    public ResponseEntity<Vehicle> addVehicle(@RequestBody Vehicle vehicle) {
         try {
             checkAccountType();
 
-            return vehicleService.addVehicle(vehicle);
+            Vehicle newVehicle = vehicleService.addVehicle(vehicle);
+            return ResponseEntity.ok(newVehicle);
         } catch (IllegalAccessException exe) {
-            return null;
+            return ResponseEntity.notFound().build();
         }
     }
 

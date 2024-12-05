@@ -4,7 +4,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class VehicleManagerServiceHelper {
-
     private static VehicleManagerService vehicleManagerService;
 
     public VehicleManagerServiceHelper(VehicleManagerService service) {
