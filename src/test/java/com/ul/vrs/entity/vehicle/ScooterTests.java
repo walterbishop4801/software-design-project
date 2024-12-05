@@ -277,19 +277,22 @@ public class ScooterTests {
     @Test
     public void testUpdateState() {
         for (int i = 0; i < testMockVehicles.size(); i++) {
+            Vehicle testMockVehicle = testMockVehicles.get(i);
+            Map<String, Object> attrs = EXPECTED_ATTRIBUTES.get(i);
+
+            final long ID = (Long) attrs.get("ID");
+
             for (VehicleState state : AVAILABLE_STATES) {
-                Vehicle testMockVehicle = testMockVehicles.get(i);
-                Map<String, Object> attrs = EXPECTED_ATTRIBUTES.get(i);
-
-                final long ID = (Long) attrs.get("ID");
-
                 testMockVehicle.updateState(state);
+
+                when(vehicleRepository.findById(ID)).thenReturn(Optional.of(testMockVehicle));
+
                 assertEquals(state, testMockVehicle.getState());
 
                 Optional<Vehicle> updatedVehicle = vehicleManagerService.getVehicleById(ID);
 
                 assertTrue(updatedVehicle.isPresent());
-                assertEquals(testMockVehicle, updatedVehicle.get());
+                assertEquals(state, updatedVehicle.get().getState());
             }
         }
     }

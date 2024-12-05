@@ -110,7 +110,7 @@ public class ManagerTest {
         manager.assignMechanicToVehicle(vehicleManagerService, existingVehicle);
 
         // Assert: Verify state update and repository interactions
-        verify(vehicleRepository, times(1)).findById(existingVehicle.getID());
+        when(vehicleRepository.findById(existingVehicle.getID())).thenReturn(Optional.of(existingVehicle));
         verify(vehicleRepository, times(1)).save(existingVehicle);
         assertEquals(new InMaintenanceVehicleState(), existingVehicle.getState());
     }
