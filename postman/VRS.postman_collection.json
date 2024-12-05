@@ -1,14 +1,14 @@
 {
 	"info": {
-		"_postman_id": "a8fb05af-2d3a-41a1-9353-17eb95bb6d51",
-		"name": "VRS",
+		"_postman_id": "34c979d4-5e9f-416d-9f44-e83fdf907cfb",
+		"name": "VRS Copy",
 		"description": "Postman collection for VRS application",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "39629405"
+		"_exporter_id": "25870780"
 	},
 	"item": [
 		{
-			"name": "Account",
+			"name": "Manager Account",
 			"item": [
 				{
 					"name": "Sign up new account",
@@ -16,27 +16,11 @@
 						"method": "POST",
 						"header": [],
 						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "username",
-									"value": "{{username}}",
-									"type": "text"
-								},
-								{
-									"key": "password",
-									"value": "{{password}}",
-									"type": "text"
-								},
-								{
-									"key": "accountType",
-									"value": "{{accountType}}",
-									"type": "text"
-								}
-							]
+							"mode": "urlencoded",
+							"urlencoded": []
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/account/signup",
+							"raw": "http://localhost:8080/api/account/signup?username=john_doe&password=123456&accountType=manager",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -46,33 +30,36 @@
 								"api",
 								"account",
 								"signup"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "john_doe"
+								},
+								{
+									"key": "password",
+									"value": "123456"
+								},
+								{
+									"key": "accountType",
+									"value": "manager"
+								}
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Log in existing account",
+					"name": "Log in manager account",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "username",
-									"value": "{{username}}",
-									"type": "text"
-								},
-								{
-									"key": "password",
-									"value": "{{password}}",
-									"type": "text"
-								}
-							]
+							"mode": "urlencoded",
+							"urlencoded": []
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/account/login",
+							"raw": "http://localhost:8080/api/account/login?username=john_doe&password=123456",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -82,27 +69,16 @@
 								"api",
 								"account",
 								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Log out the account",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/api/account/logout",
-							"protocol": "http",
-							"host": [
-								"localhost"
 							],
-							"port": "8080",
-							"path": [
-								"api",
-								"account",
-								"logout"
+							"query": [
+								{
+									"key": "username",
+									"value": "john_doe"
+								},
+								{
+									"key": "password",
+									"value": "123456"
+								}
 							]
 						}
 					},
@@ -340,7 +316,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"type\": \"car\",\n    \"ID\": 1,\n    \"name\": \"Tesla Model Y\",\n    \"brandOwner\": \"Tesla\",\n    \"releaseYear\": 2023,\n    \"cost\": 50000.0,\n    \"color\": \"RED\",\n    \"fuelType\": {\n        \"type\": \"electric\"    },\n    \"vehicleState\": \"AVAILABLE\",\n    \"numberOfDoors\": 4,\n    \"trunkCapacity\": 400.0\n}\n",
+							"raw": "{\n    \"type\": \"car\",\n    \"name\": \"Tesla Model 3\",\n    \"brandOwner\": \"Tesla\",\n    \"releaseYear\": 2023,\n    \"color\": \"RED\",\n    \"fuelType\": {\n        \"type\": \"electric\",\n        \"cost\": 0.22\n    },\n    \"vehicleState\": {\n        \"type\": \"Available\"\n    },\n    \"numberOfDoors\": 4,\n    \"trunkCapacity\": 400.0,\n    \"id\": 1,\n    \"baseCost\": 500.0\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -358,6 +334,111 @@
 								"api",
 								"vehicles",
 								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Manager Logout",
+			"item": [
+				{
+					"name": "Log out manager account",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/account/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"account",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Customer Account",
+			"item": [
+				{
+					"name": "Sign up new account",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/account/signup?username=samantha_smith&password=123456&accountType=customer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"account",
+								"signup"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "samantha_smith"
+								},
+								{
+									"key": "password",
+									"value": "123456"
+								},
+								{
+									"key": "accountType",
+									"value": "customer"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Log in existing account",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/account/login?username=samantha_smith&password=123456",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"account",
+								"login"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "samantha_smith"
+								},
+								{
+									"key": "password",
+									"value": "123456"
+								}
 							]
 						}
 					},
@@ -414,7 +495,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "",
+							"raw": "{\n    \"numberOfRentingDays\": 5\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -738,6 +819,32 @@
 								"api",
 								"renting",
 								"list_bookings"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Customer Logout",
+			"item": [
+				{
+					"name": "Log out customer account",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/account/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"account",
+								"logout"
 							]
 						}
 					},

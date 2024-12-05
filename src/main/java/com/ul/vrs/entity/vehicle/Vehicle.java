@@ -7,7 +7,12 @@ import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.Observer;
 import com.ul.vrs.entity.Subject;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
+import com.ul.vrs.entity.vehicle.fuel.FuelConverter;
 import com.ul.vrs.entity.vehicle.state.AvailableVehicleState;
+import com.ul.vrs.entity.vehicle.state.DamagedVehicleState;
+import com.ul.vrs.entity.vehicle.state.InMaintenanceVehicleState;
+import com.ul.vrs.entity.vehicle.state.ReservedVehicleState;
+import com.ul.vrs.entity.vehicle.state.StateConverter;
 import com.ul.vrs.entity.vehicle.state.VehicleState;
 import com.ul.vrs.entity.vehicle.fuel.PetrolFuel;
 import com.ul.vrs.jacoco.ExcludeConstructorFromGeneratedJacoco;
@@ -35,7 +40,16 @@ public abstract class Vehicle implements Subject {
     protected final double cost;
     @Enumerated(EnumType.STRING)
     private final Color color;
+    @Convert(converter = FuelConverter.class)
     private final Fuel fuelType;
+    @Convert(converter = StateConverter.class)
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+    @JsonSubTypes({
+        @JsonSubTypes.Type(value = AvailableVehicleState.class, name = "Available"),
+        @JsonSubTypes.Type(value = DamagedVehicleState.class, name = "Damaged"),
+        @JsonSubTypes.Type(value = InMaintenanceVehicleState.class, name = "InMaintenance"),
+        @JsonSubTypes.Type(value = ReservedVehicleState.class, name = "Reserved")
+    })
     private VehicleState vehicleState;
     @Transient
     private List<Observer> observers;

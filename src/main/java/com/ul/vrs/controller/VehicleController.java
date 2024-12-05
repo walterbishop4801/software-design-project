@@ -70,12 +70,20 @@ public class VehicleController {
         }
     }
 
-    // Update an existing vehicle's details - http://localhost:8080/api/vehicles/{id}
+ // Update an existing vehicle's details - http://localhost:8080/api/vehicles/{id}
     @PutMapping("/{id}")
-    public ResponseEntity<Vehicle> updateVehicle(@PathVariable Long id, @RequestBody Vehicle vehicleDetails) {
+    public ResponseEntity<?> updateVehicle(@PathVariable Long id, @RequestBody Vehicle vehicleDetails) {
         try {
+            // Check if the account has the required permissions
             checkAccountType();
 
+            // Validate the incoming vehicle details
+            if (vehicleDetails.getState() == null || vehicleDetails.getState().getType() == null) {
+                return ResponseEntity.badRequest().body("Invalid vehicle state: Missing or invalid 'type' field.");
+            }
+            System.out.println(vehicleDetails.getState());
+
+            // Attempt to update the vehicle
             Vehicle updatedVehicle = vehicleService.updateVehicle(id, vehicleDetails);
 
             if (updatedVehicle != null) {
@@ -83,10 +91,15 @@ public class VehicleController {
             } else {
                 return ResponseEntity.notFound().build();
             }
-        } catch (IllegalAccessException exe) {
-            return ResponseEntity.status(403).body(null);
+        } catch (IllegalAccessException e) {
+            // Handle insufficient permissions
+            return ResponseEntity.status(403).body("You do not have permission to update this vehicle.");
+        } catch (Exception e) {
+            // Handle other errors
+            return ResponseEntity.status(500).body("An error occurred while updating the vehicle: " + e.getMessage());
         }
     }
+
 
     // Delete a vehicle by its ID - http://localhost:8080/api/vehicles/{id}
     @DeleteMapping("/{id}")
