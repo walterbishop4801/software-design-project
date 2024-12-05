@@ -16,7 +16,9 @@ import com.ul.vrs.entity.booking.decorator.factory.BookingDecoratorFactoryMethod
 import com.ul.vrs.entity.booking.payment.PaymentRequest;
 import com.ul.vrs.entity.booking.payment.strategy.PaymentStrategy;
 import com.ul.vrs.entity.vehicle.Vehicle;
-import com.ul.vrs.entity.vehicle.VehicleState;
+import com.ul.vrs.entity.vehicle.state.AvailableVehicleState;
+import com.ul.vrs.entity.vehicle.state.InMaintenanceVehicleState;
+import com.ul.vrs.entity.vehicle.state.ReservedVehicleState;
 
 @Service
 public class RentalSystemService {
@@ -32,7 +34,7 @@ public class RentalSystemService {
             UUID bookingId = booking.getBookingId();
 
             bookings.put(bookingId, booking);
-            vehicle.updateState(VehicleState.RESERVED);
+            vehicle.updateState(new ReservedVehicleState());
 
             return bookingId;
         }
@@ -62,9 +64,10 @@ public class RentalSystemService {
     // TODO: We gotta later use Mechanic to check it out to then update its state
     public void returnVehicle(UUID bookingId) {
         Booking b = bookings.get(bookingId);
+
         if (b != null) {
             Vehicle v = b.getVehicle();
-            v.updateState(VehicleState.IN_MAINTENANCE);
+            v.updateState(new InMaintenanceVehicleState());
             bookings.remove(bookingId);
         }
     }
@@ -73,7 +76,7 @@ public class RentalSystemService {
         Booking b = bookings.get(bookingId);
         if (b != null) {
             Vehicle v = b.getVehicle();
-            v.updateState(VehicleState.AVAILABLE);
+            v.updateState(new AvailableVehicleState());
             bookings.remove(bookingId);
         }
     }

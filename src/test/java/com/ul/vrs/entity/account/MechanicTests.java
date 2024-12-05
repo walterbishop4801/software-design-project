@@ -17,7 +17,10 @@ import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.Observer;
 import com.ul.vrs.entity.Subject;
 import com.ul.vrs.entity.vehicle.Vehicle;
-import com.ul.vrs.entity.vehicle.VehicleState;
+import com.ul.vrs.entity.vehicle.state.AvailableVehicleState;
+import com.ul.vrs.entity.vehicle.state.DamagedVehicleState;
+import com.ul.vrs.entity.vehicle.state.InMaintenanceVehicleState;
+import com.ul.vrs.entity.vehicle.state.VehicleState;
 import com.ul.vrs.service.VehicleManagerService;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -35,7 +38,7 @@ public class MechanicTests {
             Map.entry("releaseYear", 2000),
             Map.entry("cost", 500.50),
             Map.entry("color", Color.BLACK),
-            Map.entry("state", VehicleState.AVAILABLE)
+            Map.entry("state", new AvailableVehicleState())
         ),
         Map.ofEntries(
             Map.entry("ID", 10001L),
@@ -44,7 +47,7 @@ public class MechanicTests {
             Map.entry("releaseYear", 2010),
             Map.entry("cost", 1000.0),
             Map.entry("color", Color.RED),
-            Map.entry("state", VehicleState.AVAILABLE)
+            Map.entry("state", new AvailableVehicleState())
         )
     ));
 
@@ -121,7 +124,7 @@ public class MechanicTests {
 
         testMechanic.assignToVehicle(vehicle);
 
-        assertEquals(VehicleState.IN_MAINTENANCE, vehicle.getState(), "Vehicle state should be IN_MAINTENANCE");
+        assertEquals(new InMaintenanceVehicleState(), vehicle.getState(), "Vehicle state should be IN_MAINTENANCE");
         Optional<Vehicle> retrievedVehicle = vehicleManagerService.getVehicleById(vehicle.getID());
         assertTrue(retrievedVehicle.isPresent(), "Vehicle should exist in the VehicleManagerService");
         System.out.println("Vehicle successfully assigned to mechanic. State: " + vehicle.getState());
@@ -151,7 +154,7 @@ public class MechanicTests {
         System.out.println("Vehicle registration after release: " + retrievedVehicle.isPresent());
 
         // Assertions
-        assertEquals(VehicleState.AVAILABLE, vehicle.getState(), "Vehicle state should be AVAILABLE.");
+        assertEquals(new AvailableVehicleState(), vehicle.getState(), "Vehicle state should be AVAILABLE.");
         assertTrue(retrievedVehicle.isPresent(), "Vehicle should still exist in VehicleManagerService.");
     }
 
@@ -160,10 +163,10 @@ public class MechanicTests {
         MockVehicle vehicle = testMockVehicles.get(0);
         System.out.println("Testing fix vehicle with ID: " + vehicle.getID());
 
-        vehicle.updateState(VehicleState.DAMAGED);
+        vehicle.updateState(new DamagedVehicleState());
         testMechanic.fixVehicle(vehicle);
 
-        assertEquals(VehicleState.AVAILABLE, vehicle.getState(), "Vehicle state should be AVAILABLE after fixing");
+        assertEquals(new AvailableVehicleState(), vehicle.getState(), "Vehicle state should be AVAILABLE after fixing");
         System.out.println("Vehicle successfully fixed. State: " + vehicle.getState());
     }
 
@@ -175,7 +178,7 @@ public class MechanicTests {
         testMechanic.assignToVehicle(vehicle);
         testMechanic.serviceVehicle(vehicle);
 
-        assertEquals(VehicleState.IN_MAINTENANCE, vehicle.getState(), "Vehicle state should remain IN_MAINTENANCE");
+        assertEquals(new InMaintenanceVehicleState(), vehicle.getState(), "Vehicle state should remain IN_MAINTENANCE");
         System.out.println("Vehicle successfully serviced. State: " + vehicle.getState());
     }
 
@@ -185,7 +188,7 @@ public class MechanicTests {
         System.out.println("Testing notify observers for vehicle with ID: " + vehicle.getID());
 
         vehicle.attach(testMockObserver);
-        vehicle.updateState(VehicleState.DAMAGED);
+        vehicle.updateState(new DamagedVehicleState());
 
         assertTrue(testMockObserver.signalReceived, "Observer should be notified of vehicle state change");
         System.out.println("Observer successfully notified of state change.");

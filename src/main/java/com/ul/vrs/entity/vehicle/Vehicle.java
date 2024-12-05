@@ -7,6 +7,8 @@ import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.Observer;
 import com.ul.vrs.entity.Subject;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
+import com.ul.vrs.entity.vehicle.state.AvailableVehicleState;
+import com.ul.vrs.entity.vehicle.state.VehicleState;
 import com.ul.vrs.jacoco.ExcludeConstructorFromGeneratedJacoco;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -48,7 +50,7 @@ public abstract class Vehicle implements Subject {
 
     @ExcludeConstructorFromGeneratedJacoco
     public Vehicle(long ID, String name, String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType) {
-        this(ID, name, brandOwner, releaseYear, cost, color, fuelType, VehicleState.AVAILABLE);
+        this(ID, name, brandOwner, releaseYear, cost, color, fuelType, new AvailableVehicleState());
     }
 
     public abstract double getRentingCost(int numberOfRentingDays);

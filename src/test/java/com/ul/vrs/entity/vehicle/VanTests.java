@@ -17,6 +17,11 @@ import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.Observer;
 import com.ul.vrs.entity.Subject;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
+import com.ul.vrs.entity.vehicle.state.AvailableVehicleState;
+import com.ul.vrs.entity.vehicle.state.DamagedVehicleState;
+import com.ul.vrs.entity.vehicle.state.InMaintenanceVehicleState;
+import com.ul.vrs.entity.vehicle.state.ReservedVehicleState;
+import com.ul.vrs.entity.vehicle.state.VehicleState;
 import com.ul.vrs.service.VehicleManagerService;
 
 import java.util.Optional;
@@ -29,6 +34,10 @@ public class VanTests {
     @Autowired
     private VehicleManagerService vehicleManagerService;
 
+    private static final List<VehicleState> AVAILABLE_STATES = List.of(
+        new AvailableVehicleState(), new DamagedVehicleState(), new InMaintenanceVehicleState(), new ReservedVehicleState()
+    );
+
     private static final List<Map<String, Object>> EXPECTED_ATTRIBUTES = new ArrayList<>(List.of(
         Map.ofEntries(
             Map.entry("ID", 10000L),
@@ -38,7 +47,7 @@ public class VanTests {
             Map.entry("cost", 500.50),
             Map.entry("color", Color.BLACK),
             Map.entry("fuelType", new MockFuel()),
-            Map.entry("state", VehicleState.AVAILABLE),
+            Map.entry("state", new AvailableVehicleState()),
             Map.entry("rentingCost", 579.2),
             Map.entry("cargoCapacity", 250f),
             Map.entry("numberOfSeats", 4)
@@ -218,7 +227,7 @@ public class VanTests {
     @Test
     public void testUpdateState() {
         for (int i = 0; i < testMockVehicles.size(); i++) {
-            for (VehicleState state : VehicleState.values()) {
+            for (VehicleState state : AVAILABLE_STATES) {
                 Vehicle testMockVehicle = testMockVehicles.get(i);
                 Map<String, Object> attrs = EXPECTED_ATTRIBUTES.get(i);
 

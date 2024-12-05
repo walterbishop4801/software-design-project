@@ -17,8 +17,10 @@ import com.ul.vrs.entity.booking.payment.PaymentMethod;
 import com.ul.vrs.entity.booking.payment.PaymentRequest;
 import com.ul.vrs.entity.vehicle.Car;
 import com.ul.vrs.entity.vehicle.Vehicle;
-import com.ul.vrs.entity.vehicle.VehicleState;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
+import com.ul.vrs.entity.vehicle.state.AvailableVehicleState;
+import com.ul.vrs.entity.vehicle.state.InMaintenanceVehicleState;
+import com.ul.vrs.entity.vehicle.state.ReservedVehicleState;
 
 public class RentalSystemServiceTest {
     // Service being tested
@@ -60,7 +62,7 @@ public class RentalSystemServiceTest {
         Optional<Booking> booking = rentalSystemService.getBookingById(bookingId);
         assertTrue(booking.isPresent(), "Booking should exist"); // Booking should exist
         assertEquals(vehicle, booking.get().getVehicle(), "The vehicle in the booking should match the one provided");
-        assertEquals(VehicleState.RESERVED, vehicle.getState(), "Vehicle should be RESERVED after booking");
+        assertEquals(new ReservedVehicleState(), vehicle.getState(), "Vehicle should be RESERVED after booking");
     }
 
     @Test
@@ -119,7 +121,7 @@ public class RentalSystemServiceTest {
 
         Optional<Booking> booking = rentalSystemService.getBookingById(bookingId);
         assertFalse(booking.isPresent(), "Booking should be removed after vehicle is returned"); // Booking should be removed
-        assertEquals(VehicleState.IN_MAINTENANCE, vehicle.getState(), "Vehicle state should be IN_MAINTENANCE");
+        assertEquals(new InMaintenanceVehicleState(), vehicle.getState(), "Vehicle state should be IN_MAINTENANCE");
     }
 
     @Test
@@ -132,7 +134,7 @@ public class RentalSystemServiceTest {
 
         Optional<Booking> booking = rentalSystemService.getBookingById(bookingId);
         assertFalse(booking.isPresent(), "Booking should be removed after cancellation");
-        assertEquals(VehicleState.AVAILABLE, vehicle.getState(), "Vehicle state should be AVAILABLE after cancellation");
+        assertEquals(new AvailableVehicleState(), vehicle.getState(), "Vehicle state should be AVAILABLE after cancellation");
     }
 
     @Test
