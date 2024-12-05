@@ -1,7 +1,11 @@
 package com.ul.vrs.entity.account;
 
+import jakarta.persistence.*;
+
+@MappedSuperclass
 public abstract class Account {
 	private String username;
+    @Id
 	private String accountId;
 	private String password;
 	

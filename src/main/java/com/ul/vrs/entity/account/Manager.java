@@ -3,6 +3,7 @@ package com.ul.vrs.entity.account;
 import java.util.Optional;
 
 import com.ul.vrs.entity.vehicle.Vehicle;
+import com.ul.vrs.entity.vehicle.VehicleState;
 import com.ul.vrs.service.DamageCheckingService;
 import com.ul.vrs.service.SalesReportService;
 import com.ul.vrs.service.VehicleManagerService;
@@ -71,12 +72,28 @@ public class Manager extends Account {
     /**
      * Assign a mechanic to a vehicle
      * 
+     * @param service The vehicle management service
      * @param vehicle The vehicle to assign a mechanic to
      */
-    public void assignMechanicToVehicle(Vehicle vehicle) {
-        System.out.println("Assigning mechanic to vehicle: " + vehicle.getName() + " (ID: " + vehicle.getID() + ")");
-        // Include logic to assign a mechanic (could involve additional services)
+    public void assignMechanicToVehicle(VehicleManagerService service, Vehicle vehicle) {
+        Optional<Vehicle> optionalVehicle = service.getVehicleById(vehicle.getID());
+        if (optionalVehicle.isPresent()) {
+            Vehicle foundVehicle = optionalVehicle.get();
+
+            // Update the vehicle state to IN_MAINTENANCE
+            foundVehicle.updateState(VehicleState.IN_MAINTENANCE);
+
+            // Save the updated vehicle state using the service
+            service.updateVehicle(foundVehicle.getID(), foundVehicle);
+
+            // Log success message
+            System.out.println("Assigned mechanic to vehicle: " + foundVehicle.getName() + " (ID: " + foundVehicle.getID() + ")");
+        } else {
+            // Log if the vehicle was not found
+            System.out.println("Vehicle not found for ID: " + vehicle.getID());
+        }
     }
+
 
     /**
      * Review customer feedback

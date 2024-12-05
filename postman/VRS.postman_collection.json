@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "e4f678b4-2ee4-456e-82cb-f9d9b0849c16",
+		"_postman_id": "a8fb05af-2d3a-41a1-9353-17eb95bb6d51",
 		"name": "VRS",
 		"description": "Postman collection for VRS application",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
@@ -498,7 +498,7 @@
 					"response": []
 				},
 				{
-					"name": "Authenticate Payment",
+					"name": "Make Payment",
 					"event": [
 						{
 							"listen": "test",
@@ -522,7 +522,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "",
+							"raw": "{\n    \"method\":\"CREDITCARD\",\n    \"payment\" : {\n        \"cvv\":\"123\",\n        \"cardNumber\":\"122\",\n        \"expDate\":\"12\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"

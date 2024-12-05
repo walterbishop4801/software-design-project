@@ -7,7 +7,11 @@ import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.Observer;
 import com.ul.vrs.entity.Subject;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
+import com.ul.vrs.entity.vehicle.fuel.PetrolFuel;
 import com.ul.vrs.jacoco.ExcludeConstructorFromGeneratedJacoco;
+
+import jakarta.persistence.*;
+
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -17,21 +21,27 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     property = "type"
 )
 
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @JsonSubTypes({
     @JsonSubTypes.Type(value = Car.class, name = "car"),
-    @JsonSubTypes.Type(value = Truck.class, name = "scooter"),
+    @JsonSubTypes.Type(value = Scooter.class, name = "scooter"),
     @JsonSubTypes.Type(value = Truck.class, name = "truck"),
-    @JsonSubTypes.Type(value = Truck.class, name = "van")
+    @JsonSubTypes.Type(value = Van.class, name = "van")
 })
 public abstract class Vehicle implements Subject {
+    @Id
     private long ID;
     private final String name;
     private final String brandOwner;
     private final int releaseYear;
     protected final double cost;
+    @Enumerated(EnumType.STRING)
     private final Color color;
     private final Fuel fuelType;
+    @Enumerated(EnumType.STRING)
     private VehicleState vehicleState;
+    @Transient
     private List<Observer> observers;
 
     public Vehicle(long ID, String name, String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType, VehicleState vehicleState) {
@@ -43,6 +53,18 @@ public abstract class Vehicle implements Subject {
         this.color = color;
         this.fuelType = fuelType;
         this.vehicleState = vehicleState;
+        this.observers = new ArrayList<>();
+    }
+
+    public Vehicle(){
+        this.ID = 100;
+        this.name = "Camry";
+        this.brandOwner = "Toyota";
+        this.releaseYear = 2020;
+        this.cost = 25_000;
+        this.color = Color.WHITE;
+        this.fuelType = new PetrolFuel();
+        this.vehicleState = VehicleState.AVAILABLE;
         this.observers = new ArrayList<>();
     }
 
@@ -91,7 +113,10 @@ public abstract class Vehicle implements Subject {
 
     public void updateState(VehicleState state) {
         this.vehicleState = state;
-        this.vehicleState.handleRequest(this);
+    }
+
+    public List<Observer> getObservers() {
+        return this.observers;
     }
 
     @Override

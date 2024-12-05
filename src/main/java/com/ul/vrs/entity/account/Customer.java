@@ -12,16 +12,41 @@ import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.entity.vehicle.VehicleState;
 import com.ul.vrs.interceptor.Interceptor;
 
+<<<<<<< HEAD
 public class Customer extends Account {
 
     private List<Interceptor> interceptors = new ArrayList<>();
+=======
+import jakarta.persistence.Entity;
+import jakarta.persistence.Transient;
+
+@Entity
+// TODO: This class doesn't look like an entity, as it has methods already defined at AccountController
+public class Customer extends Account {
+    @Transient
+	@Autowired
+    private RentalSystemService rentalSystemService;
+
+    @Transient
+    @Autowired
+    private VehicleManagerService vehicleManagerService;
+>>>>>>> develop
 
     public Customer(String name, String id, String password) {
         super(name, id, password);
     }
 
+<<<<<<< HEAD
     public void addInterceptor(Interceptor interceptor) {
         interceptors.add(interceptor);
+=======
+    public Customer() {
+        super("test_username", "test_id", "test_password");
+    }
+
+    public List<Vehicle> searchAvailableVehicles() {
+        return vehicleManagerService.getAllVehicles();
+>>>>>>> develop
     }
 
     private void runBeforeInterceptors(String action, Object target) {
