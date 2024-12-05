@@ -37,4 +37,7 @@ public abstract class Account {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	// Abstract method
+    public abstract String getAccountType();
 }

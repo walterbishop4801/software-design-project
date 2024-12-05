@@ -18,6 +18,10 @@ public class Customer extends Account{
         super(name, id, password);
     }
     
+    @Override
+    public String getAccountType() {
+        return "Customer";
+    }    
     
     /* Check available vehicles */
     public void searchAvailableVehicles(VehicleManagerService service) {
