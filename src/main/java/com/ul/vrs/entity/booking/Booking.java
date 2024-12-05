@@ -9,32 +9,36 @@ public class Booking {
     private final Customer customer;
     private final Vehicle vehicle;
     private final UUID bookingId;
-    private final long price;
+    private final double price;
+    private final int numberOfRentingDays;
     private boolean isAuthenticated;
 
-    protected Booking(UUID bookingId, Customer customer, Vehicle vehicle) {
+    protected Booking(UUID bookingId, Customer customer, Vehicle vehicle, int numberOfRentingDays) {
         this.customer = customer;
         this.vehicle = vehicle;
         this.bookingId = bookingId;
         this.isAuthenticated = false;
-
-        // TODO: Adjust cost based on vehicle cost and renting duration
-        this.price = 10;
+        this.numberOfRentingDays = numberOfRentingDays;
+        this.price = this.vehicle.getRentingCost(numberOfRentingDays);
     }
 
-    public Booking(Customer customer, Vehicle vehicle) {
-        this(UUID.randomUUID(), customer, vehicle);
+    public Booking(Customer customer, Vehicle vehicle, int numberOfRentingDays) {
+        this(UUID.randomUUID(), customer, vehicle, numberOfRentingDays);
     }
 
     public UUID getBookingId() {
         return bookingId;
     }
 
-    public void authenticatePayment() {
-        this.isAuthenticated = true;
+    public void setIsAuthenticated(boolean isAuthenticated) {
+        this.isAuthenticated = isAuthenticated;
     }
 
-    public long getPrice() {
+    public int getNumberOfRentingDays() {
+        return this.numberOfRentingDays;
+    }
+
+    public double getPrice() {
         return this.price;
     }
 

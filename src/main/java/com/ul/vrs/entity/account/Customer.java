@@ -1,19 +1,24 @@
 package com.ul.vrs.entity.account;
 
-import java.util.ArrayList;
 import java.util.List;
-import com.ul.vrs.entity.booking.Booking;
-import com.ul.vrs.entity.booking.Customization;
-import com.ul.vrs.entity.booking.GPSBookingDecorator;
-import com.ul.vrs.entity.booking.InsuranceBookingDecorator;
-import com.ul.vrs.entity.booking.VoucherBookingDecorator;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.ul.vrs.entity.booking.payment.PaymentRequest;
 import com.ul.vrs.entity.vehicle.Vehicle;
-import com.ul.vrs.entity.vehicle.VehicleState;
+import com.ul.vrs.service.RentalSystemService;
 import com.ul.vrs.service.VehicleManagerService;
 
+// TODO: This class doesn't look like an entity, as it has methods already defined at AccountController
+public class Customer extends Account {
+    @Autowired
+    private RentalSystemService rentalSystemService;
 
-public class Customer extends Account{
+    @Autowired
+    private VehicleManagerService vehicleManagerService;
 
+<<<<<<< HEAD
     public Customer(String name, String id, String password) {
         super(name, id, password);
     }
@@ -96,7 +101,33 @@ public class Customer extends Account{
         }
 
         return customizedBooking;
+=======
+    public Customer(String username, String accountId, String password) {
+        super(username, accountId, password);
+>>>>>>> 98bca6413625c5104a624831d3c39ed72763800f
     }
 
+    public List<Vehicle> searchAvailableVehicles() {
+        return vehicleManagerService.getAllVehicles();
+    }
 
+    public void makeBooking(Vehicle vehicle, int numberOfRentingDays) {
+        rentalSystemService.makeBooking(this, vehicle, numberOfRentingDays);
+    }
+
+    public void customizeVehicle(UUID booking) {
+        rentalSystemService.customizeBooking(booking, null);
+    }
+
+    public void makeBookingPayment(UUID booking, PaymentRequest paymentRequest) {
+        rentalSystemService.makeBookingPayment(booking, paymentRequest);
+    }
+
+    public void returnVehicle(UUID booking) {
+        rentalSystemService.returnVehicle(booking);
+    }
+
+    public void cancelBooking(UUID vehicle) {
+        rentalSystemService.cancelBooking(vehicle);
+    }
 }

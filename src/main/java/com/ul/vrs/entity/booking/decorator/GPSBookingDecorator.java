@@ -1,4 +1,6 @@
-package com.ul.vrs.entity.booking;
+package com.ul.vrs.entity.booking.decorator;
+
+import com.ul.vrs.entity.booking.Booking;
 
 public class GPSBookingDecorator extends BookingDecorator {
     public GPSBookingDecorator(Booking booking) {
@@ -6,7 +8,7 @@ public class GPSBookingDecorator extends BookingDecorator {
     }
 
     // TODO: Adjust value based on real-life values
-    public long getPrice() {
+    public double getPrice() {
         return super.getPrice() + 10;
     }
 }

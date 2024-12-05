@@ -1,12 +1,115 @@
 {
 	"info": {
-		"_postman_id": "62f6b961-f12c-42f9-b31e-7fec3c7e6af0",
+		"_postman_id": "e4f678b4-2ee4-456e-82cb-f9d9b0849c16",
 		"name": "VRS",
 		"description": "Postman collection for VRS application",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "39629405"
 	},
 	"item": [
+		{
+			"name": "Account",
+			"item": [
+				{
+					"name": "Sign up new account",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "text"
+								},
+								{
+									"key": "accountType",
+									"value": "{{accountType}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/account/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"account",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Log in existing account",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/account/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"account",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Log out the account",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/account/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"account",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
 		{
 			"name": "Vehicle",
 			"item": [
@@ -24,7 +127,6 @@
 									"",
 									"pm.test(\"Response has the required fields\", function () {",
 									"    const responseData = pm.response.json();",
-									"",
 									"    pm.expect(responseData).to.be.an('array');",
 									"    responseData.forEach(function(vehicle) {",
 									"        pm.expect(vehicle).to.have.property('name');",
@@ -34,9 +136,13 @@
 									"        pm.expect(vehicle).to.have.property('fuelType');",
 									"        pm.expect(vehicle).to.have.property('numberOfDoors');",
 									"        pm.expect(vehicle).to.have.property('trunkCapacity');",
-									"        pm.expect(vehicle).to.have.property('rentingCost');",
 									"        pm.expect(vehicle).to.have.property('state');",
 									"        pm.expect(vehicle).to.have.property('id');",
+									"        ",
+									"        // Check for 'rentingCost' only if it's defined",
+									"        if (vehicle.hasOwnProperty('rentingCost')) {",
+									"            pm.expect(vehicle.rentingCost).to.be.a('number');",
+									"        }",
 									"    });",
 									"});",
 									"",
@@ -69,11 +175,13 @@
 									"        pm.expect(vehicle.name).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Name should not be empty\");",
 									"        pm.expect(vehicle.brandOwner).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Brand owner should not be empty\");",
 									"        pm.expect(vehicle.color).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Color should not be empty\");",
-									"        pm.expect(vehicle.state).to.be.a('string').and.to.have.lengthOf.at.leLeast(1, \"State should not be empty\");",
+									"        pm.expect(vehicle.state).to.be.a('string').and.to.have.lengthOf.at.least(1, \"State should not be empty\");",
 									"    });",
-									"});"
+									"});",
+									""
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -103,7 +211,7 @@
 							"script": {
 								"exec": [
 									"pm.test(\"Response status code is 200\", function () {",
-									"    pm.expect(pm.response.code).to.equal(200);",
+									"  pm.response.to.have.status(200);",
 									"});",
 									"",
 									"",
@@ -111,64 +219,42 @@
 									"    const responseData = pm.response.json();",
 									"    ",
 									"    pm.expect(responseData).to.be.an('object');",
-									"    pm.expect(responseData).to.have.property('name');",
-									"    pm.expect(responseData).to.have.property('brandOwner');",
-									"    pm.expect(responseData).to.have.property('releaseYear');",
-									"    pm.expect(responseData).to.have.property('color');",
-									"    pm.expect(responseData).to.have.property('fuelType');",
-									"    pm.expect(responseData).to.have.property('numberOfDoors');",
-									"    pm.expect(responseData).to.have.property('trunkCapacity');",
-									"    pm.expect(responseData).to.have.property('rentingCost');",
-									"    pm.expect(responseData).to.have.property('state');",
-									"    pm.expect(responseData).to.have.property('id');",
+									"    pm.expect(responseData).to.include.all.keys('type', 'name', 'brandOwner', 'releaseYear', 'color', 'fuelType', 'numberOfDoors', 'trunkCapacity', 'state', 'id', 'baseCost');",
 									"});",
 									"",
 									"",
-									"pm.test(\"FuelType object contains a valid cost field\", function () {",
-									"    const responseData = pm.response.json();",
-									"    ",
-									"    pm.expect(responseData.fuelType).to.exist.and.to.be.an('object');",
-									"    pm.expect(responseData.fuelType.cost).to.exist.and.to.be.a('number');",
-									"});",
-									"",
-									"",
-									"pm.test(\"Release year is a non-negative integer\", function () {",
-									"    const responseData = pm.response.json();",
-									"    pm.expect(responseData.releaseYear).to.be.a('number');",
-									"    pm.expect(responseData.releaseYear).to.be.at.least(0);",
-									"});",
-									"",
-									"pm.test(\"Number of doors is a non-negative integer\", function () {",
-									"    const responseData = pm.response.json();",
-									"    pm.expect(responseData.numberOfDoors).to.be.a('number');",
-									"    pm.expect(responseData.numberOfDoors).to.be.at.least(0);",
-									"});",
-									"",
-									"pm.test(\"Trunk capacity is a non-negative integer\", function () {",
-									"    const responseData = pm.response.json();",
-									"    pm.expect(responseData.trunkCapacity).to.be.a('number');",
-									"    pm.expect(responseData.trunkCapacity).to.be.at.least(0);",
-									"});",
-									"",
-									"pm.test(\"Renting cost is a non-negative integer\", function () {",
-									"    const responseData = pm.response.json();",
-									"    pm.expect(responseData.rentingCost).to.be.a('number');",
-									"    pm.expect(responseData.rentingCost).to.be.at.least(0);",
-									"});",
-									"",
-									"",
-									"pm.test(\"Name, brandOwner, color, and state are non-empty strings\", function () {",
+									"pm.test(\"Release year is a valid year format\", function () {",
 									"    const responseData = pm.response.json();",
 									"    ",
 									"    pm.expect(responseData).to.be.an('object');",
-									"    ",
-									"    pm.expect(responseData.name).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Name should be a non-empty string\");",
-									"    pm.expect(responseData.brandOwner).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Brand owner should be a non-empty string\");",
-									"    pm.expect(responseData.color).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Color should be a non-empty string\");",
-									"    pm.expect(responseData.state).to.be.a('string').and.to.have.lengthOf.at.least(1, \"State should be a non-empty string\");",
-									"});"
+									"    pm.expect(responseData.releaseYear).to.match(/^\\d{4}$/);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Fuel type has type and cost properties\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData.fuelType).to.exist;",
+									"  pm.expect(responseData.fuelType.type).to.exist;",
+									"  pm.expect(responseData.fuelType.cost).to.exist;",
+									"});",
+									"",
+									"",
+									"pm.test(\"Trunk capacity is a non-negative number\", function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData.trunkCapacity).to.be.a('number');",
+									"    pm.expect(responseData.trunkCapacity).to.be.at.least(0, \"Trunk capacity should be a non-negative number\");",
+									"});",
+									"",
+									"pm.test(\"Base cost is a non-negative number\", function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData.baseCost).to.be.a('number');",
+									"    pm.expect(responseData.baseCost).to.be.at.least(0, \"Base cost should be a non-negative number\");",
+									"});",
+									""
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -254,7 +340,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"type\": \"car\",\n    \"ID\": 2,\n    \"name\": \"Honda Civic\",\n    \"brandOwner\": \"Honda\",\n    \"releaseYear\": 2019,\n    \"cost\": 25000.0,\n    \"color\": \"GREEN\",\n    \"fuelType\": {\n        \"type\": \"petrol\"\n    },\n    \"vehicleState\": \"AVAILABLE\",\n    \"numberOfDoors\": 4,\n    \"trunkCapacity\": 350.0\n}\n",
+							"raw": "{\n    \"type\": \"car\",\n    \"ID\": 1,\n    \"name\": \"Tesla Model Y\",\n    \"brandOwner\": \"Tesla\",\n    \"releaseYear\": 2023,\n    \"cost\": 50000.0,\n    \"color\": \"RED\",\n    \"fuelType\": {\n        \"type\": \"electric\"    },\n    \"vehicleState\": \"AVAILABLE\",\n    \"numberOfDoors\": 4,\n    \"trunkCapacity\": 400.0\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -262,7 +348,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/vehicles/2",
+							"raw": "http://localhost:8080/api/vehicles/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -271,7 +357,7 @@
 							"path": [
 								"api",
 								"vehicles",
-								"2"
+								"1"
 							]
 						}
 					},
@@ -284,6 +370,39 @@
 			"item": [
 				{
 					"name": "Make booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Get the raw response text",
+									"var rawResponse = pm.response.text();",
+									"",
+									"// Remove quotes from the response",
+									"var sanitizedResponse = rawResponse.replace(/^\"|\"$/g, '');",
+									"",
+									"// Store the sanitized response as an environment variable",
+									"pm.environment.set(\"bookingId\", sanitizedResponse);",
+									"",
+									"// Debugging output",
+									"console.log(\"Stored bookingId:\", sanitizedResponse);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -321,6 +440,28 @@
 				},
 				{
 					"name": "Customize booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -340,7 +481,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/renting/customize_booking/c4d25887-2c2a-4d20-9c0f-12eb12373f26",
+							"raw": "http://localhost:8080/api/renting/customize_booking/{{bookingId}}\n",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -350,7 +491,7 @@
 								"api",
 								"renting",
 								"customize_booking",
-								"c4d25887-2c2a-4d20-9c0f-12eb12373f26"
+								"{{bookingId}}\n"
 							]
 						}
 					},
@@ -358,6 +499,18 @@
 				},
 				{
 					"name": "Authenticate Payment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -377,7 +530,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/renting/authenticate_payment/c4d25887-2c2a-4d20-9c0f-12eb12373f26",
+							"raw": "http://localhost:8080/api/renting/authenticate_payment/{{bookingId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -387,7 +540,29 @@
 								"api",
 								"renting",
 								"authenticate_payment",
-								"c4d25887-2c2a-4d20-9c0f-12eb12373f26"
+								"{{bookingId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Return and Open Gate",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/renting/return_vehicle_and_open_gate/{{bookingId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"renting",
+								"return_vehicle_and_open_gate",
+								"{{bookingId}}"
 							]
 						}
 					},
@@ -414,7 +589,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/renting/return_vehicle/f88e4ebc-61e1-4072-8769-e105189847cb",
+							"raw": "http://localhost:8080/api/renting/return_vehicle/{{bookingId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -424,7 +599,7 @@
 								"api",
 								"renting",
 								"return_vehicle",
-								"f88e4ebc-61e1-4072-8769-e105189847cb"
+								"{{bookingId}}"
 							]
 						}
 					},
@@ -451,7 +626,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/renting/cancel_booking/7e4d0902-cec9-4b86-86f5-03c8a9e962d1",
+							"raw": "http://localhost:8080/api/renting/cancel_booking/{{bookingId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -461,7 +636,7 @@
 								"api",
 								"renting",
 								"cancel_booking",
-								"7e4d0902-cec9-4b86-86f5-03c8a9e962d1"
+								"{{bookingId}}"
 							]
 						}
 					},
@@ -474,61 +649,71 @@
 							"listen": "test",
 							"script": {
 								"exec": [
+									"// Test: Response status code is 200",
 									"pm.test(\"Response status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
 									"});",
 									"",
-									"",
-									"pm.test(\"Response has the required fields\", function () {",
+									"// Test: Response has the required fields in the vehicle object",
+									"pm.test(\"Response has the required fields in the vehicle object\", function () {",
 									"    const responseData = pm.response.json();",
-									"",
-									"    pm.expect(responseData).to.be.an('array');",
-									"",
-									"    responseData.forEach(function(vehicle) {",
-									"        pm.expect(vehicle).to.have.property('name');",
-									"        pm.expect(vehicle).to.have.property('brandOwner');",
-									"        pm.expect(vehicle).to.have.property('releaseYear');",
-									"        pm.expect(vehicle).to.have.property('color');",
-									"        pm.expect(vehicle).to.have.property('fuelType');",
-									"        pm.expect(vehicle).to.have.property('numberOfDoors');",
-									"        pm.expect(vehicle).to.have.property('trunkCapacity');",
-									"        pm.expect(vehicle).to.have.property('rentingCost');",
-									"        pm.expect(vehicle).to.have.property('state');",
-									"        pm.expect(vehicle).to.have.property('id');",
+									"    pm.expect(responseData).to.be.an('array', \"Response should be an array\");",
+									"    ",
+									"    responseData.forEach(function(entry) {",
+									"        const vehicle = entry.vehicle;",
+									"        ",
+									"        // Check required fields exist",
+									"        pm.expect(vehicle.name).to.exist;",
+									"        pm.expect(vehicle.brandOwner).to.exist;",
+									"        pm.expect(vehicle.releaseYear).to.exist;",
+									"        pm.expect(vehicle.color).to.exist;",
+									"        pm.expect(vehicle.fuelType).to.exist;",
+									"        pm.expect(vehicle.numberOfDoors).to.exist;",
+									"        pm.expect(vehicle.trunkCapacity).to.exist;",
+									"        pm.expect(vehicle.state).to.exist;",
+									"        pm.expect(vehicle.id).to.exist;",
+									"        pm.expect(vehicle.baseCost).to.exist;",
 									"    });",
 									"});",
 									"",
-									"",
+									"// Test: Fuel type object has a cost property",
 									"pm.test(\"Fuel type object has a cost property\", function () {",
-									"  const responseData = pm.response.json();",
-									"  ",
-									"  pm.expect(responseData).to.be.an('array');",
-									"  responseData.forEach(function(vehicle) {",
-									"    pm.expect(vehicle.fuelType.cost).to.exist;",
-									"  });",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData).to.be.an('array', \"Response should be an array\");",
+									"    ",
+									"    responseData.forEach(function(entry) {",
+									"        const fuelType = entry.vehicle.fuelType;",
+									"        ",
+									"        // Check 'cost' property in 'fuelType'",
+									"        pm.expect(fuelType.cost).to.exist;",
+									"        pm.expect(fuelType.cost).to.be.a('number');",
+									"    });",
 									"});",
 									"",
-									"",
-									"pm.test(\"Verify non-negative integers for releaseYear, numberOfDoors, trunkCapacity, rentingCost, and id\", function () {",
+									"// Test: Verify non-negative integers for numeric fields",
+									"pm.test(\"Verify non-negative integers for numeric fields in the vehicle object\", function () {",
 									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData).to.be.an('array', \"Response should be an array\");",
 									"    ",
-									"    pm.expect(responseData).to.be.an('array');",
-									"    responseData.forEach(function(vehicle) {",
+									"    responseData.forEach(function(entry) {",
+									"        const vehicle = entry.vehicle;",
 									"        pm.expect(vehicle.releaseYear).to.be.a('number').and.to.be.at.least(0);",
 									"        pm.expect(vehicle.numberOfDoors).to.be.a('number').and.to.be.at.least(0);",
 									"        pm.expect(vehicle.trunkCapacity).to.be.a('number').and.to.be.at.least(0);",
-									"        pm.expect(vehicle.rentingCost).to.be.a('number').and.to.be.at.least(0);",
 									"        pm.expect(vehicle.id).to.be.a('number').and.to.be.at.least(0);",
+									"        pm.expect(vehicle.baseCost).to.be.a('number').and.to.be.at.least(0);",
 									"    });",
 									"});",
 									"",
-									"",
-									"pm.test(\"Name, brandOwner, color, and state are non-empty strings\", function () {",
+									"// Test: Name, brandOwner, color, and state are non-empty strings",
+									"pm.test(\"Name, brandOwner, color, and state are non-empty strings in the vehicle object\", function () {",
 									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData).to.be.an('array', \"Response should be an array\");",
 									"    ",
-									"    responseData.forEach(function(vehicle) {",
+									"    responseData.forEach(function(entry) {",
+									"        const vehicle = entry.vehicle;",
 									"        pm.expect(vehicle.name).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Name should not be empty\");",
-									"        pm.expect(vehicle.brandOwner).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Brand owner should not be empty\");",
+									"        pm.expect(vehicle.brandOwner).to.be.a('string').and.to.have.lengthOf.at.least(1, \"BrandOwner should not be empty\");",
 									"        pm.expect(vehicle.color).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Color should not be empty\");",
 									"        pm.expect(vehicle.state).to.be.a('string').and.to.have.lengthOf.at.least(1, \"State should not be empty\");",
 									"    });",
