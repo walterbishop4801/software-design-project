@@ -25,45 +25,28 @@ public class AccountController {
     // Sign up - http://localhost:8080/api/account/signup?username=?,password=?,accountType=?
     @PostMapping("/signup")
     public ResponseEntity<Account> signUp(@RequestParam String username, @RequestParam String password, @RequestParam String accountType) {
-        if (accountManager.getLoggedAccount() == null) {
-            Account account = accountManager.signUp(username, password, accountType);
 
-            if (account != null) {
-                return ResponseEntity.ok(account);
-            } else {
-                return ResponseEntity.badRequest().body(null);
-            }
+        Account account = accountManager.signUp(username, password, accountType);
+
+        if (account != null) {
+            return ResponseEntity.ok(account);
+        } else {
+            return ResponseEntity.badRequest().body(null);
         }
-
-        return ResponseEntity.badRequest().build();
     }
 
     // Log in - http://localhost:8080/api/account/login?username=?,password=?
     @PostMapping("/login")
     public ResponseEntity<String> logIn(@RequestParam String username, @RequestParam String password) {
-        if (accountManager.getLoggedAccount() == null) {
-            Account account = accountManager.logIn(username, password);
-            if (account == null) {
-                return ResponseEntity.badRequest().body("Invalid credentials");
-            }
-    
-            // Generate JWT
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            String jwt = jwtTokenUtil.generateToken(userDetails);
-
-            return ResponseEntity.ok(jwt);
+        Account account = accountManager.logIn(username, password);
+        if (account == null) {
+            return ResponseEntity.badRequest().body("Invalid credentials");
         }
 
-        return ResponseEntity.badRequest().build();
-    }
+        // Generate JWT
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        String jwt = jwtTokenUtil.generateToken(userDetails);
 
-    // Log out - http://localhost:8080/api/account/logout
-    @PostMapping("/logout")
-    public ResponseEntity<String> logOut() {
-        if (accountManager.logout()) {
-            return ResponseEntity.ok("Account has been logged out");
-        } else {
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok(jwt);
     }
 }

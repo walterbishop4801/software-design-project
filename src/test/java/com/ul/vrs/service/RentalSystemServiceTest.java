@@ -1,6 +1,7 @@
 package com.ul.vrs.service;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import java.util.*;
@@ -51,7 +52,7 @@ public class RentalSystemServiceTest {
     public void setup() {
         // Initialize mocks and set up mock customer
         MockitoAnnotations.openMocks(this);
-        mockCustomer = new Customer("test_user", "test_id", "test_password");
+        mockCustomer = new Customer("test_user", "test_password");
         initMockVehicles(); // Initialize mock vehicles
     }
 
@@ -81,7 +82,7 @@ public class RentalSystemServiceTest {
         Booking booking = new Booking(mockCustomer, vehicle, 1);
         when(bookingRepository.save(any(Booking.class))).thenReturn(booking);
 
-        UUID bookingId = rentalSystemService.makeBooking(mockCustomer, vehicle, 1); // Create a booking
+        UUID bookingId = rentalSystemService.makeBooking(mockCustomer.getUsername(), vehicle, 1); // Create a booking
 
         assertNotNull(bookingId, "Booking ID should not be null"); // Booking ID must not be null
         when(bookingRepository.findById(bookingId)).thenReturn(Optional.of(booking));
@@ -95,7 +96,7 @@ public class RentalSystemServiceTest {
     @Test
     public void testMakeBooking_NullVehicle() {
         // Test for attempting to book a null vehicle
-        UUID bookingId = rentalSystemService.makeBooking(mockCustomer, null, 0);
+        UUID bookingId = rentalSystemService.makeBooking(mockCustomer.getUsername(), null, 0);
         assertNull(bookingId, "Booking ID should be null when vehicle is null"); // Booking ID must be null
     }
 

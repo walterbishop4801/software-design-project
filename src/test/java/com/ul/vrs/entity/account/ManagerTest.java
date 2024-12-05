@@ -34,7 +34,7 @@ public class ManagerTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        manager = new Manager("John Doe", "M001", "securePassword");
+        manager = new Manager("John Doe","securePassword");
         new DamageCheckingService();
         new SalesReportService(vehicleManagerService);
     }
@@ -43,7 +43,6 @@ public class ManagerTest {
     public void testManagerCreation() {
         // Check if manager details are correctly initialized
         assertEquals("John Doe", manager.getUsername());
-        assertEquals("M001", manager.getAccountId());
         assertEquals("securePassword", manager.getPassword());
     }
 

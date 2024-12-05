@@ -9,7 +9,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ul.vrs.entity.account.Customer;
+import com.ul.vrs.entity.account.Account;
 import com.ul.vrs.entity.booking.Booking;
 import com.ul.vrs.entity.booking.decorator.Customization;
 import com.ul.vrs.entity.booking.decorator.factory.BookingDecoratorFactoryMethod;
@@ -19,12 +19,16 @@ import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.entity.vehicle.VehicleState;
 
 import com.ul.vrs.repository.BookingRepository;
+import com.ul.vrs.repository.AccountRepository;
 
 @Service
 public class RentalSystemService {
 
     @Autowired 
     BookingRepository bookingRepository;
+
+    @Autowired 
+    AccountRepository accountRepository;
 
     @Autowired
     private VehicleManagerService vehicleManagerService;
@@ -35,9 +39,10 @@ public class RentalSystemService {
         return bookingRepository.findById(bookingId);
     }
 
-    public UUID makeBooking(Customer customer, Vehicle vehicle, int numberOfRentingDays) {
+    public UUID makeBooking(String username, Vehicle vehicle, int numberOfRentingDays) {
         if (vehicle != null) {
-            Booking booking = new Booking(customer, vehicle, numberOfRentingDays);
+            Account account = accountRepository.findById(username).get();
+            Booking booking = new Booking(account, vehicle, numberOfRentingDays);
             UUID bookingId = booking.getBookingId();
 
             bookingRepository.save(booking);

@@ -23,8 +23,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
             .authorizeRequests()
-            .requestMatchers("/api/account/login", "/api/account/signup").permitAll()
+            .requestMatchers("/api/account/login", "/api/account/signup", "/h2-console/**").permitAll()
             .anyRequest().authenticated()
+            .and()
+            .headers().frameOptions().disable()
             .and()
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

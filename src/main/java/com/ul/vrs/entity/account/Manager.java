@@ -10,8 +10,8 @@ import com.ul.vrs.service.VehicleManagerService;
 
 public class Manager extends Account {
 
-    public Manager(String name, String id, String password) {
-        super(name, id, password);
+    public Manager(String name,  String password) {
+        super(name, password);
     }
 
     /**
