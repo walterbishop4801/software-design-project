@@ -10,11 +10,14 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class VehicleManagerService {
     private final List<Vehicle> vehicles;
-    private static VehicleManagerService instance = getInstance();
+    private final List<Long> IDs;
+
+    private static VehicleManagerService instance;
 
     public static final synchronized VehicleManagerService getInstance() {
         if (instance == null) {
@@ -28,6 +31,7 @@ public class VehicleManagerService {
     // TODO: Based on Singleton, this should be private, but for now we can leave it like that
     private VehicleManagerService() {
         this.vehicles = new ArrayList<>();
+        this.IDs = new ArrayList<>();
 
         addVehicle(new Car(1L, "Camry", "Toyota", 2020, 25_000, Color.WHITE, new PetrolFuel(), 4, 425));
         addVehicle(new Car(2L, "Civic", "Honda", 2010, 8_000, Color.BLACK, new PetrolFuel(), 4, 354));
@@ -48,7 +52,17 @@ public class VehicleManagerService {
             throw new IllegalArgumentException("Cannot add null vehicle.");
         }
 
+        long vehicleID = vehicle.getID();
+
+        // Update ID so it is unique
+        if (IDs.contains(vehicleID)) {
+            vehicleID = generateID();
+            vehicle.setID(vehicleID);
+        }
+
+        IDs.add(vehicle.getID());
         vehicles.add(vehicle);
+
         System.out.println("Vehicle added with ID: " + vehicle.getID());
         return vehicle;
     }
@@ -73,5 +87,16 @@ public class VehicleManagerService {
     // TODO: Include here database operations
     public void deleteVehicle(Long id) {
         vehicles.removeIf(v -> v.getID() == id);
+    }
+
+    private long generateID() {
+        Random random = new Random();
+        Long randomID = 1L;
+
+        while (this.IDs.contains(randomID)) {
+            randomID = Math.abs(random.nextLong());
+        }
+
+        return randomID;
     }
 }
