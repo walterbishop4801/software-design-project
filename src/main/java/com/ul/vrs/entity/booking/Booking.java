@@ -1,29 +1,62 @@
 package com.ul.vrs.entity.booking;
 
+import com.ul.vrs.entity.vehicle.Car;
 import com.ul.vrs.entity.vehicle.Vehicle;
-import com.ul.vrs.entity.account.Customer;
 
+import jakarta.persistence.*;
+
+import com.ul.vrs.entity.account.*;
+import com.ul.vrs.entity.booking.decorator.Customization;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "booking_type")
+@DiscriminatorValue("BASE")
 public class Booking {
-    private final Customer customer;
+    @ManyToOne
+    @JoinColumn(name = "account_id")
+    private final Account account;
+
+    @OneToOne
+    @JoinColumn(name = "vehicle_id")
     private final Vehicle vehicle;
+    
+    @Id
     private final UUID bookingId;
     private final double price;
     private final int numberOfRentingDays;
     private boolean isAuthenticated;
 
-    protected Booking(UUID bookingId, Customer customer, Vehicle vehicle, int numberOfRentingDays) {
-        this.customer = customer;
+    @ElementCollection
+    @CollectionTable(name = "booking_decorators", joinColumns = @JoinColumn(name = "booking_id"))
+    protected List<Customization> decorators;
+
+    protected Booking(UUID bookingId, Account account, Vehicle vehicle, int numberOfRentingDays) {
+        this.account = account;
         this.vehicle = vehicle;
         this.bookingId = bookingId;
         this.isAuthenticated = false;
         this.numberOfRentingDays = numberOfRentingDays;
         this.price = this.vehicle.getRentingCost(numberOfRentingDays);
+        this.decorators = new ArrayList<>();
     }
 
-    public Booking(Customer customer, Vehicle vehicle, int numberOfRentingDays) {
-        this(UUID.randomUUID(), customer, vehicle, numberOfRentingDays);
+    public Booking(Account account, Vehicle vehicle, int numberOfRentingDays) {
+        this(UUID.randomUUID(), account, vehicle, numberOfRentingDays);
+    }
+
+    public Booking() {
+        this.account = new Customer();
+        this.vehicle = new Car();
+        this.bookingId = UUID.randomUUID();
+        this.isAuthenticated = false;
+        this.price = 10;
+        this.numberOfRentingDays = 1;
+        this.decorators = new ArrayList<>();
     }
 
     public UUID getBookingId() {
@@ -46,11 +79,15 @@ public class Booking {
         return vehicle;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public Account getAccount() {
+        return account;
     }
 
     public boolean getIsAuthenticated() {
         return isAuthenticated;
+    }
+
+    public List<Customization> getDecorators() {
+        return this.decorators;
     }
 }

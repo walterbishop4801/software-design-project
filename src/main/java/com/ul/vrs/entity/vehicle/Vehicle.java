@@ -7,31 +7,51 @@ import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.Observer;
 import com.ul.vrs.entity.Subject;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
+import com.ul.vrs.entity.vehicle.fuel.FuelConverter;
+import com.ul.vrs.entity.vehicle.state.AvailableVehicleState;
+import com.ul.vrs.entity.vehicle.state.DamagedVehicleState;
+import com.ul.vrs.entity.vehicle.state.InMaintenanceVehicleState;
+import com.ul.vrs.entity.vehicle.state.ReservedVehicleState;
+import com.ul.vrs.entity.vehicle.state.StateConverter;
+import com.ul.vrs.entity.vehicle.state.VehicleState;
+import com.ul.vrs.entity.vehicle.fuel.PetrolFuel;
 import com.ul.vrs.jacoco.ExcludeConstructorFromGeneratedJacoco;
+
+import jakarta.persistence.*;
+
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type"
-)
-
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @JsonSubTypes({
     @JsonSubTypes.Type(value = Car.class, name = "car"),
-    @JsonSubTypes.Type(value = Truck.class, name = "scooter"),
+    @JsonSubTypes.Type(value = Scooter.class, name = "scooter"),
     @JsonSubTypes.Type(value = Truck.class, name = "truck"),
-    @JsonSubTypes.Type(value = Truck.class, name = "van")
+    @JsonSubTypes.Type(value = Van.class, name = "van")
 })
 public abstract class Vehicle implements Subject {
+    @Id
     private long ID;
     private final String name;
     private final String brandOwner;
     private final int releaseYear;
     protected final double cost;
+    @Enumerated(EnumType.STRING)
     private final Color color;
+    @Convert(converter = FuelConverter.class)
     private final Fuel fuelType;
+    @Convert(converter = StateConverter.class)
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+    @JsonSubTypes({
+        @JsonSubTypes.Type(value = AvailableVehicleState.class, name = "Available"),
+        @JsonSubTypes.Type(value = DamagedVehicleState.class, name = "Damaged"),
+        @JsonSubTypes.Type(value = InMaintenanceVehicleState.class, name = "InMaintenance"),
+        @JsonSubTypes.Type(value = ReservedVehicleState.class, name = "Reserved")
+    })
     private VehicleState vehicleState;
+    @Transient
     private List<Observer> observers;
 
     public Vehicle(long ID, String name, String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType, VehicleState vehicleState) {
@@ -46,9 +66,21 @@ public abstract class Vehicle implements Subject {
         this.observers = new ArrayList<>();
     }
 
+    public Vehicle(){
+        this.ID = 100;
+        this.name = "Camry";
+        this.brandOwner = "Toyota";
+        this.releaseYear = 2020;
+        this.cost = 25_000;
+        this.color = Color.WHITE;
+        this.fuelType = new PetrolFuel();
+        this.vehicleState = new AvailableVehicleState();
+        this.observers = new ArrayList<>();
+    }
+
     @ExcludeConstructorFromGeneratedJacoco
     public Vehicle(long ID, String name, String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType) {
-        this(ID, name, brandOwner, releaseYear, cost, color, fuelType, VehicleState.AVAILABLE);
+        this(ID, name, brandOwner, releaseYear, cost, color, fuelType, new AvailableVehicleState());
     }
 
     public abstract double getRentingCost(int numberOfRentingDays);
@@ -91,7 +123,10 @@ public abstract class Vehicle implements Subject {
 
     public void updateState(VehicleState state) {
         this.vehicleState = state;
-        this.vehicleState.handleRequest(this);
+    }
+
+    public List<Observer> getObservers() {
+        return this.observers;
     }
 
     @Override

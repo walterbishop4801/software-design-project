@@ -4,9 +4,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
+import com.ul.vrs.entity.vehicle.state.AvailableVehicleState;
+import com.ul.vrs.entity.vehicle.state.VehicleState;
 import com.ul.vrs.jacoco.ExcludeConstructorFromGeneratedJacoco;
 import com.ul.vrs.jacoco.ExcludeMethodFromGeneratedJacoco;
 
+import jakarta.persistence.*;
+
+@Entity
 public class Truck extends Vehicle {
     private final float payloadCapacity;
     private final float towingCapacity;
@@ -26,11 +31,18 @@ public class Truck extends Vehicle {
         this.towingCapacity = towingCapacity;
         this.numberOfAxles = numberOfAxles;
     }
+    
+    public Truck() {
+        this.payloadCapacity = 100;
+        this.towingCapacity = 2000;
+        this.numberOfAxles = 2;
+    }
+
 
     // TODO: Do we need @JsonProperty here?
     @ExcludeConstructorFromGeneratedJacoco
     public Truck(long ID, String name, String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType, float payloadCapacity, float towingCapacity, int numberOfAxles) {
-        this(ID, name, brandOwner, releaseYear, cost, color, fuelType, VehicleState.AVAILABLE, payloadCapacity, towingCapacity, numberOfAxles);
+        this(ID, name, brandOwner, releaseYear, cost, color, fuelType, new AvailableVehicleState(), payloadCapacity, towingCapacity, numberOfAxles);
     }
 
     public float getPayloadCapacity() {

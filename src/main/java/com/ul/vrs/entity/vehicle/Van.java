@@ -4,9 +4,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
+import com.ul.vrs.entity.vehicle.state.AvailableVehicleState;
+import com.ul.vrs.entity.vehicle.state.VehicleState;
 import com.ul.vrs.jacoco.ExcludeConstructorFromGeneratedJacoco;
 import com.ul.vrs.jacoco.ExcludeMethodFromGeneratedJacoco;
 
+import jakarta.persistence.*;
+
+@Entity
 public class Van extends Vehicle {
     private final float cargoCapacity;
     private final int numberOfSeats;
@@ -23,10 +28,15 @@ public class Van extends Vehicle {
         this.numberOfSeats = numberOfSeats;
     }
 
+    public Van() {
+        this.cargoCapacity = 400;
+        this.numberOfSeats = 6;
+    }
+
     // TODO: Do we need @JsonProperty here?
     @ExcludeConstructorFromGeneratedJacoco
     public Van(long ID, String name, String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType, float cargoCapacity, int numberOfSeats) {
-        this(ID, name, brandOwner, releaseYear, cost, color, fuelType, VehicleState.AVAILABLE, cargoCapacity, numberOfSeats);
+        this(ID, name, brandOwner, releaseYear, cost, color, fuelType, new AvailableVehicleState(), cargoCapacity, numberOfSeats);
     }
 
     public float getCargoCapacity() {
