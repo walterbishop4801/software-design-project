@@ -13,6 +13,11 @@ public class Manager extends Account {
     public Manager(String name, String id, String password) {
         super(name, id, password);
     }
+    
+    @Override
+    public String getAccountType() {
+        return "Manager";
+    }
 
     public void addVehicle(VehicleManagerService service, Vehicle vehicle) {
         service.addVehicle(vehicle);
@@ -72,7 +77,7 @@ public class Manager extends Account {
         System.out.println("Generating vehicle sales report...");
 
         // Include logic to generate and fetch the report from a service
-        String report = SalesReportService.generateReport();
+        String report = SalesReportService.generateSalesReport();
         System.out.println(report);
         return report;
     }
@@ -81,7 +86,7 @@ public class Manager extends Account {
         System.out.println("Viewing damage assessment report for vehicle: " + vehicle.getName() + " (ID: " + vehicle.getID() + ")");
 
         // Include logic to fetch and display the damage assessment report
-        String report = DamageCheckingService.generateReport();
+        String report = DamageCheckingService.generateDamageReport();
         System.out.println(report);
         return report;
     }
