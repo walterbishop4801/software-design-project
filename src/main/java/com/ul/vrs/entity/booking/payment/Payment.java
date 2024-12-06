@@ -1,17 +1,13 @@
 package com.ul.vrs.entity.booking.payment;
 
 public class Payment {
-    protected long amount;
+    private double amount = 100_000;
 
-    public Payment() {
-        this.amount = 10_000;
-    }
-
-    public void setAmount(long amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 
-    public long getAmount() {
+    public double getAmount() {
         return amount;
     }
 }

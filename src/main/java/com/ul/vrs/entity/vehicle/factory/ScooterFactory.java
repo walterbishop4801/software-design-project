@@ -4,9 +4,9 @@ import org.springframework.stereotype.Component;
 
 import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.vehicle.Vehicle;
-import com.ul.vrs.entity.vehicle.VehicleState;
 import com.ul.vrs.entity.vehicle.Scooter;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
+import com.ul.vrs.entity.vehicle.state.VehicleState;
 
 @Component
 public class ScooterFactory implements VehicleFactory {

@@ -1,6 +1,9 @@
 package com.ul.vrs.controller;
 
+import com.ul.vrs.entity.account.Account;
+import com.ul.vrs.entity.account.Manager;
 import com.ul.vrs.entity.vehicle.Vehicle;
+import com.ul.vrs.service.AccountManagerService;
 import com.ul.vrs.service.VehicleManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +17,9 @@ import java.util.Optional;
 public class VehicleController {
     @Autowired
     private VehicleManagerService vehicleService;
+
+    @Autowired
+    private AccountManagerService accountManagerService;
 
     // Get all vehicles in the system - http://localhost:8080/api/vehicles
     @GetMapping
@@ -35,13 +41,18 @@ public class VehicleController {
 
     // Add a new vehicle to the system - http://localhost:8080/api/vehicles
     @PostMapping
-    public Vehicle addVehicle(@RequestBody Vehicle vehicle) {
-        return vehicleService.addVehicle(vehicle);
+    public ResponseEntity<Vehicle> addVehicle(@RequestBody Vehicle vehicle) {
+        Vehicle newVehicle = vehicleService.addVehicle(vehicle);
+        return ResponseEntity.ok(newVehicle);
     }
 
-    // Update an existing vehicle's details - http://localhost:8080/api/vehicles/{id}
+ // Update an existing vehicle's details - http://localhost:8080/api/vehicles/{id}
     @PutMapping("/{id}")
-    public ResponseEntity<Vehicle> updateVehicle(@PathVariable Long id, @RequestBody Vehicle vehicleDetails) {
+    public ResponseEntity<?> updateVehicle(@PathVariable Long id, @RequestBody Vehicle vehicleDetails) {
+        if (vehicleDetails.getState() == null || vehicleDetails.getState().getType() == null) {
+            return ResponseEntity.badRequest().body("Invalid vehicle state: Missing or invalid 'type' field.");
+        }
+        System.out.println(vehicleDetails.getState());
         Vehicle updatedVehicle = vehicleService.updateVehicle(id, vehicleDetails);
 
         if (updatedVehicle != null) {
@@ -51,10 +62,13 @@ public class VehicleController {
         }
     }
 
+
     // Delete a vehicle by its ID - http://localhost:8080/api/vehicles/{id}
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteVehicle(@PathVariable Long id) {
+
         vehicleService.deleteVehicle(id);
         return ResponseEntity.noContent().build();
+
     }
 }

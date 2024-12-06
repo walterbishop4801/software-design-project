@@ -71,4 +71,4 @@ jobs:
       # Run Postman collection tests
       - name: Run Postman Collection Tests
         run: |
-          newman run postman/VRS.postman_collection.json
+          newman run postman/VRS.postman_collection.json -e postman/VRS.postman_environment.json

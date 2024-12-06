@@ -15,8 +15,8 @@ import com.ul.vrs.entity.vehicle.Scooter;
 import com.ul.vrs.entity.vehicle.Truck;
 import com.ul.vrs.entity.vehicle.Van;
 import com.ul.vrs.entity.vehicle.Vehicle;
-import com.ul.vrs.entity.vehicle.VehicleState;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
+import com.ul.vrs.entity.vehicle.state.AvailableVehicleState;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class VehicleFactoryMethodTests {
@@ -27,19 +27,19 @@ public class VehicleFactoryMethodTests {
     private static final List<Vehicle> EXPECTED_VEHICLES = new ArrayList<>(List.of(
         new Car(
             10000L, "Test_Name_Car", "Test_BrandOwner_Car", 2020, 150.5,
-            Color.RED, new MockFuel(), VehicleState.AVAILABLE, 4, 250f
+            Color.RED, new MockFuel(), new AvailableVehicleState(), 4, 250f
         ),
         new Scooter(
             10001L, "Test_Name_Scooter", "Test_BrandOwner_Scooter", 2020, 150.5,
-            Color.RED, new MockFuel(), VehicleState.AVAILABLE, true, 2, 150
+            Color.RED, new MockFuel(), new AvailableVehicleState(), true, 2, 150
         ),
         new Truck(
             10002L, "Test_Name_Truck", "Test_BrandOwner_Truck", 2020, 150.5,
-            Color.RED, new MockFuel(), VehicleState.AVAILABLE, 200f, 300f, 6
+            Color.RED, new MockFuel(), new AvailableVehicleState(), 200f, 300f, 6
         ),
         new Van(
             10003L, "Test_Name_Van", "Test_BrandOwner_Van", 2020, 150.5,
-            Color.RED, new MockFuel(), VehicleState.AVAILABLE, 250f, 4
+            Color.RED, new MockFuel(), new AvailableVehicleState(), 250f, 4
         )
     ));
 
@@ -60,22 +60,22 @@ public class VehicleFactoryMethodTests {
 
         testParams.add(new Object[] {
             10000L, "Test_Name_Car", "Test_BrandOwner_Car", 2020, 150.5,
-            Color.RED, EXPECTED_VEHICLES.get(0).getFuelType(), VehicleState.AVAILABLE, 4, 250f
+            Color.RED, EXPECTED_VEHICLES.get(0).getFuelType(), new AvailableVehicleState(), 4, 250f
         });
 
         testParams.add(new Object[] {
             10001L, "Test_Name_Scooter", "Test_BrandOwner_Scooter", 2020, 150.5,
-            Color.RED, EXPECTED_VEHICLES.get(1).getFuelType(), VehicleState.AVAILABLE, true, 2, 150
+            Color.RED, EXPECTED_VEHICLES.get(1).getFuelType(), new AvailableVehicleState(), true, 2, 150
         });
 
         testParams.add(new Object[] {
             10002L, "Test_Name_Truck", "Test_BrandOwner_Truck", 2020, 150.5,
-            Color.RED, EXPECTED_VEHICLES.get(2).getFuelType(), VehicleState.AVAILABLE, 200f, 300f, 6
+            Color.RED, EXPECTED_VEHICLES.get(2).getFuelType(), new AvailableVehicleState(), 200f, 300f, 6
         });
 
         testParams.add(new Object[] {
             10003L, "Test_Name_Van", "Test_BrandOwner_Van", 2020, 150.5,
-            Color.RED, EXPECTED_VEHICLES.get(3).getFuelType(), VehicleState.AVAILABLE, 250f, 4
+            Color.RED, EXPECTED_VEHICLES.get(3).getFuelType(), new AvailableVehicleState(), 250f, 4
         });
     }
 
