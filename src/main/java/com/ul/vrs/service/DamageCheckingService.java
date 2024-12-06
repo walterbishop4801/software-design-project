@@ -7,7 +7,7 @@ import java.util.Map;
 
 @Service
 public class DamageCheckingService {
-    private final Map<Long, String> damageReports = new HashMap<>();
+    private final static Map<Long, String> damageReports = new HashMap<>();
 
     /**
      * Adds a damage report for a vehicle.
@@ -79,7 +79,7 @@ public class DamageCheckingService {
      *
      * @return The formatted damage report string.
      */
-    public String generateDamageReport() {
+    public static String generateDamageReport() {
         String header = "Comprehensive Damage Report:";
         return ReportUtility.buildReport(damageReports.entrySet(), header, entry ->
             "Vehicle ID: " + entry.getKey() +

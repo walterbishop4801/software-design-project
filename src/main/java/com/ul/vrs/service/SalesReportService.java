@@ -7,10 +7,10 @@ import java.util.List;
 
 @Service
 public class SalesReportService {
-    private final VehicleManagerService vehicleManagerService;
+    private static VehicleManagerService vehicleManagerService;
 
     public SalesReportService(VehicleManagerService vehicleManagerService) {
-        this.vehicleManagerService = vehicleManagerService;
+        SalesReportService.vehicleManagerService = vehicleManagerService;
     }
 
     /**
@@ -18,8 +18,8 @@ public class SalesReportService {
      *
      * @return Formatted sales report string.
      */
-    public String generateSalesReport() {
-        List<Vehicle> vehicles = vehicleManagerService.getAllVehicles();
+	public static String generateSalesReport() {
+		List<Vehicle> vehicles = vehicleManagerService.getAllVehicles();
         String header = "Vehicle Sales Report:";
         return ReportUtility.buildReport(vehicles, header, vehicle -> 
             "ID: " + vehicle.getID() +
@@ -27,7 +27,7 @@ public class SalesReportService {
             ", Manufacturer: " + vehicle.getBrandOwner() +
             ", 1-day Price: " + vehicle.getRentingCost(1)
         );
-    }
+	}
 }
 
 /**
