@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "6c641028-0368-4c9c-bbb1-141d4e5eb1da",
+		"_postman_id": "47a134d1-4dd5-4f74-8982-764841f12177",
 		"name": "VRS",
 		"description": "Postman collection for VRS application",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
@@ -134,9 +134,8 @@
 									"        pm.expect(vehicle).to.have.property('releaseYear');",
 									"        pm.expect(vehicle).to.have.property('color');",
 									"        pm.expect(vehicle).to.have.property('fuelType');",
-									"        pm.expect(vehicle).to.have.property('numberOfDoors');",
-									"        pm.expect(vehicle).to.have.property('trunkCapacity');",
-									"        pm.expect(vehicle).to.have.property('state');",
+									"        pm.expect(vehicle).to.have.property('color');",
+									"        pm.expect(vehicle).to.have.property('vehicleState');",
 									"        pm.expect(vehicle).to.have.property('id');",
 									"        ",
 									"        // Check for 'rentingCost' only if it's defined",
@@ -166,7 +165,7 @@
 									"});",
 									"",
 									"",
-									"pm.test(\"Name, brandOwner, color, and state are non-empty strings\", function () {",
+									"pm.test(\"Name, brandOwner, color, and vehicleState are non-empty strings\", function () {",
 									"    const responseData = pm.response.json();",
 									"    ",
 									"    pm.expect(responseData).to.be.an('array');",
@@ -175,7 +174,7 @@
 									"        pm.expect(vehicle.name).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Name should not be empty\");",
 									"        pm.expect(vehicle.brandOwner).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Brand owner should not be empty\");",
 									"        pm.expect(vehicle.color).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Color should not be empty\");",
-									"        pm.expect(vehicle.state).to.be.a('string').and.to.have.lengthOf.at.least(1, \"State should not be empty\");",
+									"        pm.expect(vehicle.vehicleState.type).to.be.a('string').and.to.have.lengthOf.at.least(1, \"State should not be empty\");",
 									"    });",
 									"});",
 									""
@@ -262,7 +261,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/vehicles/2",
+							"raw": "http://localhost:8080/api/vehicles/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -271,7 +270,7 @@
 							"path": [
 								"api",
 								"vehicles",
-								"2"
+								"1"
 							]
 						}
 					},
