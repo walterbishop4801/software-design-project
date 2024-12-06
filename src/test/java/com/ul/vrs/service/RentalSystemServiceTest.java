@@ -23,8 +23,7 @@ import com.ul.vrs.entity.vehicle.Car;
 import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.entity.vehicle.VehicleState;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
-import com.ul.vrs.repository.BookingRepository;
-import com.ul.vrs.repository.VehicleRepository;
+import com.ul.vrs.repository.*;
 
 public class RentalSystemServiceTest {
     // Service being tested
@@ -42,6 +41,13 @@ public class RentalSystemServiceTest {
     @Mock
     private VehicleManagerService vehicleManagerService;
 
+    // Mock Account repository
+    @Mock
+    private AccountRepository accountRepository;
+
+    @Mock
+    private AccountManagerService accountManagerService;
+
     // Mock data for vehicles
     private List<Vehicle> mockVehicles;
 
@@ -53,6 +59,7 @@ public class RentalSystemServiceTest {
         // Initialize mocks and set up mock customer
         MockitoAnnotations.openMocks(this);
         mockCustomer = new Customer("test_user", "test_password");
+        when(accountRepository.findById(mockCustomer.getUsername())).thenReturn(Optional.of(mockCustomer));
         initMockVehicles(); // Initialize mock vehicles
     }
 
