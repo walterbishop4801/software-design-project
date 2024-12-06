@@ -9,8 +9,8 @@ import com.ul.vrs.entity.booking.Booking;
 import com.ul.vrs.entity.booking.decorator.*;
 import com.ul.vrs.entity.vehicle.Car;
 import com.ul.vrs.entity.vehicle.Vehicle;
-import com.ul.vrs.entity.vehicle.VehicleState;
 import com.ul.vrs.entity.vehicle.fuel.PetrolFuel;
+import com.ul.vrs.entity.vehicle.state.ReservedVehicleState;
 
 public class InterceptorTest {
 
@@ -20,7 +20,7 @@ public class InterceptorTest {
         GPSInterceptor gpsInterceptor = new GPSInterceptor();
         Customer customer = new Customer("John Doe", "123", "password");
         Vehicle vehicle = new Car(1L, "Test Car", "Toyota", 2020, 20000, Color.BLUE, new PetrolFuel(), 4, 300);
-        vehicle.updateState(VehicleState.RESERVED);
+        vehicle.updateState(new ReservedVehicleState());
         Booking booking = new Booking(customer, vehicle, 0);
 
         customer.addInterceptor(gpsInterceptor);
@@ -39,7 +39,7 @@ public class InterceptorTest {
         VoucherInterceptor voucherInterceptor = new VoucherInterceptor();
         Customer customer = new Customer("Jane Doe", "456", "password123");
         Vehicle vehicle = new Car(2L, "Luxury Car", "BMW", 2022, 50000, Color.BLACK, new PetrolFuel(), 4, 450);
-        vehicle.updateState(VehicleState.RESERVED);
+        vehicle.updateState(new ReservedVehicleState());
         Booking booking = new Booking(customer, vehicle, 0);
 
         customer.addInterceptor(voucherInterceptor);
@@ -58,7 +58,7 @@ public class InterceptorTest {
         InsuranceInterceptor insuranceInterceptor = new InsuranceInterceptor();
         Customer customer = new Customer("Smith Doe", "789", "securepass");
         Vehicle vehicle = new Car(3L, "SUV", "Ford", 2021, 30000, Color.RED, new PetrolFuel(), 5, 400);
-        vehicle.updateState(VehicleState.RESERVED);
+        vehicle.updateState(new ReservedVehicleState());
         Booking booking = new Booking(customer, vehicle, 0);
 
         customer.addInterceptor(insuranceInterceptor);

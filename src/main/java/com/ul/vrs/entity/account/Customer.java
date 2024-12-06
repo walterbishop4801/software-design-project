@@ -3,50 +3,41 @@ package com.ul.vrs.entity.account;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
-import com.ul.vrs.entity.booking.*;
+
+import com.ul.vrs.entity.booking.Booking;
 import com.ul.vrs.entity.booking.decorator.Customization;
 import com.ul.vrs.entity.booking.decorator.GPSBookingDecorator;
 import com.ul.vrs.entity.booking.decorator.InsuranceBookingDecorator;
 import com.ul.vrs.entity.booking.decorator.VoucherBookingDecorator;
 import com.ul.vrs.entity.vehicle.Vehicle;
-import com.ul.vrs.entity.vehicle.VehicleState;
+import com.ul.vrs.entity.vehicle.state.AvailableVehicleState;
+import com.ul.vrs.entity.vehicle.state.ReservedVehicleState;
 import com.ul.vrs.interceptor.Interceptor;
+import com.ul.vrs.service.VehicleManagerService;
 
-<<<<<<< HEAD
-public class Customer extends Account {
-
-    private List<Interceptor> interceptors = new ArrayList<>();
-=======
 import jakarta.persistence.Entity;
 import jakarta.persistence.Transient;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
-// TODO: This class doesn't look like an entity, as it has methods already defined at AccountController
 public class Customer extends Account {
-    @Transient
-	@Autowired
-    private RentalSystemService rentalSystemService;
 
     @Transient
     @Autowired
     private VehicleManagerService vehicleManagerService;
->>>>>>> develop
+
+    private final List<Interceptor> interceptors = new ArrayList<>();
 
     public Customer(String name, String id, String password) {
         super(name, id, password);
     }
 
-<<<<<<< HEAD
-    public void addInterceptor(Interceptor interceptor) {
-        interceptors.add(interceptor);
-=======
     public Customer() {
         super("test_username", "test_id", "test_password");
     }
 
-    public List<Vehicle> searchAvailableVehicles() {
-        return vehicleManagerService.getAllVehicles();
->>>>>>> develop
+    public void addInterceptor(Interceptor interceptor) {
+        interceptors.add(interceptor);
     }
 
     private void runBeforeInterceptors(String action, Object target) {
@@ -66,13 +57,15 @@ public class Customer extends Account {
         return "Customer";
     }
 
-    /* Check available vehicles */
-    public void searchAvailableVehicles(List<Vehicle> vehicles) {
-        runBeforeInterceptors("searchAvailableVehicles", vehicles);
-
+    /* Search available vehicles */
+    public List<Vehicle> searchAvailableVehicles() {
         List<Vehicle> availableVehicles = new ArrayList<>();
-        for (Vehicle vehicle : vehicles) {
-            if (vehicle.getState().equals(VehicleState.AVAILABLE)) {
+        List<Vehicle> allVehicles = vehicleManagerService.getAllVehicles();
+
+        runBeforeInterceptors("searchAvailableVehicles", allVehicles);
+
+        for (Vehicle vehicle : allVehicles) {
+            if (vehicle.getState() instanceof AvailableVehicleState) {
                 availableVehicles.add(vehicle);
             }
         }
@@ -80,21 +73,21 @@ public class Customer extends Account {
         if (availableVehicles.isEmpty()) {
             System.out.println("No vehicles are currently available for booking.");
         } else {
-            availableVehicles.forEach(vehicle ->
-                    System.out.println("Vehicle: " + vehicle.getName() +
-                            ", ID: " + vehicle.getID() + " is available"));
+            availableVehicles.forEach(vehicle -> System.out.println("Vehicle: " + vehicle.getName() +
+                    ", ID: " + vehicle.getID() + " is available."));
         }
 
-        runAfterInterceptors("searchAvailableVehicles", vehicles);
+        runAfterInterceptors("searchAvailableVehicles", availableVehicles);
+        return availableVehicles;
     }
 
     /* Book a vehicle */
     public Booking bookVehicle(Vehicle vehicle) {
         runBeforeInterceptors("bookVehicle", vehicle);
 
-        if (vehicle.getState().equals(VehicleState.AVAILABLE)) {
+        if (vehicle.getState() instanceof AvailableVehicleState) {
             System.out.println("Booking vehicle: " + vehicle.getName() + ", ID: " + vehicle.getID());
-            vehicle.updateState(VehicleState.RESERVED);
+            vehicle.updateState(new ReservedVehicleState());
             Booking booking = new Booking(this, vehicle, 0);
 
             runAfterInterceptors("bookVehicle", booking);
@@ -111,7 +104,7 @@ public class Customer extends Account {
         runBeforeInterceptors("cancelBooking", vehicle);
 
         System.out.println("Booking cancelled for vehicle: " + vehicle.getName() + ", ID: " + vehicle.getID());
-        vehicle.updateState(VehicleState.AVAILABLE);
+        vehicle.updateState(new AvailableVehicleState());
 
         runAfterInterceptors("cancelBooking", vehicle);
     }
@@ -121,53 +114,39 @@ public class Customer extends Account {
         runBeforeInterceptors("returnVehicle", vehicle);
 
         System.out.println("Returning vehicle: " + vehicle.getName() + ", ID: " + vehicle.getID());
-        vehicle.updateState(VehicleState.AVAILABLE);
+        vehicle.updateState(new AvailableVehicleState());
 
         runAfterInterceptors("returnVehicle", vehicle);
     }
 
-    private Booking applyCustomization(String action, Booking booking, Vehicle vehicle, Supplier<Booking> decorator) {
-    	// Run interceptors before applying the customization
-        runBeforeInterceptors(action, vehicle);
+    /* Apply customization logic using a decorator */
+    private Booking applyCustomization(String action, Booking booking, Supplier<Booking> decorator) {
+        runBeforeInterceptors(action, booking);
 
-        // Apply the decorator to the booking
         Booking customizedBooking = decorator.get();
 
-        // Run interceptors after applying the customization
         runAfterInterceptors(action, customizedBooking);
 
-        // Return the customized booking
         return customizedBooking;
     }
 
     /* Customize a vehicle booking */
     public Booking customizeBooking(Booking booking, Customization customization) {
         runBeforeInterceptors("customizeBooking", booking);
-        
-     // Validate inputs
+
         if (booking == null) {
             throw new IllegalArgumentException("Booking cannot be null.");
         }
 
-        Vehicle vehicle = booking.getVehicle();
-        if (vehicle == null) {
-            throw new IllegalArgumentException("Booking must have a valid vehicle.");
-        }
-        
-     // Delegate to applyCustomization for specific customization logic
         switch (customization) {
             case GPS:
-                return applyCustomization("applyGPS", booking, vehicle, () -> new GPSBookingDecorator(booking));
+                return applyCustomization("applyGPS", booking, () -> new GPSBookingDecorator(booking));
             case INSURANCE:
-                return applyCustomization("applyInsurance", booking, vehicle, () -> new InsuranceBookingDecorator(booking));
+                return applyCustomization("applyInsurance", booking, () -> new InsuranceBookingDecorator(booking));
             case VOUCHER:
-                return applyCustomization("applyVoucher", booking, vehicle, () -> new VoucherBookingDecorator(booking));
+                return applyCustomization("applyVoucher", booking, () -> new VoucherBookingDecorator(booking));
             default:
                 throw new IllegalArgumentException("Invalid customization option: " + customization);
         }
     }
-
-    
-
-
 }

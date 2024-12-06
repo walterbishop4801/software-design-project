@@ -2,33 +2,52 @@ package com.ul.vrs.service;
 
 import org.springframework.stereotype.Service;
 import com.ul.vrs.entity.vehicle.Vehicle;
-import com.ul.vrs.service.SalesReportService.ReportUtility;
-
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 @Service
 public class DamageCheckingService {
-    private static Map<Long, String> damageReports = new HashMap<>();
+    private final Map<Long, String> damageReports = new HashMap<>();
 
+    /**
+     * Adds a damage report for a vehicle.
+     *
+     * @param vehicleId     The ID of the damaged vehicle.
+     * @param damageDetails The details of the damage.
+     */
     public void addDamageReport(Long vehicleId, String damageDetails) {
         damageReports.put(vehicleId, damageDetails);
+        System.out.println("Damage report added for vehicle ID " + vehicleId);
     }
 
+    /**
+     * Checks for damage for a specific vehicle.
+     *
+     * @param vehicle The vehicle to check.
+     * @return Damage report string.
+     */
     public String checkForDamage(Vehicle vehicle) {
         Long vehicleId = vehicle.getID();
+        String damageDetails = damageReports.get(vehicleId);
 
-        if (damageReports.containsKey(vehicleId)) {
-            String damageDetails = damageReports.get(vehicleId);
-            System.out.println("Damage found for vehicle ID " + vehicleId + ": " + damageDetails);
-            return "Damage Report: " + damageDetails;
+        if (damageDetails != null) {
+            String response = "Damage found for vehicle ID " + vehicleId + ": " + damageDetails;
+            System.out.println(response);
+            return response;
         } else {
-            System.out.println("No damage found for vehicle ID " + vehicleId);
-            return "No Damage Found";
+            String response = "No damage found for vehicle ID " + vehicleId;
+            System.out.println(response);
+            return response;
         }
     }
 
+    /**
+     * Applies a damage charge to the customer.
+     *
+     * @param vehicle     The damaged vehicle.
+     * @param damageCost  The cost to apply.
+     * @return Response string for the applied charge.
+     */
     public String applyChargeToCustomer(Vehicle vehicle, double damageCost) {
         Long vehicleId = vehicle.getID();
         String response = "Charge of $" + damageCost + " applied to vehicle ID " + vehicleId + ".";
@@ -36,46 +55,35 @@ public class DamageCheckingService {
         return response;
     }
 
+    /**
+     * Resolves a damage dispute for a specific vehicle.
+     *
+     * @param vehicle The vehicle involved in the dispute.
+     * @return Response string indicating the dispute resolution status.
+     */
     public String resolveDispute(Vehicle vehicle) {
         Long vehicleId = vehicle.getID();
-        if (damageReports.containsKey(vehicleId)) {
-            System.out.println("Damage dispute resolved for vehicle ID " + vehicleId);
-            return "Damage dispute resolved for vehicle ID " + vehicleId;
+        if (damageReports.remove(vehicleId) != null) {
+            String response = "Damage dispute resolved for vehicle ID " + vehicleId;
+            System.out.println(response);
+            return response;
         } else {
-            System.out.println("No damage report found for vehicle ID " + vehicleId + " to dispute.");
-            return "No damage report found for vehicle ID " + vehicleId + " to dispute.";
+            String response = "No damage report found for vehicle ID " + vehicleId + " to dispute.";
+            System.out.println(response);
+            return response;
         }
     }
-<<<<<<< HEAD
-    
+
     /**
-     * Generate a comprehensive damage report for the manager.
+     * Generates a comprehensive damage report.
      *
-     * @return A string containing the damage report summary.
-     * 
+     * @return The formatted damage report string.
      */
-    
-    public static String generateDamageReport() {
+    public String generateDamageReport() {
         String header = "Comprehensive Damage Report:";
-        return ReportUtility.buildReport(damageReports.entrySet(), header, entry -> 
+        return ReportUtility.buildReport(damageReports.entrySet(), header, entry ->
             "Vehicle ID: " + entry.getKey() +
             ", Damage: " + entry.getValue()
         );
-=======
-
-    public static String generateReport() {
-        if (damageReports.isEmpty()) {
-            return "No damage reports available.";
-        }
-
-        StringBuilder report = new StringBuilder("Comprehensive Damage Report:\n");
-        for (Map.Entry<Long, String> entry : damageReports.entrySet()) {
-            report.append("Vehicle ID: ").append(entry.getKey())
-                  .append(" - Damage: ").append(entry.getValue())
-                  .append("\n");
-        }
-
-        return report.toString();
->>>>>>> 98bca6413625c5104a624831d3c39ed72763800f
     }
 }
