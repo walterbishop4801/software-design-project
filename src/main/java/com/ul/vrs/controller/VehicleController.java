@@ -41,15 +41,18 @@ public class VehicleController {
 
     // Add a new vehicle to the system - http://localhost:8080/api/vehicles
     @PostMapping
-    public Vehicle addVehicle(@RequestBody Vehicle vehicle) {
-
-        return vehicleService.addVehicle(vehicle);
+    public ResponseEntity<Vehicle> addVehicle(@RequestBody Vehicle vehicle) {
+        Vehicle newVehicle = vehicleService.addVehicle(vehicle);
+        return ResponseEntity.ok(newVehicle);
     }
 
-    // Update an existing vehicle's details - http://localhost:8080/api/vehicles/{id}
+ // Update an existing vehicle's details - http://localhost:8080/api/vehicles/{id}
     @PutMapping("/{id}")
-    public ResponseEntity<Vehicle> updateVehicle(@PathVariable Long id, @RequestBody Vehicle vehicleDetails) {
-
+    public ResponseEntity<?> updateVehicle(@PathVariable Long id, @RequestBody Vehicle vehicleDetails) {
+        if (vehicleDetails.getState() == null || vehicleDetails.getState().getType() == null) {
+            return ResponseEntity.badRequest().body("Invalid vehicle state: Missing or invalid 'type' field.");
+        }
+        System.out.println(vehicleDetails.getState());
         Vehicle updatedVehicle = vehicleService.updateVehicle(id, vehicleDetails);
 
         if (updatedVehicle != null) {
@@ -58,6 +61,7 @@ public class VehicleController {
             return ResponseEntity.notFound().build();
         }
     }
+
 
     // Delete a vehicle by its ID - http://localhost:8080/api/vehicles/{id}
     @DeleteMapping("/{id}")

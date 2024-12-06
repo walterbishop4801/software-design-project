@@ -2,10 +2,10 @@ package com.ul.vrs.entity.booking;
 
 import com.ul.vrs.entity.account.Customer;
 import com.ul.vrs.entity.vehicle.Vehicle;
-import com.ul.vrs.entity.vehicle.VehicleState;
 import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.booking.decorator.BookingDecorator;
 import com.ul.vrs.entity.vehicle.fuel.PetrolFuel;
+import com.ul.vrs.entity.vehicle.state.AvailableVehicleState;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +27,7 @@ public class BookingTest {
         // Initialize common test objects
         testCustomer = new Customer("John Doe", "john.doe@example.com");
 
-        testVehicle = new Vehicle(1L, "Camry", "Toyota", 2020, 25_000, Color.BLACK, new PetrolFuel(), VehicleState.AVAILABLE) {
+        testVehicle = new Vehicle(1L, "Camry", "Toyota", 2020, 25_000, Color.BLACK, new PetrolFuel(), new AvailableVehicleState()) {
             @Override
             public double getRentingCost(int numberOfRentingDays) {
                 return 500.0 * numberOfRentingDays;

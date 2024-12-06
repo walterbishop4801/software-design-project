@@ -1,6 +1,7 @@
 package com.ul.vrs.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -56,7 +57,12 @@ public class RentalSystemController {
 
     // Make booking - http://localhost:8080/api/renting/make_booking/{id}
     @PostMapping("/make_booking/{id}")
-    public ResponseEntity<UUID> makeBooking(@PathVariable long id, @RequestBody int numberOfRentingDays, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<?> makeBooking(@PathVariable long id, @RequestBody(required = false) Map<String, Integer> payload, @RequestHeader("Authorization") String token) {
+        if (payload == null || !payload.containsKey("numberOfRentingDays")) {
+            return ResponseEntity.badRequest().body("Invalid request: 'numberOfRentingDays' is required.");
+        }
+
+        int numberOfRentingDays = payload.get("numberOfRentingDays");
 
         String username = jwtTokenUtil.extractUsername(token);
 

@@ -21,6 +21,11 @@ import com.ul.vrs.entity.Observer;
 import com.ul.vrs.entity.Subject;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
 import com.ul.vrs.repository.VehicleRepository;
+import com.ul.vrs.entity.vehicle.state.AvailableVehicleState;
+import com.ul.vrs.entity.vehicle.state.DamagedVehicleState;
+import com.ul.vrs.entity.vehicle.state.InMaintenanceVehicleState;
+import com.ul.vrs.entity.vehicle.state.ReservedVehicleState;
+import com.ul.vrs.entity.vehicle.state.VehicleState;
 import com.ul.vrs.service.VehicleManagerService;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -34,6 +39,10 @@ public class TruckTests {
     @InjectMocks
     private VehicleManagerService vehicleManagerService;
 
+    private static final List<VehicleState> AVAILABLE_STATES = List.of(
+        new AvailableVehicleState(), new DamagedVehicleState(), new InMaintenanceVehicleState(), new ReservedVehicleState()
+    );
+
     private static final List<Map<String, Object>> EXPECTED_ATTRIBUTES = new ArrayList<>(List.of(
         Map.ofEntries(
             Map.entry("ID", 10000L),
@@ -43,7 +52,7 @@ public class TruckTests {
             Map.entry("cost", 500.50),
             Map.entry("color", Color.BLACK),
             Map.entry("fuelType", new MockFuel()),
-            Map.entry("state", VehicleState.AVAILABLE),
+            Map.entry("state", new AvailableVehicleState()),
             Map.entry("rentingCost", 18041.7),
             Map.entry("payloadCapacity", 500f),
             Map.entry("towingCapacity", 250f),
@@ -88,7 +97,7 @@ public class TruckTests {
 
     @Test
     public void testAddVehicle() {
-        Truck truck = new Truck(10001L, "New_Truck", "New_Brand", 2022, 1000.00, Color.RED, new MockFuel(), VehicleState.AVAILABLE, 800f, 400f, 6);
+        Truck truck = new Truck(10001L, "New_Truck", "New_Brand", 2022, 1000.00, Color.RED, new MockFuel(), new AvailableVehicleState(), 800f, 400f, 6);
         when(vehicleRepository.save(truck)).thenReturn(truck);
 
         vehicleManagerService.addVehicle(truck);
@@ -219,7 +228,7 @@ public class TruckTests {
     @Test
     public void testUpdateState() {
         for (int i = 0; i < testMockVehicles.size(); i++) {
-            for (VehicleState state : VehicleState.values()) {
+            for (VehicleState state : AVAILABLE_STATES) {
                 Vehicle testMockVehicle = testMockVehicles.get(i);
                 Map<String, Object> attrs = EXPECTED_ATTRIBUTES.get(i);
 

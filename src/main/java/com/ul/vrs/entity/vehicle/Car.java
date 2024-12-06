@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
+import com.ul.vrs.entity.vehicle.state.AvailableVehicleState;
+import com.ul.vrs.entity.vehicle.state.VehicleState;
 import com.ul.vrs.jacoco.ExcludeConstructorFromGeneratedJacoco;
 import com.ul.vrs.jacoco.ExcludeMethodFromGeneratedJacoco;
 
@@ -34,7 +36,7 @@ public class Car extends Vehicle {
     // TODO: Do we need @JsonProperty here?
     @ExcludeConstructorFromGeneratedJacoco
     public Car(long ID, String name, String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType, int numberOfDoors, float trunkCapacity) {
-        this(ID, name, brandOwner, releaseYear, cost, color, fuelType, VehicleState.AVAILABLE, numberOfDoors, trunkCapacity);
+        this(ID, name, brandOwner, releaseYear, cost, color, fuelType, new AvailableVehicleState(), numberOfDoors, trunkCapacity);
     }
 
     public int getNumberOfDoors() {

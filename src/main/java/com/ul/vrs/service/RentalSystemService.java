@@ -16,7 +16,9 @@ import com.ul.vrs.entity.booking.decorator.factory.BookingDecoratorFactoryMethod
 import com.ul.vrs.entity.booking.payment.PaymentRequest;
 import com.ul.vrs.entity.booking.payment.strategy.PaymentStrategy;
 import com.ul.vrs.entity.vehicle.Vehicle;
-import com.ul.vrs.entity.vehicle.VehicleState;
+import com.ul.vrs.entity.vehicle.state.AvailableVehicleState;
+import com.ul.vrs.entity.vehicle.state.InMaintenanceVehicleState;
+import com.ul.vrs.entity.vehicle.state.ReservedVehicleState;
 
 import com.ul.vrs.repository.BookingRepository;
 import com.ul.vrs.repository.AccountRepository;
@@ -24,7 +26,7 @@ import com.ul.vrs.repository.AccountRepository;
 @Service
 public class RentalSystemService {
 
-    @Autowired 
+    @Autowired
     BookingRepository bookingRepository;
 
     @Autowired 
@@ -46,7 +48,7 @@ public class RentalSystemService {
             UUID bookingId = booking.getBookingId();
 
             bookingRepository.save(booking);
-            vehicle.updateState(VehicleState.RESERVED);
+            vehicle.updateState(new ReservedVehicleState());
             vehicleManagerService.updateVehicle(vehicle.getID(), vehicle);
 
             return bookingId;
@@ -81,10 +83,11 @@ public class RentalSystemService {
     // TODO: We gotta later use Mechanic to check it out to then update its state
     public void returnVehicle(UUID bookingId) {
         Optional<Booking> b = bookingRepository.findById(bookingId);
+
         if(b.isPresent()) {
             Booking booking = b.get();
             Vehicle v = booking.getVehicle();
-            v.updateState(VehicleState.IN_MAINTENANCE);
+            v.updateState(new InMaintenanceVehicleState());
             vehicleManagerService.updateVehicle(v.getID(), v);
             bookingRepository.delete(booking);
         }
@@ -95,7 +98,7 @@ public class RentalSystemService {
         if(b.isPresent()) {
             Booking booking = b.get();
             Vehicle v = booking.getVehicle();
-            v.updateState(VehicleState.AVAILABLE);
+            v.updateState(new AvailableVehicleState());
             vehicleManagerService.updateVehicle(v.getID(), v);
             bookingRepository.delete(booking);
         }
