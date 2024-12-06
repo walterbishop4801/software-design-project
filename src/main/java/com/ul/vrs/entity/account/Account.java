@@ -29,7 +29,7 @@ public abstract class Account {
 		this.username = username;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

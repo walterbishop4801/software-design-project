@@ -14,17 +14,21 @@ import com.ul.vrs.entity.booking.Booking;
 import com.ul.vrs.entity.booking.payment.strategy.PaymentStrategy;
 import com.ul.vrs.repository.AccountRepository;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 @Service
 public class AccountManagerService {
 
     @Autowired
     AccountRepository accountRepository;
 
-    private Map<String, Account> accounts = new HashMap<>();
+    @Autowired 
+    PasswordEncoder passwordEncoder;
 
     public Account signUp(String username, String password, String accountType) {
 
         Optional<Account> account = accountRepository.findById(username);
+        String hashedPassword = passwordEncoder.encode(password);
 
         if(account.isPresent()) {
             System.out.println("Username already exists: " + username);
@@ -34,8 +38,8 @@ public class AccountManagerService {
         Account newAccount = null;
 
         switch (accountType.toLowerCase()) {
-            case "customer" -> newAccount = new Customer(username, password);
-            case "manager" -> newAccount = new Manager(username,  password);
+            case "customer" -> newAccount = new Customer(username, hashedPassword);
+            case "manager" -> newAccount = new Manager(username,  hashedPassword);
             default -> System.err.println("Unkown account type");
         }
 
@@ -50,7 +54,7 @@ public class AccountManagerService {
     public Account logIn(String username, String password) {
         Optional<Account> account = accountRepository.findById(username);
 
-        if (account.isPresent() && account.get().getPassword().equals(password)) {
+        if (account.isPresent() && passwordEncoder.matches(password, account.get().getPassword())) {
             System.out.println("Login successful for user: " + username);
             return account.get();
         }
