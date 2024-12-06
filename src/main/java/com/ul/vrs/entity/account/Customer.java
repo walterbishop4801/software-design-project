@@ -56,6 +56,10 @@ public class Customer extends Account {
     public String getAccountType() {
         return "Customer";
     }
+    
+    public void setVehicleManagerService(VehicleManagerService vehicleManagerService) {
+        this.vehicleManagerService = vehicleManagerService;
+    }
 
     /* Search available vehicles */
     public List<Vehicle> searchAvailableVehicles() {
