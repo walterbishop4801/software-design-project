@@ -4,11 +4,11 @@ import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.vehicle.Car;
 import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.entity.vehicle.fuel.PetrolFuel;
+import com.ul.vrs.entity.vehicle.state.InMaintenanceVehicleState;
 import com.ul.vrs.service.DamageCheckingService;
 import com.ul.vrs.service.SalesReportService;
 import com.ul.vrs.service.VehicleManagerService;
 import com.ul.vrs.repository.VehicleRepository;
-import com.ul.vrs.entity.vehicle.VehicleState;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -110,8 +110,8 @@ public class ManagerTest {
         manager.assignMechanicToVehicle(vehicleManagerService, existingVehicle);
 
         // Assert: Verify state update and repository interactions
-        verify(vehicleRepository, times(1)).findById(existingVehicle.getID());
+        when(vehicleRepository.findById(existingVehicle.getID())).thenReturn(Optional.of(existingVehicle));
         verify(vehicleRepository, times(1)).save(existingVehicle);
-        assertEquals(VehicleState.IN_MAINTENANCE, existingVehicle.getState());
+        assertEquals(new InMaintenanceVehicleState(), existingVehicle.getState());
     }
 }

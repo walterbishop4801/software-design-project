@@ -18,7 +18,10 @@ import com.ul.vrs.entity.Color;
 import com.ul.vrs.entity.Observer;
 import com.ul.vrs.entity.Subject;
 import com.ul.vrs.entity.vehicle.Vehicle;
-import com.ul.vrs.entity.vehicle.VehicleState;
+import com.ul.vrs.entity.vehicle.state.AvailableVehicleState;
+import com.ul.vrs.entity.vehicle.state.DamagedVehicleState;
+import com.ul.vrs.entity.vehicle.state.InMaintenanceVehicleState;
+import com.ul.vrs.entity.vehicle.state.VehicleState;
 import com.ul.vrs.repository.VehicleRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -38,7 +41,7 @@ public class MechanicTests {
             Map.entry("releaseYear", 2000),
             Map.entry("cost", 500.50),
             Map.entry("color", Color.BLACK),
-            Map.entry("state", VehicleState.AVAILABLE)
+            Map.entry("state", new AvailableVehicleState())
         ),
         Map.ofEntries(
             Map.entry("ID", 10001L),
@@ -47,7 +50,7 @@ public class MechanicTests {
             Map.entry("releaseYear", 2010),
             Map.entry("cost", 1000.0),
             Map.entry("color", Color.RED),
-            Map.entry("state", VehicleState.AVAILABLE)
+            Map.entry("state", new AvailableVehicleState())
         )
     ));
 
@@ -146,7 +149,7 @@ public class MechanicTests {
         testMechanic.assignToVehicle(vehicle);
 
         // Verify state update and save interaction
-        assertEquals(VehicleState.IN_MAINTENANCE, vehicle.getState(), "Vehicle state should be IN_MAINTENANCE");
+        assertEquals(new InMaintenanceVehicleState(), vehicle.getState(), "Vehicle state should be IN_MAINTENANCE");
         verify(vehicleRepository, times(1)).save(vehicle);
         System.out.println("Vehicle successfully assigned to mechanic. State: " + vehicle.getState());
     }
@@ -166,8 +169,8 @@ public class MechanicTests {
         testMechanic.releaseFromVehicle(vehicle);
 
         // Verify state update and save interaction
-        assertEquals(VehicleState.AVAILABLE, vehicle.getState(), "Vehicle state should be AVAILABLE.");
-        verify(vehicleRepository, times(2)).save(vehicle); 
+        assertEquals(new AvailableVehicleState(), vehicle.getState(), "Vehicle state should be AVAILABLE.");
+        verify(vehicleRepository, times(2)).save(vehicle);
         System.out.println("Vehicle successfully released from mechanic. State: " + vehicle.getState());
     }
 
@@ -179,11 +182,11 @@ public class MechanicTests {
         // Add necessary mock when needed
         when(vehicleRepository.save(vehicle)).thenReturn(vehicle);
 
-        vehicle.updateState(VehicleState.DAMAGED);
+        vehicle.updateState(new DamagedVehicleState());
         testMechanic.fixVehicle(vehicle);
 
         // Verify state update and save interaction
-        assertEquals(VehicleState.AVAILABLE, vehicle.getState(), "Vehicle state should be AVAILABLE after fixing");
+        assertEquals(new AvailableVehicleState(), vehicle.getState(), "Vehicle state should be AVAILABLE after fixing");
         verify(vehicleRepository, times(1)).save(vehicle);
         System.out.println("Vehicle successfully fixed. State: " + vehicle.getState());
     }
@@ -200,8 +203,8 @@ public class MechanicTests {
         testMechanic.serviceVehicle(vehicle);
 
         // Verify state remains IN_MAINTENANCE and save interaction
-        assertEquals(VehicleState.IN_MAINTENANCE, vehicle.getState(), "Vehicle state should remain IN_MAINTENANCE");
-        verify(vehicleRepository, times(2)).save(vehicle); 
+        assertEquals(new InMaintenanceVehicleState(), vehicle.getState(), "Vehicle state should remain IN_MAINTENANCE");
+        verify(vehicleRepository, times(2)).save(vehicle);
         System.out.println("Vehicle successfully serviced. State: " + vehicle.getState());
     }
 
@@ -211,7 +214,7 @@ public class MechanicTests {
         System.out.println("Testing notify observers for vehicle with ID: " + vehicle.getID());
 
         vehicle.attach(testMockObserver);
-        vehicle.updateState(VehicleState.DAMAGED);
+        vehicle.updateState(new DamagedVehicleState());
         vehicle.notifyObservers();
 
         // Verify observer notification

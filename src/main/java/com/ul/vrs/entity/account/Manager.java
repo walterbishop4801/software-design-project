@@ -4,7 +4,7 @@ package com.ul.vrs.entity.account;
 import java.util.Optional;
 
 import com.ul.vrs.entity.vehicle.Vehicle;
-import com.ul.vrs.entity.vehicle.VehicleState;
+import com.ul.vrs.entity.vehicle.state.InMaintenanceVehicleState;
 import com.ul.vrs.service.DamageCheckingService;
 import com.ul.vrs.service.SalesReportService;
 =======
@@ -25,6 +25,7 @@ public class Manager {
         this.vehicleManager = vehicleManager;
     }
 
+<<<<<<< HEAD
     /**
 <<<<<<< Updated upstream
      * Add a new vehicle to the inventory
@@ -32,6 +33,8 @@ public class Manager {
      * @param service The vehicle management service
      * @param vehicle The new vehicle to add
      */
+=======
+>>>>>>> caa91544f9cfef2d5819628cc452b514e0e9c690
     public void addVehicle(VehicleManagerService service, Vehicle vehicle) {
         service.addVehicle(vehicle);
         System.out.println("Added new vehicle: " + vehicle.getName() + " (ID: " + vehicle.getID() + ")");
@@ -49,8 +52,8 @@ public class Manager {
         }
 >>>>>>> Stashed changes
     }
-    
 
+<<<<<<< HEAD
     /**
 <<<<<<< Updated upstream
      * Modify or update details of an existing vehicle
@@ -58,6 +61,8 @@ public class Manager {
      * @param service The vehicle management service
      * @param vehicle The vehicle with updated details
      */
+=======
+>>>>>>> caa91544f9cfef2d5819628cc452b514e0e9c690
     public void modifyVehicle(VehicleManagerService service, Vehicle updatedVehicle) {
         Optional<Vehicle> vehicleToModify = service.getVehicleById(updatedVehicle.getID());
 =======
@@ -94,6 +99,7 @@ public class Manager {
         }
     }
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 
 
@@ -103,24 +109,21 @@ public class Manager {
      * @param service The vehicle management service
      * @param vehicleId The ID of the vehicle to remove
      */
+=======
+>>>>>>> caa91544f9cfef2d5819628cc452b514e0e9c690
     public void removeVehicle(VehicleManagerService service, Vehicle vehicle) {
         service.deleteVehicle(vehicle.getID());
         System.out.println("Removed vehicle with ID: " + vehicle.getID());
     }
-    
-    /**
-     * Assign a mechanic to a vehicle
-     * 
-     * @param service The vehicle management service
-     * @param vehicle The vehicle to assign a mechanic to
-     */
+
     public void assignMechanicToVehicle(VehicleManagerService service, Vehicle vehicle) {
         Optional<Vehicle> optionalVehicle = service.getVehicleById(vehicle.getID());
+
         if (optionalVehicle.isPresent()) {
             Vehicle foundVehicle = optionalVehicle.get();
 
             // Update the vehicle state to IN_MAINTENANCE
-            foundVehicle.updateState(VehicleState.IN_MAINTENANCE);
+            foundVehicle.updateState(new InMaintenanceVehicleState());
 
             // Save the updated vehicle state using the service
             service.updateVehicle(foundVehicle.getID(), foundVehicle);
@@ -148,37 +151,31 @@ public class Manager {
         }
     }
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 
     /**
      * Review customer feedback
      */
+=======
+>>>>>>> caa91544f9cfef2d5819628cc452b514e0e9c690
     public void reviewFeedback() {
         System.out.println("Reviewing customer feedback...");
         // Include logic to fetch and review feedback from a service or database
     }
 
-    /**
-     * Generate and view the sales report for all vehicles.
-     * @return 
-     *
-     * @return Sales report as a string.
-     */
     public String generateVehicleSalesReport() {
         System.out.println("Generating vehicle sales report...");
+
         // Include logic to generate and fetch the report from a service
         String report = SalesReportService.generateSalesReport();
         System.out.println(report);
         return report;
     }
 
-    /**
-     * View damage assessment report for a vehicle
-     * 
-     * @param vehicle The vehicle for which to view the report
-     */
     public String viewDamageAssessmentReport(Vehicle vehicle) {
         System.out.println("Viewing damage assessment report for vehicle: " + vehicle.getName() + " (ID: " + vehicle.getID() + ")");
+
         // Include logic to fetch and display the damage assessment report
         String report = DamageCheckingService.generateDamageReport();
         System.out.println(report);
