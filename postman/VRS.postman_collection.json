@@ -1,26 +1,45 @@
 {
 	"info": {
-		"_postman_id": "34c979d4-5e9f-416d-9f44-e83fdf907cfb",
-		"name": "VRS Copy",
+		"_postman_id": "47a134d1-4dd5-4f74-8982-764841f12177",
+		"name": "VRS",
 		"description": "Postman collection for VRS application",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "25870780"
+		"_exporter_id": "39265277"
 	},
 	"item": [
 		{
-			"name": "Manager Account",
+			"name": "Account",
 			"item": [
 				{
 					"name": "Sign up new account",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
-							"mode": "urlencoded",
-							"urlencoded": []
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "text"
+								},
+								{
+									"key": "accountType",
+									"value": "{{accountType}}",
+									"type": "text"
+								}
+							]
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/account/signup?username=john_doe&password=123456&accountType=manager",
+							"raw": "http://localhost:8080/api/account/signup",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -30,36 +49,51 @@
 								"api",
 								"account",
 								"signup"
-							],
-							"query": [
-								{
-									"key": "username",
-									"value": "john_doe"
-								},
-								{
-									"key": "password",
-									"value": "123456"
-								},
-								{
-									"key": "accountType",
-									"value": "manager"
-								}
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Log in manager account",
+					"name": "Log in existing account",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Save JWT Token\", function () {",
+									"    var token = pm.response.text();",
+									"    pm.environment.set(\"jwtToken\", token);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
-							"mode": "urlencoded",
-							"urlencoded": []
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "text"
+								}
+							]
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/account/login?username=john_doe&password=123456",
+							"raw": "http://localhost:8080/api/account/login",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -69,16 +103,6 @@
 								"api",
 								"account",
 								"login"
-							],
-							"query": [
-								{
-									"key": "username",
-									"value": "john_doe"
-								},
-								{
-									"key": "password",
-									"value": "123456"
-								}
 							]
 						}
 					},
@@ -110,9 +134,8 @@
 									"        pm.expect(vehicle).to.have.property('releaseYear');",
 									"        pm.expect(vehicle).to.have.property('color');",
 									"        pm.expect(vehicle).to.have.property('fuelType');",
-									"        pm.expect(vehicle).to.have.property('numberOfDoors');",
-									"        pm.expect(vehicle).to.have.property('trunkCapacity');",
-									"        pm.expect(vehicle).to.have.property('state');",
+									"        pm.expect(vehicle).to.have.property('color');",
+									"        pm.expect(vehicle).to.have.property('vehicleState');",
 									"        pm.expect(vehicle).to.have.property('id');",
 									"        ",
 									"        // Check for 'rentingCost' only if it's defined",
@@ -142,7 +165,7 @@
 									"});",
 									"",
 									"",
-									"pm.test(\"Name, brandOwner, color, and state are non-empty strings\", function () {",
+									"pm.test(\"Name, brandOwner, color, and vehicleState are non-empty strings\", function () {",
 									"    const responseData = pm.response.json();",
 									"    ",
 									"    pm.expect(responseData).to.be.an('array');",
@@ -151,7 +174,7 @@
 									"        pm.expect(vehicle.name).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Name should not be empty\");",
 									"        pm.expect(vehicle.brandOwner).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Brand owner should not be empty\");",
 									"        pm.expect(vehicle.color).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Color should not be empty\");",
-									"        pm.expect(vehicle.state).to.have.property('type').that.is.a('string').and.to.have.lengthOf.at.least(1, \"State should not be empty\");",
+									"        pm.expect(vehicle.vehicleState.type).to.be.a('string').and.to.have.lengthOf.at.least(1, \"State should not be empty\");",
 									"    });",
 									"});",
 									""
@@ -238,7 +261,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/vehicles/2",
+							"raw": "http://localhost:8080/api/vehicles/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -247,7 +270,7 @@
 							"path": [
 								"api",
 								"vehicles",
-								"2"
+								"1"
 							]
 						}
 					},
@@ -287,7 +310,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"type\": \"car\",\n    \"ID\": 1,\n    \"name\": \"Tesla Model 3\",\n    \"brandOwner\": \"Tesla\",\n    \"releaseYear\": 2023,\n    \"cost\": 50000.0,\n    \"color\": \"RED\",\n    \"fuelType\": {\n        \"type\": \"electric\"    \n    },\n    \"vehicleState\": {\n        \"type\": \"Available\"\n    },\n    \"numberOfDoors\": 4,\n    \"trunkCapacity\": 400.0\n}\n",
+							"raw": "{\n    \"type\": \"car\",\n    \"ID\": 1,\n    \"name\": \"Tesla Model 3\",\n    \"brandOwner\": \"Tesla\",\n    \"releaseYear\": 2023,\n    \"cost\": 50000.0,\n    \"color\": \"RED\",\n    \"fuelType\": {\n        \"type\": \"electric\"    },\n    \"vehicleState\": \"AVAILABLE\",\n    \"numberOfDoors\": 4,\n    \"trunkCapacity\": 400.0\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -316,7 +339,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"type\": \"car\",\n    \"name\": \"Tesla Model 3\",\n    \"brandOwner\": \"Tesla\",\n    \"releaseYear\": 2023,\n    \"color\": \"RED\",\n    \"fuelType\": {\n        \"type\": \"electric\",\n        \"cost\": 0.22\n    },\n    \"vehicleState\": {\n        \"type\": \"Available\"\n    },\n    \"numberOfDoors\": 4,\n    \"trunkCapacity\": 400.0,\n    \"id\": 1,\n    \"baseCost\": 500.0\n}\n",
+							"raw": "{\n    \"type\": \"car\",\n    \"ID\": 1,\n    \"name\": \"Tesla Model Y\",\n    \"brandOwner\": \"Tesla\",\n    \"releaseYear\": 2023,\n    \"cost\": 50000.0,\n    \"color\": \"RED\",\n    \"fuelType\": {\n        \"type\": \"electric\"    },\n    \"vehicleState\": \"AVAILABLE\",\n    \"numberOfDoors\": 4,\n    \"trunkCapacity\": 400.0\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -334,111 +357,6 @@
 								"api",
 								"vehicles",
 								"1"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Manager Logout",
-			"item": [
-				{
-					"name": "Log out manager account",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/api/account/logout",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"account",
-								"logout"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Customer Account",
-			"item": [
-				{
-					"name": "Sign up new account",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": []
-						},
-						"url": {
-							"raw": "http://localhost:8080/api/account/signup?username=samantha_smith&password=123456&accountType=customer",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"account",
-								"signup"
-							],
-							"query": [
-								{
-									"key": "username",
-									"value": "samantha_smith"
-								},
-								{
-									"key": "password",
-									"value": "123456"
-								},
-								{
-									"key": "accountType",
-									"value": "customer"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Log in existing account",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": []
-						},
-						"url": {
-							"raw": "http://localhost:8080/api/account/login?username=samantha_smith&password=123456",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"account",
-								"login"
-							],
-							"query": [
-								{
-									"key": "username",
-									"value": "samantha_smith"
-								},
-								{
-									"key": "password",
-									"value": "123456"
-								}
 							]
 						}
 					},
@@ -495,7 +413,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"numberOfRentingDays\": 5\n}\n",
+							"raw": "{\n    \"numberOfRentingDays\":10\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -503,7 +421,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/renting/make_booking/1",
+							"raw": "http://localhost:8080/api/renting/make_booking/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -513,7 +431,7 @@
 								"api",
 								"renting",
 								"make_booking",
-								"1"
+								"2"
 							]
 						}
 					},
@@ -562,7 +480,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/renting/customize_booking/{{bookingId}}\n",
+							"raw": "http://localhost:8080/api/renting/customize_booking/{{bookingId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -572,7 +490,7 @@
 								"api",
 								"renting",
 								"customize_booking",
-								"{{bookingId}}\n"
+								"{{bookingId}}"
 							]
 						}
 					},
@@ -611,7 +529,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/renting/authenticate_payment/{{bookingId}}",
+							"raw": "http://localhost:8080/api/renting/make_payment/{{bookingId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -620,7 +538,7 @@
 							"path": [
 								"api",
 								"renting",
-								"authenticate_payment",
+								"make_payment",
 								"{{bookingId}}"
 							]
 						}
@@ -825,32 +743,38 @@
 					"response": []
 				}
 			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{jwtToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
 		},
 		{
-			"name": "Customer Logout",
-			"item": [
-				{
-					"name": "Log out customer account",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/api/account/logout",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"account",
-								"logout"
-							]
-						}
-					},
-					"response": []
-				}
-			]
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }

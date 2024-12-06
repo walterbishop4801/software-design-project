@@ -21,24 +21,6 @@ public class VehicleController {
     @Autowired
     private AccountManagerService accountManagerService;
 
-    // -------------------------------------------
-    // Check user permissions
-    // -------------------------------------------
-    private Manager getManager() throws IllegalAccessException {
-        Account account = accountManagerService.getLoggedAccount();
-
-        if (account == null || !(account instanceof Manager)) {
-            throw new IllegalAccessException("The account does not have the required permissions");
-        }
-
-        return (Manager) account;
-    }
-
-    private void checkAccountType() throws IllegalAccessException {
-        getManager();
-    }
-    // -------------------------------------------
-
     // Get all vehicles in the system - http://localhost:8080/api/vehicles
     @GetMapping
     public List<Vehicle> getAllVehicles() {
@@ -60,43 +42,23 @@ public class VehicleController {
     // Add a new vehicle to the system - http://localhost:8080/api/vehicles
     @PostMapping
     public ResponseEntity<Vehicle> addVehicle(@RequestBody Vehicle vehicle) {
-        try {
-            checkAccountType();
-
-            Vehicle newVehicle = vehicleService.addVehicle(vehicle);
-            return ResponseEntity.ok(newVehicle);
-        } catch (IllegalAccessException exe) {
-            return ResponseEntity.notFound().build();
-        }
+        Vehicle newVehicle = vehicleService.addVehicle(vehicle);
+        return ResponseEntity.ok(newVehicle);
     }
 
  // Update an existing vehicle's details - http://localhost:8080/api/vehicles/{id}
     @PutMapping("/{id}")
     public ResponseEntity<?> updateVehicle(@PathVariable Long id, @RequestBody Vehicle vehicleDetails) {
-        try {
-            // Check if the account has the required permissions
-            checkAccountType();
+        if (vehicleDetails.getState() == null || vehicleDetails.getState().getType() == null) {
+            return ResponseEntity.badRequest().body("Invalid vehicle state: Missing or invalid 'type' field.");
+        }
+        System.out.println(vehicleDetails.getState());
+        Vehicle updatedVehicle = vehicleService.updateVehicle(id, vehicleDetails);
 
-            // Validate the incoming vehicle details
-            if (vehicleDetails.getState() == null || vehicleDetails.getState().getType() == null) {
-                return ResponseEntity.badRequest().body("Invalid vehicle state: Missing or invalid 'type' field.");
-            }
-            System.out.println(vehicleDetails.getState());
-
-            // Attempt to update the vehicle
-            Vehicle updatedVehicle = vehicleService.updateVehicle(id, vehicleDetails);
-
-            if (updatedVehicle != null) {
-                return ResponseEntity.ok(updatedVehicle);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (IllegalAccessException e) {
-            // Handle insufficient permissions
-            return ResponseEntity.status(403).body("You do not have permission to update this vehicle.");
-        } catch (Exception e) {
-            // Handle other errors
-            return ResponseEntity.status(500).body("An error occurred while updating the vehicle: " + e.getMessage());
+        if (updatedVehicle != null) {
+            return ResponseEntity.ok(updatedVehicle);
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -104,13 +66,9 @@ public class VehicleController {
     // Delete a vehicle by its ID - http://localhost:8080/api/vehicles/{id}
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteVehicle(@PathVariable Long id) {
-        try {
-            checkAccountType();
 
-            vehicleService.deleteVehicle(id);
-            return ResponseEntity.noContent().build();
-        } catch (IllegalAccessException exe) {
-            return ResponseEntity.status(403).body(null);
-        }
+        vehicleService.deleteVehicle(id);
+        return ResponseEntity.noContent().build();
+
     }
 }

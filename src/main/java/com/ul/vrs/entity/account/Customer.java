@@ -24,12 +24,12 @@ public class Customer extends Account {
     @Autowired
     private VehicleManagerService vehicleManagerService;
 
-    public Customer(String username, String accountId, String password) {
-        super(username, accountId, password);
+    public Customer(String username, String password) {
+        super(username, password);
     }
 
     public Customer() {
-        super("test_username", "test_id", "test_password");
+        super("test_username", "test_password");
     }
 
     public List<Vehicle> searchAvailableVehicles() {
@@ -37,7 +37,7 @@ public class Customer extends Account {
     }
 
     public void makeBooking(Vehicle vehicle, int numberOfRentingDays) {
-        rentalSystemService.makeBooking(this, vehicle, numberOfRentingDays);
+        rentalSystemService.makeBooking(this.getUsername(), vehicle, numberOfRentingDays);
     }
 
     public void customizeVehicle(UUID booking) {

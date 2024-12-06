@@ -8,10 +8,17 @@ import com.ul.vrs.service.DamageCheckingService;
 import com.ul.vrs.service.SalesReportService;
 import com.ul.vrs.service.VehicleManagerService;
 
+import jakarta.persistence.Entity;
+
+@Entity
 public class Manager extends Account {
 
-    public Manager(String name, String id, String password) {
-        super(name, id, password);
+    public Manager(String name,  String password) {
+        super(name, password);
+    }
+
+    public Manager() {
+        super("test_manager", "test_password");
     }
 
     public void addVehicle(VehicleManagerService service, Vehicle vehicle) {
