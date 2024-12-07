@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Entity
 public class Customer extends Account {
 	
+	@Transient
 	private final List<Interceptor> interceptors = new ArrayList<>();
 	
 	@Transient
