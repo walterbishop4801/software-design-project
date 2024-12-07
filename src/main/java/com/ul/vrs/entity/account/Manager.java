@@ -8,15 +8,17 @@ import com.ul.vrs.service.DamageCheckingService;
 import com.ul.vrs.service.SalesReportService;
 import com.ul.vrs.service.VehicleManagerService;
 
+import jakarta.persistence.Entity;
+
+@Entity
 public class Manager extends Account {
 
-    public Manager(String name, String id, String password) {
-        super(name, id, password);
+    public Manager(String name,  String password) {
+        super(name, password);
     }
-    
-    @Override
-    public String getAccountType() {
-        return "Manager";
+
+    public Manager() {
+        super("test_manager", "test_password");
     }
 
     public void addVehicle(VehicleManagerService service, Vehicle vehicle) {
@@ -77,7 +79,7 @@ public class Manager extends Account {
         System.out.println("Generating vehicle sales report...");
 
         // Include logic to generate and fetch the report from a service
-        String report = SalesReportService.generateSalesReport();
+        String report = SalesReportService.generateReport();
         System.out.println(report);
         return report;
     }
@@ -86,7 +88,7 @@ public class Manager extends Account {
         System.out.println("Viewing damage assessment report for vehicle: " + vehicle.getName() + " (ID: " + vehicle.getID() + ")");
 
         // Include logic to fetch and display the damage assessment report
-        String report = DamageCheckingService.generateDamageReport();
+        String report = DamageCheckingService.generateReport();
         System.out.println(report);
         return report;
     }

@@ -1,6 +1,7 @@
 package com.ul.vrs.service;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import java.util.*;
@@ -21,11 +22,8 @@ import com.ul.vrs.entity.booking.payment.PaymentRequest;
 import com.ul.vrs.entity.vehicle.Car;
 import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.entity.vehicle.fuel.Fuel;
-import com.ul.vrs.entity.vehicle.state.AvailableVehicleState;
-import com.ul.vrs.entity.vehicle.state.InMaintenanceVehicleState;
-import com.ul.vrs.entity.vehicle.state.ReservedVehicleState;
-import com.ul.vrs.repository.BookingRepository;
-import com.ul.vrs.repository.VehicleRepository;
+import com.ul.vrs.entity.vehicle.state.*;
+import com.ul.vrs.repository.*;
 
 public class RentalSystemServiceTest {
     // Service being tested
@@ -43,6 +41,13 @@ public class RentalSystemServiceTest {
     @Mock
     private VehicleManagerService vehicleManagerService;
 
+    // Mock Account repository
+    @Mock
+    private AccountRepository accountRepository;
+
+    @Mock
+    private AccountManagerService accountManagerService;
+
     // Mock data for vehicles
     private List<Vehicle> mockVehicles;
 
@@ -53,7 +58,8 @@ public class RentalSystemServiceTest {
     public void setup() {
         // Initialize mocks and set up mock customer
         MockitoAnnotations.openMocks(this);
-        mockCustomer = new Customer("test_user", "test_id", "test_password");
+        mockCustomer = new Customer("test_user", "test_password");
+        when(accountRepository.findById(mockCustomer.getUsername())).thenReturn(Optional.of(mockCustomer));
         initMockVehicles(); // Initialize mock vehicles
     }
 
@@ -83,7 +89,7 @@ public class RentalSystemServiceTest {
         Booking booking = new Booking(mockCustomer, vehicle, 1);
         when(bookingRepository.save(any(Booking.class))).thenReturn(booking);
 
-        UUID bookingId = rentalSystemService.makeBooking(mockCustomer, vehicle, 1); // Create a booking
+        UUID bookingId = rentalSystemService.makeBooking(mockCustomer.getUsername(), vehicle, 1); // Create a booking
 
         assertNotNull(bookingId, "Booking ID should not be null"); // Booking ID must not be null
         when(bookingRepository.findById(bookingId)).thenReturn(Optional.of(booking));
@@ -97,7 +103,7 @@ public class RentalSystemServiceTest {
     @Test
     public void testMakeBooking_NullVehicle() {
         // Test for attempting to book a null vehicle
-        UUID bookingId = rentalSystemService.makeBooking(mockCustomer, null, 0);
+        UUID bookingId = rentalSystemService.makeBooking(mockCustomer.getUsername(), null, 0);
         assertNull(bookingId, "Booking ID should be null when vehicle is null"); // Booking ID must be null
     }
 

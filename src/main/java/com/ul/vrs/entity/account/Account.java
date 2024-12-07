@@ -2,27 +2,22 @@ package com.ul.vrs.entity.account;
 
 import jakarta.persistence.*;
 
-@MappedSuperclass
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class Account {
-	private String username;
     @Id
-	private String accountId;
+	private String username;
 	private String password;
 	
 	//Constructor
-	public Account(String username, String accountId, String password) {
+	public Account(String username, String password) {
 		this.username = username;
-		this.accountId = accountId;
 		this.password = password;
 	}
 	
 	//Getters
 	public String getUsername() {
 		return username;
-	}
-	
-	public String getAccountId() {
-		return accountId;
 	}
 	
 	public String getPassword() {
@@ -33,15 +28,8 @@ public abstract class Account {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	
-	public void setAccountId(String accountId) {
-		this.accountId = accountId;
-	}
-	
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
-	// Abstract method
-    public abstract String getAccountType();
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

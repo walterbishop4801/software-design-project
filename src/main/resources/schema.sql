@@ -1,13 +1,13 @@
-create table customer (
-    account_id varchar not null,
+create table account (
     username varchar not null,
     password varchar not null,
-    primary key(account_id)
+    DTYPE varchar,
+    primary key(username)
 );
 
 CREATE TABLE booking (
     booking_id UUID PRIMARY KEY,
-    customer_id varchar,
+    account_id varchar,
     vehicle_id BIGINT,
     is_authenticated BOOLEAN,
     price DECIMAL(10,2),

@@ -25,7 +25,7 @@ public class BookingTest {
     @BeforeAll
     public void setup() {
         // Initialize common test objects
-        testCustomer = new Customer("John Doe", "john.doe@example.com", "1234567890");
+        testCustomer = new Customer("John Doe", "john.doe@example.com");
 
         testVehicle = new Vehicle(1L, "Camry", "Toyota", 2020, 25_000, Color.BLACK, new PetrolFuel(), new AvailableVehicleState()) {
             @Override
@@ -48,7 +48,7 @@ public class BookingTest {
     @Test
     public void testValidBookingInitialization() {
         assertNotNull(testBooking.getBookingId(), "Booking ID should not be null");
-        assertEquals(testCustomer, testBooking.getCustomer(), "Customer should be correctly initialized");
+        assertEquals(testCustomer, testBooking.getAccount(), "Customer should be correctly initialized");
         assertEquals(testVehicle, testBooking.getVehicle(), "Vehicle should be correctly initialized");
         assertFalse(testBooking.getIsAuthenticated(), "is_authenticated should be false by default");
         assertEquals(500, testBooking.getPrice(), "Default price should be 500");
@@ -77,7 +77,7 @@ public class BookingTest {
     @Test
     public void testBookingDecoratorCustomerDelegation() {
         BookingDecorator decoratedBooking = new BookingDecorator(testBooking);
-        assertEquals(testBooking.getCustomer(), decoratedBooking.getCustomer(), "Decorator should delegate getCustomer to the original booking");
+        assertEquals(testBooking.getAccount(), decoratedBooking.getAccount(), "Decorator should delegate getCustomer to the original booking");
     }
 
     @Test

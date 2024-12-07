@@ -5,7 +5,7 @@ import com.ul.vrs.entity.vehicle.Vehicle;
 
 import jakarta.persistence.*;
 
-import com.ul.vrs.entity.account.Customer;
+import com.ul.vrs.entity.account.*;
 import com.ul.vrs.entity.booking.decorator.Customization;
 
 import java.util.ArrayList;
@@ -18,8 +18,8 @@ import java.util.UUID;
 @DiscriminatorValue("BASE")
 public class Booking {
     @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private final Customer customer;
+    @JoinColumn(name = "account_id")
+    private final Account account;
 
     @OneToOne
     @JoinColumn(name = "vehicle_id")
@@ -35,8 +35,8 @@ public class Booking {
     @CollectionTable(name = "booking_decorators", joinColumns = @JoinColumn(name = "booking_id"))
     protected List<Customization> decorators;
 
-    protected Booking(UUID bookingId, Customer customer, Vehicle vehicle, int numberOfRentingDays) {
-        this.customer = customer;
+    protected Booking(UUID bookingId, Account account, Vehicle vehicle, int numberOfRentingDays) {
+        this.account = account;
         this.vehicle = vehicle;
         this.bookingId = bookingId;
         this.isAuthenticated = false;
@@ -45,12 +45,12 @@ public class Booking {
         this.decorators = new ArrayList<>();
     }
 
-    public Booking(Customer customer, Vehicle vehicle, int numberOfRentingDays) {
-        this(UUID.randomUUID(), customer, vehicle, numberOfRentingDays);
+    public Booking(Account account, Vehicle vehicle, int numberOfRentingDays) {
+        this(UUID.randomUUID(), account, vehicle, numberOfRentingDays);
     }
 
     public Booking() {
-        this.customer = new Customer();
+        this.account = new Customer();
         this.vehicle = new Car();
         this.bookingId = UUID.randomUUID();
         this.isAuthenticated = false;
@@ -79,8 +79,8 @@ public class Booking {
         return vehicle;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public Account getAccount() {
+        return account;
     }
 
     public boolean getIsAuthenticated() {

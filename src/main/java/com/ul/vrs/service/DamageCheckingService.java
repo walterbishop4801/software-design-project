@@ -2,11 +2,9 @@ package com.ul.vrs.service;
 
 import org.springframework.stereotype.Service;
 import com.ul.vrs.entity.vehicle.Vehicle;
-import com.ul.vrs.service.SalesReportService.ReportUtility;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 @Service
 public class DamageCheckingService {
@@ -46,22 +44,6 @@ public class DamageCheckingService {
             return "No damage report found for vehicle ID " + vehicleId + " to dispute.";
         }
     }
-<<<<<<< HEAD
-    
-    /**
-     * Generate a comprehensive damage report for the manager.
-     *
-     * @return A string containing the damage report summary.
-     * 
-     */
-    
-    public static String generateDamageReport() {
-        String header = "Comprehensive Damage Report:";
-        return ReportUtility.buildReport(damageReports.entrySet(), header, entry -> 
-            "Vehicle ID: " + entry.getKey() +
-            ", Damage: " + entry.getValue()
-        );
-=======
 
     public static String generateReport() {
         if (damageReports.isEmpty()) {
@@ -76,6 +58,5 @@ public class DamageCheckingService {
         }
 
         return report.toString();
->>>>>>> 98bca6413625c5104a624831d3c39ed72763800f
     }
 }

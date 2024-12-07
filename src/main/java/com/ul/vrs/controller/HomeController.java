@@ -28,12 +28,6 @@ public class HomeController {
         return "login";
     }
 
-    @GetMapping("/logout")
-    public String logout() {
-        accountManager.logout();
-        return "redirect:/login";
-    }
-
     @PostMapping("/login")
     public String login(@RequestParam String username, @RequestParam String password, Model model) {
         Account account = accountManager.logIn(username, password);

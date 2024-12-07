@@ -8,7 +8,7 @@ public class BookingDecorator extends Booking {
     private final Booking booking;
 
     public BookingDecorator(Booking booking) {
-        super(booking.getBookingId(), booking.getCustomer(), booking.getVehicle(), booking.getNumberOfRentingDays());
+        super(booking.getBookingId(), booking.getAccount(), booking.getVehicle(), booking.getNumberOfRentingDays());
         this.booking = booking;
     }
 
