@@ -13,6 +13,7 @@ import com.ul.vrs.entity.vehicle.fuel.PetrolFuel;
 import com.ul.vrs.entity.vehicle.state.AvailableVehicleState;
 import com.ul.vrs.entity.vehicle.state.ReservedVehicleState;
 import com.ul.vrs.interceptor.Interceptor;
+import com.ul.vrs.service.RentalSystemService;
 import com.ul.vrs.service.VehicleManagerService;
 
 import org.junit.jupiter.api.Test;
@@ -24,6 +25,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class CustomerTest {
 
@@ -53,26 +55,29 @@ public class CustomerTest {
 	    assertTrue(availableVehicles.size() > 0);
 	}
 
+	@Test
+	public void testBookVehicleSuccessfully() {
+	    // Arrange
+	    Customer customer = new Customer("TestUser", "password123");
+	    Vehicle vehicle = new Car(1L, "Model X", "Tesla", 2021, 50000, Color.BLACK, new PetrolFuel(), 4, 300);
+	    vehicle.updateState(new AvailableVehicleState());
 
-    @Test
-    public void testBookVehicle() {
-        // Arrange
-        Customer customer = new Customer("Mark Bough", "password");
-        Vehicle vehicle = new Car(1L, "Test Car", "Toyota", 2020, 20000, Color.BLUE, new PetrolFuel(), 4, 300);
-        vehicle.updateState(new AvailableVehicleState());
-
-        Interceptor mockInterceptor = mock(Interceptor.class);
+	    RentalSystemService mockRentalSystemService = mock(RentalSystemService.class);
+	    customer.setRentalSystemService(mockRentalSystemService);
+	    Interceptor mockInterceptor = mock(Interceptor.class);
         customer.addInterceptor(mockInterceptor);
 
-        // Act
-        Booking booking = customer.bookVehicle(vehicle);
+	    // Act
+	    Booking booking = customer.bookVehicle(vehicle, 5);
 
-        // Assert
-        assertNotNull(booking, "Booking should not be null.");
-        assertTrue(vehicle.getState() instanceof ReservedVehicleState, "Vehicle should be in RESERVED state after booking.");
+	    // Assert
+	    assertNotNull(booking, "Booking should not be null.");
+	    assertTrue(vehicle.getState() instanceof ReservedVehicleState, "Vehicle should be in RESERVED state after booking.");
         verify(mockInterceptor).beforeAction(eq("bookVehicle"), eq(vehicle));
         verify(mockInterceptor).afterAction(eq("bookVehicle"), eq(booking));
-    }
+	    verify(mockRentalSystemService).makeBooking(eq("TestUser"), eq(vehicle), eq(5));
+	}
+
 
     @Test
     public void testCancelBooking() {
@@ -80,12 +85,17 @@ public class CustomerTest {
         Customer customer = new Customer("Mark Bough", "password");
         Vehicle vehicle = new Car(1L, "Test Car", "Toyota", 2020, 20000, Color.BLUE, new PetrolFuel(), 4, 300);
         vehicle.updateState(new ReservedVehicleState());
-
+        
+        //Mock interceptor
         Interceptor mockInterceptor = mock(Interceptor.class);
         customer.addInterceptor(mockInterceptor);
+        
+        //Mock Rental System Service
+        RentalSystemService mockRentalSystemService = mock(RentalSystemService.class);
+        customer.setRentalSystemService(mockRentalSystemService);
 
         // Act
-        customer.cancelBooking(vehicle);
+        customer.cancelBooking(vehicle, UUID.randomUUID());
 
         // Assert
         assertTrue(vehicle.getState() instanceof AvailableVehicleState, "Vehicle should be in AVAILABLE state after cancellation.");
@@ -100,11 +110,16 @@ public class CustomerTest {
         Vehicle vehicle = new Car(1L, "Test Car", "Toyota", 2020, 20000, Color.BLUE, new PetrolFuel(), 4, 300);
         vehicle.updateState(new ReservedVehicleState());
 
+        //Mock interceptor
         Interceptor mockInterceptor = mock(Interceptor.class);
         customer.addInterceptor(mockInterceptor);
+        
+        //Mock Rental System Service
+        RentalSystemService mockRentalSystemService = mock(RentalSystemService.class);
+        customer.setRentalSystemService(mockRentalSystemService);
 
         // Act
-        customer.returnVehicle(vehicle);
+        customer.returnVehicle(vehicle, UUID.randomUUID());
 
         // Assert
         assertTrue(vehicle.getState() instanceof AvailableVehicleState, "Vehicle should be in AVAILABLE state after returning.");
@@ -117,19 +132,25 @@ public class CustomerTest {
         // Arrange
         Customer customer = new Customer("Mark Bough", "password");
         Vehicle vehicle = new Car(1L, "Test Car", "Toyota", 2020, 20000, Color.BLUE, new PetrolFuel(), 4, 300);
+        int numberOfRentingDays = 5;
         vehicle.updateState(new AvailableVehicleState());
+        
+        //Mock interceptor
+        Interceptor mockInterceptor = mock(Interceptor.class);
+        customer.addInterceptor(mockInterceptor);
+        
+        //Mock Rental System Service
+        RentalSystemService mockRentalSystemService = mock(RentalSystemService.class);
+        customer.setRentalSystemService(mockRentalSystemService);
 
         // Create a booking first
-        Booking booking = customer.bookVehicle(vehicle); // Ensure this does not return null
+        Booking booking = customer.bookVehicle(vehicle, numberOfRentingDays); // Ensure this does not return null
 
         // Check if booking was created successfully
         assertNotNull(booking, "Booking should not be null.");
         
         //Change vehicle state to reserved after booking is completed
         vehicle.updateState(new ReservedVehicleState());
-
-        Interceptor mockInterceptor = mock(Interceptor.class);
-        customer.addInterceptor(mockInterceptor);
 
         // Act
         Booking customizedBooking = customer.customizeBooking(booking, Customization.GPS);
@@ -146,19 +167,25 @@ public class CustomerTest {
         // Arrange
         Customer customer = new Customer("Macht Bough", "securepassword");
         Vehicle vehicle = new Car(2L, "Luxury Car", "BMW", 2021, 50000, Color.BLACK, new DieselFuel(), 4, 400);
+        int numberOfRentingDays = 5;
         vehicle.updateState(new AvailableVehicleState());
+        
+        //Mock interceptor
+        Interceptor mockInterceptor = mock(Interceptor.class);
+        customer.addInterceptor(mockInterceptor);
+        
+        //Mock Rental System Service
+        RentalSystemService mockRentalSystemService = mock(RentalSystemService.class);
+        customer.setRentalSystemService(mockRentalSystemService);
 
         // Create a booking first
-        Booking booking = customer.bookVehicle(vehicle); // Ensure this does not return null
+        Booking booking = customer.bookVehicle(vehicle, numberOfRentingDays); // Ensure this does not return null
 
         // Check if booking was created successfully
         assertNotNull(booking, "Booking should not be null.");
         
         //Change vehicle state to reserved after booking is completed
         vehicle.updateState(new ReservedVehicleState());
-
-        Interceptor mockInterceptor = mock(Interceptor.class);
-        customer.addInterceptor(mockInterceptor);
 
         // Act
         Booking customizedBooking = customer.customizeBooking(booking, Customization.INSURANCE);
@@ -175,19 +202,25 @@ public class CustomerTest {
         // Arrange
         Customer customer = new Customer("Martha Bough", "safePassword");
         Vehicle vehicle = new Car(3L, "Economy Car", "Honda", 2019, 15000, Color.WHITE, new PetrolFuel(), 4, 250);
+        int numberOfRentingDays = 5;
         vehicle.updateState(new AvailableVehicleState());
+        
+        //Mock interceptor
+        Interceptor mockInterceptor = mock(Interceptor.class);
+        customer.addInterceptor(mockInterceptor);
+        
+        //Mock Rental System Service
+        RentalSystemService mockRentalSystemService = mock(RentalSystemService.class);
+        customer.setRentalSystemService(mockRentalSystemService);
 
         // Create a booking first
-        Booking booking = customer.bookVehicle(vehicle); // Ensure this does not return null
+        Booking booking = customer.bookVehicle(vehicle, numberOfRentingDays); // Ensure this does not return null
 
         // Check if booking was created successfully
         assertNotNull(booking, "Booking should not be null.");
         
         //Change vehicle state to reserved after booking is completed
         vehicle.updateState(new ReservedVehicleState());
-
-        Interceptor mockInterceptor = mock(Interceptor.class);
-        customer.addInterceptor(mockInterceptor);
 
         // Act
         Booking customizedBooking = customer.customizeBooking(booking, Customization.VOUCHER);

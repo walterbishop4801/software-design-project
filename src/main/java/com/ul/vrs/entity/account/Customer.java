@@ -2,6 +2,7 @@ package com.ul.vrs.entity.account;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Supplier;
 
 import com.ul.vrs.entity.booking.Booking;
@@ -9,10 +10,12 @@ import com.ul.vrs.entity.booking.decorator.Customization;
 import com.ul.vrs.entity.booking.decorator.GPSBookingDecorator;
 import com.ul.vrs.entity.booking.decorator.InsuranceBookingDecorator;
 import com.ul.vrs.entity.booking.decorator.VoucherBookingDecorator;
+import com.ul.vrs.entity.booking.payment.PaymentRequest;
 import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.entity.vehicle.state.AvailableVehicleState;
 import com.ul.vrs.entity.vehicle.state.ReservedVehicleState;
 import com.ul.vrs.interceptor.Interceptor;
+import com.ul.vrs.service.RentalSystemService;
 import com.ul.vrs.service.VehicleManagerService;
 
 import jakarta.persistence.Entity;
@@ -21,13 +24,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
 public class Customer extends Account {
+	
+	private final List<Interceptor> interceptors = new ArrayList<>();
+	
+	@Transient
+	@Autowired
+    private RentalSystemService rentalSystemService;
 
     @Transient
     @Autowired
     private VehicleManagerService vehicleManagerService;
-
-    private final List<Interceptor> interceptors = new ArrayList<>();
-
+    
     public Customer(String name, String password) {
         super(name, password);
     }
@@ -79,15 +86,16 @@ public class Customer extends Account {
         runAfterInterceptors("searchAvailableVehicles", availableVehicles);
         return availableVehicles;
     }
-
+    
     /* Book a vehicle */
-    public Booking bookVehicle(Vehicle vehicle) {
+    public Booking bookVehicle(Vehicle vehicle, int numberOfRentingDays) {
         runBeforeInterceptors("bookVehicle", vehicle);
 
         if (vehicle.getState() instanceof AvailableVehicleState) {
             System.out.println("Booking vehicle: " + vehicle.getName() + ", ID: " + vehicle.getID());
             vehicle.updateState(new ReservedVehicleState());
             Booking booking = new Booking(this, vehicle, 0);
+            rentalSystemService.makeBooking(this.getUsername(), vehicle, numberOfRentingDays);
 
             runAfterInterceptors("bookVehicle", booking);
             return booking;
@@ -97,25 +105,36 @@ public class Customer extends Account {
         runAfterInterceptors("bookVehicle", vehicle);
         return null;
     }
+    
+    /* Make payment for the booking */
+    public void makeBookingPayment(UUID booking, PaymentRequest paymentRequest) {
+        runBeforeInterceptors("makeBookingPayment", paymentRequest);
 
-    /* Cancel a vehicle booking */
-    public void cancelBooking(Vehicle vehicle) {
-        runBeforeInterceptors("cancelBooking", vehicle);
-
-        System.out.println("Booking cancelled for vehicle: " + vehicle.getName() + ", ID: " + vehicle.getID());
-        vehicle.updateState(new AvailableVehicleState());
-
-        runAfterInterceptors("cancelBooking", vehicle);
+        rentalSystemService.makeBookingPayment(booking, paymentRequest);
+        
+        runAfterInterceptors("makeBookingPayment", paymentRequest);
     }
 
     /* Return a vehicle */
-    public void returnVehicle(Vehicle vehicle) {
+    public void returnVehicle(Vehicle vehicle, UUID booking) {
         runBeforeInterceptors("returnVehicle", vehicle);
-
+        
+        rentalSystemService.returnVehicle(booking);
         System.out.println("Returning vehicle: " + vehicle.getName() + ", ID: " + vehicle.getID());
         vehicle.updateState(new AvailableVehicleState());
 
         runAfterInterceptors("returnVehicle", vehicle);
+    }
+    
+    /* Cancel a vehicle booking */
+    public void cancelBooking(Vehicle vehicle, UUID booking) {
+        runBeforeInterceptors("cancelBooking", vehicle);
+
+        rentalSystemService.cancelBooking(booking);
+        System.out.println("Booking cancelled for vehicle: " + vehicle.getName() + ", ID: " + vehicle.getID());
+        vehicle.updateState(new AvailableVehicleState());
+
+        runAfterInterceptors("cancelBooking", vehicle);
     }
 
     /* Apply customization logic using a decorator */
@@ -147,5 +166,9 @@ public class Customer extends Account {
             default:
                 throw new IllegalArgumentException("Invalid customization option: " + customization);
         }
+    }
+    
+    public void setRentalSystemService(RentalSystemService rentalSystemService) {
+        this.rentalSystemService = rentalSystemService;
     }
 }
