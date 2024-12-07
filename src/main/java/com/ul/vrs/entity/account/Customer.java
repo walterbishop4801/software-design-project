@@ -2,6 +2,7 @@ package com.ul.vrs.entity.account;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Supplier;
 
@@ -35,8 +36,8 @@ public class Customer extends Account {
     @Transient
     @Autowired
     private VehicleManagerService vehicleManagerService;
-    
-    public Customer(String name, String password) {
+
+	public Customer(String name, String password) {
         super(name, password);
     }
 
@@ -44,7 +45,11 @@ public class Customer extends Account {
         super("test_username", "test_password");
     }
 
-    public void addInterceptor(Interceptor interceptor) {
+	public void setRentalSystemService(RentalSystemService rentalSystemService) {
+        this.rentalSystemService = rentalSystemService;
+    }
+
+	public void addInterceptor(Interceptor interceptor) {
         interceptors.add(interceptor);
     }
 
@@ -62,6 +67,14 @@ public class Customer extends Account {
     
     public void setVehicleManagerService(VehicleManagerService vehicleManagerService) {
         this.vehicleManagerService = vehicleManagerService;
+    }
+    
+    public Optional<Vehicle> viewVehicleDetails(long vehicleId) {
+        Optional<Vehicle> vehicle = vehicleManagerService.getVehicleById(vehicleId);
+        if (vehicle.isEmpty()) {
+            System.out.println("No vehicle found with ID: " + vehicleId);
+        }
+        return vehicle;
     }
 
     /* Search available vehicles */
@@ -169,7 +182,14 @@ public class Customer extends Account {
         }
     }
     
-    public void setRentalSystemService(RentalSystemService rentalSystemService) {
-        this.rentalSystemService = rentalSystemService;
+    public void reportIssue(Vehicle vehicle, UUID vehicleId, Booking issueDescription) {
+        System.out.println("Reporting issue for vehicle: " + vehicle.getName() + " (ID: " + vehicle.getID() + ")");
+        System.out.println("Issue Description: " + issueDescription);
+        rentalSystemService.reportIssue(vehicleId, issueDescription); // Simulated mechanic service
+    }
+    
+    public void submitFeedback(UUID vehicleId, Booking feedback) {
+        System.out.println("Submitting feedback: " + feedback);
+        rentalSystemService.submitFeedback(vehicleId, feedback);
     }
 }
