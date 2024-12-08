@@ -5,6 +5,53 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v3.0.0](https://github.com/mallyaaniruddh/software-design-project/releases/tag/v3.0.0) (2024-12-08)
+
+### Features
+
+-  **booking**:  fix booking customization issues ([aeef03c289d951f](https://github.com/mallyaaniruddh/software-design-project/commit/aeef03c289d951f1a866d73912e14e7b4cbc0793) Ivor D&#x27;Souza)
+-  **account**:  include account logging service ([ef043c135a8cde4](https://github.com/mallyaaniruddh/software-design-project/commit/ef043c135a8cde42e38f05f6d1f559f5b2455edb) David Parreño Barbuzano)
+
+### Bug Fixes
+
+-  **changelog**:  fix changelog versions ([5d8188b2d5eef1e](https://github.com/mallyaaniruddh/software-design-project/commit/5d8188b2d5eef1e9b774af84e3850cd85e768559) David Parreño Barbuzano)
+-  Add and improve state handling logic for VehicleState ([f8e111ad2c7d164](https://github.com/mallyaaniruddh/software-design-project/commit/f8e111ad2c7d16413ac576068a22375bd673ef6a) Rohan Sikder)
+-  **tests**:  update  in  to mock repository updates ([ab104491dcd4d0a](https://github.com/mallyaaniruddh/software-design-project/commit/ab104491dcd4d0ade103432063b85ae920ef04f7) Rohan Sikder)
+-  fix error of ManagerTest ([5d8ffda48cbed35](https://github.com/mallyaaniruddh/software-design-project/commit/5d8ffda48cbed35eb3c1b0b2559cb100cfbc3c8a) David Parreño Barbuzano)
+-  **postman**:  Fix postman collection for new vehicle state ([76860a808b0de83](https://github.com/mallyaaniruddh/software-design-project/commit/76860a808b0de836529abb227926e328a9bd3f33) David Parreño Barbuzano)
+-  **vehicle**:  fix ID uniqueness so vehicles have always different IDs ([3f895e5f37c3f44](https://github.com/mallyaaniruddh/software-design-project/commit/3f895e5f37c3f440871ccbaad8a38bf380c0084b) David Parreño Barbuzano)
+-  **vehicle**:  fix jackson annotations of VehicleState ([72d4a47cbf21222](https://github.com/mallyaaniruddh/software-design-project/commit/72d4a47cbf21222c7a7a75de785b9250e0021743) David Parreño Barbuzano)
+
+### Style
+
+-  delete TODO lines and fix PMD violations ([f9ab32baed2b6aa](https://github.com/mallyaaniruddh/software-design-project/commit/f9ab32baed2b6aa0653f468ddfb3903e599a2ba5) David Parreño Barbuzano)
+
+### Refactoring
+
+-  **vehicle**:  replace state enum with inheritance ([a688f20694e4dea](https://github.com/mallyaaniruddh/software-design-project/commit/a688f20694e4dea4aae5d8e396619798c230fcc3) David Parreño Barbuzano)
+
+### Other changes
+
+- chorus: update springboot for version 3.4.0 update springboot for version 3.4.0 ([9474f4b1bd5c1e2](https://github.com/mallyaaniruddh/software-design-project/commit/9474f4b1bd5c1e287dc7b8d422c3c9185bdcdbb6) David Parreño Barbuzano)
+- Update maven.yml to include ci/cd in main  ([5342b935a0faf34](https://github.com/mallyaaniruddh/software-design-project/commit/5342b935a0faf3427c8246476da49a7e545cbdf7) Rohan Sikder)
+- Added missing functionality to customer class  ([8f97fc4072e5039](https://github.com/mallyaaniruddh/software-design-project/commit/8f97fc4072e5039d196fca4580b7ad2c8d47ac85) walterbishop4801)
+- Minor bug fix  ([22045d2d308ca8b](https://github.com/mallyaaniruddh/software-design-project/commit/22045d2d308ca8bad452c44c820762d8ac92b966) walterbishop4801)
+- Rental system service re-introduced to customer class and test  ([ed58ddb8278c332](https://github.com/mallyaaniruddh/software-design-project/commit/ed58ddb8278c3325cc01d16ebc07d5bcaccc951f) walterbishop4801)
+- Interceptor added to customer class along with tests  ([670df7d87ef2411](https://github.com/mallyaaniruddh/software-design-project/commit/670df7d87ef2411292191d336f57c77188a3dfd2) walterbishop4801)
+- security - (JWT, password hashing) (#55)  ([3280e85c133238c](https://github.com/mallyaaniruddh/software-design-project/commit/3280e85c133238c7f70178757d77bf7e4abd4c16) ivor11)
+- Fix ManagerTest to work with repository and update assignMechanicToVehicle for proper repository interaction  ([c11150b69d4cfb9](https://github.com/mallyaaniruddh/software-design-project/commit/c11150b69d4cfb9aecd2986e7fe984016290e8ae) Rohan Sikder)
+- h2 repository added (#43)  ([0300c6329622fed](https://github.com/mallyaaniruddh/software-design-project/commit/0300c6329622fed9a2c0f5d578da4716deec5990) ivor11)
+- resolving conflicts  ([6ad39039f983a3b](https://github.com/mallyaaniruddh/software-design-project/commit/6ad39039f983a3bd78cae9f8a0bed752bb60a73a) Ivor D&#x27;Souza)
+- Update README.md  ([0174c611c8cc257](https://github.com/mallyaaniruddh/software-design-project/commit/0174c611c8cc257f1f3e5ca28c4cc4c6c994f6ba) vehicle-rental-system)
+- Fix Mechanic and Test Classes to Ensure Correct Behavior and Repository Integration  ([129a953c4d7ba93](https://github.com/mallyaaniruddh/software-design-project/commit/129a953c4d7ba9372a0b60fe263b0c02dbeb6f98) Rohan Sikder)
+- add make payment request body  ([6c29c0a32535dc2](https://github.com/mallyaaniruddh/software-design-project/commit/6c29c0a32535dc23ac13b4e27b8e0b02da7c42bb) Ivor D&#x27;Souza)
+- all database calls working  ([795db127f7e2b8d](https://github.com/mallyaaniruddh/software-design-project/commit/795db127f7e2b8d42dbd9c173813268add46a225) Ivor D&#x27;Souza)
+- merge with develop  ([79e9d4ee4749824](https://github.com/mallyaaniruddh/software-design-project/commit/79e9d4ee47498240affb7fbed62313f78773ac36) Ivor D&#x27;Souza)
+- stable database: booking repo  ([7c1d487d8901d1a](https://github.com/mallyaaniruddh/software-design-project/commit/7c1d487d8901d1a6a4ebc188f1a068a9f310904a) Ivor D&#x27;Souza)
+- stable database init  ([8eee224f2568aea](https://github.com/mallyaaniruddh/software-design-project/commit/8eee224f2568aeade6ae6abf28f62f3504cc227b) Ivor D&#x27;Souza)
+- WIP Database using h2 repository - very unstable and not up to date code  ([e23dba9e9cf7bec](https://github.com/mallyaaniruddh/software-design-project/commit/e23dba9e9cf7becf7369ebed80f674b4c33ef032) Rohan Sikder)
+- Updated account and customer, created mechanic, manager classes  ([257e204430ea9b4](https://github.com/mallyaaniruddh/software-design-project/commit/257e204430ea9b4f221ca03ba46f9726b521352e) walterbishop4801)
+
 ## [v2.3.1](https://github.com/mallyaaniruddh/software-design-project/releases/tag/v2.3.1) (2024-12-04)
 
 ### Bug Fixes
