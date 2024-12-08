@@ -5,10 +5,12 @@ on:
     branches:
       - "develop"
       - "automation"
+      - "main"
   pull_request:
     branches:
       - "develop"
       - "automation"
+      - "main"
 
 jobs:
   # Job to run Maven tests
