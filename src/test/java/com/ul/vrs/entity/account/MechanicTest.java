@@ -25,7 +25,7 @@ import com.ul.vrs.entity.vehicle.state.VehicleState;
 import com.ul.vrs.repository.VehicleRepository;
 
 @ExtendWith(MockitoExtension.class)
-public class MechanicTests {
+public class MechanicTest {
     private List<MockVehicle> testMockVehicles;
     private MockObserver testMockObserver;
     private Mechanic testMechanic;
