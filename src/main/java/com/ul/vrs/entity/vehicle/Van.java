@@ -33,7 +33,6 @@ public class Van extends Vehicle {
         this.numberOfSeats = 6;
     }
 
-    // TODO: Do we need @JsonProperty here?
     @ExcludeConstructorFromGeneratedJacoco
     public Van(long ID, String name, String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType, float cargoCapacity, int numberOfSeats) {
         this(ID, name, brandOwner, releaseYear, cost, color, fuelType, new AvailableVehicleState(), cargoCapacity, numberOfSeats);

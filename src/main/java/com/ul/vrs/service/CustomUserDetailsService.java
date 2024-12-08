@@ -20,13 +20,12 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Account account = accountManagerService.getAccount(username);
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();;
         if (account == null) {
             throw new UsernameNotFoundException("User not found");
         }
-        return new User(account.getUsername(), 
-                        passwordEncoder.encode(account.getPassword()), 
-                        new ArrayList<>());
+
+        return new User(account.getUsername(), passwordEncoder.encode(account.getPassword()), new ArrayList<>());
     }
 }

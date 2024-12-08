@@ -25,14 +25,13 @@ import com.ul.vrs.repository.AccountRepository;
 
 @Service
 public class RentalSystemService {
-	
 	private final Map<UUID, Booking> issues = new HashMap<>();
     private final Map<UUID, Booking> feedbacks = new HashMap<>();
-    
+
     @Autowired
     BookingRepository bookingRepository;
 
-    @Autowired 
+    @Autowired
     AccountRepository accountRepository;
 
     @Autowired
@@ -82,7 +81,6 @@ public class RentalSystemService {
         }
     }
 
-    // TODO: We gotta later use Mechanic to check it out to then update its state
     public void returnVehicle(UUID bookingId) {
         Optional<Booking> b = bookingRepository.findById(bookingId);
 
@@ -109,7 +107,7 @@ public class RentalSystemService {
     public List<Booking> getAllBookings() {
         return bookingRepository.findAll();
     }
-    
+
     // Reports an issue for a specific vehicle.
     public void reportIssue(UUID vehicleId, Booking issueDescription) {
         if (isValidInput(vehicleId, issueDescription)) {

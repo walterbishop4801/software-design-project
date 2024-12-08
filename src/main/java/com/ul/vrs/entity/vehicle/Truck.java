@@ -31,7 +31,7 @@ public class Truck extends Vehicle {
         this.towingCapacity = towingCapacity;
         this.numberOfAxles = numberOfAxles;
     }
-    
+
     public Truck() {
         this.payloadCapacity = 100;
         this.towingCapacity = 2000;
@@ -39,7 +39,6 @@ public class Truck extends Vehicle {
     }
 
 
-    // TODO: Do we need @JsonProperty here?
     @ExcludeConstructorFromGeneratedJacoco
     public Truck(long ID, String name, String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType, float payloadCapacity, float towingCapacity, int numberOfAxles) {
         this(ID, name, brandOwner, releaseYear, cost, color, fuelType, new AvailableVehicleState(), payloadCapacity, towingCapacity, numberOfAxles);

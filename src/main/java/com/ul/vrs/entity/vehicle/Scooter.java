@@ -37,7 +37,6 @@ public class Scooter extends Vehicle {
         this.rangePerFuelTank = 1000;
     }
 
-    // TODO: Do we need @JsonProperty here?
     @ExcludeConstructorFromGeneratedJacoco
     public Scooter(long ID, String name, String brandOwner, int releaseYear, double cost, Color color, Fuel fuelType, boolean hasHelmetIncluded, int maxPassengers, int rangePerFuelTank) {
         this(ID, name, brandOwner, releaseYear, cost, color, fuelType, new AvailableVehicleState(), hasHelmetIncluded, maxPassengers, rangePerFuelTank);

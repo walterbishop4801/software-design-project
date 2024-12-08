@@ -15,12 +15,9 @@ import com.ul.vrs.entity.booking.decorator.Customization;
 import com.ul.vrs.entity.booking.payment.PaymentRequest;
 import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.security.JwtTokenUtil;
-import com.ul.vrs.service.AccountManagerService;
 import com.ul.vrs.service.RentalSystemService;
 import com.ul.vrs.service.VehicleManagerService;
 import com.ul.vrs.controller.command.CommandInvoker;
-import com.ul.vrs.entity.account.Account;
-import com.ul.vrs.entity.account.Customer;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,9 +39,6 @@ public class RentalSystemController {
 
     @Autowired
     private CommandInvoker invoker;
-
-    @Autowired
-    private AccountManagerService accountManagerService;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;

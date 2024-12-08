@@ -1,7 +1,5 @@
 package com.ul.vrs.service;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +8,6 @@ import org.springframework.stereotype.Service;
 import com.ul.vrs.entity.account.Account;
 import com.ul.vrs.entity.account.Customer;
 import com.ul.vrs.entity.account.Manager;
-import com.ul.vrs.entity.booking.Booking;
-import com.ul.vrs.entity.booking.payment.strategy.PaymentStrategy;
 import com.ul.vrs.repository.AccountRepository;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,11 +18,10 @@ public class AccountManagerService {
     @Autowired
     AccountRepository accountRepository;
 
-    @Autowired 
+    @Autowired
     PasswordEncoder passwordEncoder;
 
     public Account signUp(String username, String password, String accountType) {
-
         Optional<Account> account = accountRepository.findById(username);
         String hashedPassword = passwordEncoder.encode(password);
 
